@@ -23,6 +23,7 @@ namespace validation_layer
             handleLifetime = std::make_unique<HandleLifetimeValidation>();
         }
         enableThreadingValidation = getenv_tobool( "ZE_ENABLE_THREADING_VALIDATION" );
+        enableBasicLeakChecking = getenv_tobool( "ZE_ENABLE_BASIC_LEAK_CHECKING" );
     }
 
     ///////////////////////////////////////////////////////////////////////////////

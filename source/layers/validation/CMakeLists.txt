@@ -45,3 +45,4 @@ install(TARGETS ze_validation_layer
 
 add_subdirectory(handle_lifetime_tracking)
 add_subdirectory(checkers)
+add_subdirectory(basic_leak)

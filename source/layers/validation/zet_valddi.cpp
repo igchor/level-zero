@@ -52,6 +52,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetModuleGetDebugInfo");
+        }
+
         return driver_result;
     }
 
@@ -90,6 +95,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDeviceGetDebugPropertiesEpilogue( hDevice, pDebugProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDeviceGetDebugProperties");
         }
 
         return driver_result;
@@ -133,6 +143,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugAttach");
+        }
+
         return driver_result;
     }
 
@@ -170,6 +185,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDebugDetachEpilogue( hDebug ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugDetach");
         }
 
         return driver_result;
@@ -219,6 +239,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugReadEvent");
+        }
+
         return driver_result;
     }
 
@@ -257,6 +282,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDebugAcknowledgeEventEpilogue( hDebug, event ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugAcknowledgeEvent");
         }
 
         return driver_result;
@@ -299,6 +329,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugInterrupt");
+        }
+
         return driver_result;
     }
 
@@ -337,6 +372,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDebugResumeEpilogue( hDebug, thread ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugResume");
         }
 
         return driver_result;
@@ -382,6 +422,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugReadMemory");
+        }
+
         return driver_result;
     }
 
@@ -423,6 +468,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDebugWriteMemoryEpilogue( hDebug, thread, desc, size, buffer ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugWriteMemory");
         }
 
         return driver_result;
@@ -472,6 +522,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDebugGetRegisterSetPropertiesEpilogue( hDevice, pCount, pRegisterSetProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugGetRegisterSetProperties");
         }
 
         return driver_result;
@@ -524,6 +579,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugGetThreadRegisterSetProperties");
+        }
+
         return driver_result;
     }
 
@@ -572,6 +632,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugReadRegisters");
+        }
+
         return driver_result;
     }
 
@@ -618,6 +683,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetDebugWriteRegistersEpilogue( hDebug, thread, type, start, count, pRegisterValues ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDebugWriteRegisters");
         }
 
         return driver_result;
@@ -678,6 +748,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupGet");
+        }
+
         return driver_result;
     }
 
@@ -716,6 +791,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricGroupGetPropertiesEpilogue( hMetricGroup, pProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupGetProperties");
         }
 
         return driver_result;
@@ -767,6 +847,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricGroupCalculateMetricValuesEpilogue( hMetricGroup, type, rawDataSize, pRawData, pMetricValueCount, pMetricValues ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupCalculateMetricValues");
         }
 
         return driver_result;
@@ -826,6 +911,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGet");
+        }
+
         return driver_result;
     }
 
@@ -864,6 +954,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricGetPropertiesEpilogue( hMetric, pProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGetProperties");
         }
 
         return driver_result;
@@ -912,6 +1007,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetContextActivateMetricGroups");
+        }
+
         return driver_result;
     }
 
@@ -956,6 +1056,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricStreamerOpen");
+        }
+
         return driver_result;
     }
 
@@ -997,6 +1102,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetCommandListAppendMetricStreamerMarker");
+        }
+
         return driver_result;
     }
 
@@ -1034,6 +1144,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricStreamerCloseEpilogue( hMetricStreamer ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricStreamerClose");
         }
 
         return driver_result;
@@ -1084,6 +1199,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricStreamerReadDataEpilogue( hMetricStreamer, maxReportCount, pRawDataSize, pRawData ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricStreamerReadData");
         }
 
         return driver_result;
@@ -1138,6 +1258,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricQueryPoolCreate");
+        }
+
         return driver_result;
     }
 
@@ -1175,6 +1300,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricQueryPoolDestroyEpilogue( hMetricQueryPool ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricQueryPoolDestroy");
         }
 
         return driver_result;
@@ -1227,6 +1357,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricQueryCreate");
+        }
+
         return driver_result;
     }
 
@@ -1264,6 +1399,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricQueryDestroyEpilogue( hMetricQuery ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricQueryDestroy");
         }
 
         return driver_result;
@@ -1305,6 +1445,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricQueryReset");
+        }
+
         return driver_result;
     }
 
@@ -1343,6 +1488,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetCommandListAppendMetricQueryBeginEpilogue( hCommandList, hMetricQuery ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetCommandListAppendMetricQueryBegin");
         }
 
         return driver_result;
@@ -1388,6 +1538,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetCommandListAppendMetricQueryEnd");
+        }
+
         return driver_result;
     }
 
@@ -1425,6 +1580,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetCommandListAppendMetricMemoryBarrierEpilogue( hCommandList ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetCommandListAppendMetricMemoryBarrier");
         }
 
         return driver_result;
@@ -1475,6 +1635,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricQueryGetData");
+        }
+
         return driver_result;
     }
 
@@ -1513,6 +1678,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetKernelGetProfileInfoEpilogue( hKernel, pProfileProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetKernelGetProfileInfo");
         }
 
         return driver_result;
@@ -1565,6 +1735,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetTracerExpCreate");
+        }
+
         return driver_result;
     }
 
@@ -1602,6 +1777,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetTracerExpDestroyEpilogue( hTracer ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetTracerExpDestroy");
         }
 
         return driver_result;
@@ -1644,6 +1824,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetTracerExpSetPrologues");
+        }
+
         return driver_result;
     }
 
@@ -1684,6 +1869,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetTracerExpSetEpilogues");
+        }
+
         return driver_result;
     }
 
@@ -1722,6 +1912,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetTracerExpSetEnabledEpilogue( hTracer, enable ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetTracerExpSetEnabled");
         }
 
         return driver_result;
@@ -1775,6 +1970,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDeviceGetConcurrentMetricGroupsExp");
+        }
+
         return driver_result;
     }
 
@@ -1832,6 +2032,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricTracerCreateExp");
+        }
+
         return driver_result;
     }
 
@@ -1869,6 +2074,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricTracerDestroyExpEpilogue( hMetricTracer ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricTracerDestroyExp");
         }
 
         return driver_result;
@@ -1915,6 +2125,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricTracerEnableExp");
+        }
+
         return driver_result;
     }
 
@@ -1958,6 +2173,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricTracerDisableExpEpilogue( hMetricTracer, synchronous ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricTracerDisableExp");
         }
 
         return driver_result;
@@ -2006,6 +2226,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricTracerReadDataExpEpilogue( hMetricTracer, pRawDataSize, pRawData ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricTracerReadDataExp");
         }
 
         return driver_result;
@@ -2057,6 +2282,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricDecoderCreateExp");
+        }
+
         return driver_result;
     }
 
@@ -2094,6 +2324,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricDecoderDestroyExpEpilogue( phMetricDecoder ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricDecoderDestroyExp");
         }
 
         return driver_result;
@@ -2156,6 +2391,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricDecoderGetDecodableMetricsExp");
+        }
+
         return driver_result;
     }
 
@@ -2234,6 +2474,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricTracerDecodeExp");
+        }
+
         return driver_result;
     }
 
@@ -2295,6 +2540,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupCalculateMultipleMetricValuesExp");
+        }
+
         return driver_result;
     }
 
@@ -2341,6 +2591,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupGetGlobalTimestampsExp");
+        }
+
         return driver_result;
     }
 
@@ -2392,6 +2647,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupGetExportDataExp");
+        }
+
         return driver_result;
     }
 
@@ -2454,6 +2714,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupCalculateMetricExportDataExp");
+        }
+
         return driver_result;
     }
 
@@ -2512,6 +2777,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricProgrammableGetExp");
+        }
+
         return driver_result;
     }
 
@@ -2556,6 +2826,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricProgrammableGetPropertiesExp");
+        }
+
         return driver_result;
     }
 
@@ -2607,6 +2882,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricProgrammableGetParamInfoExp");
+        }
+
         return driver_result;
     }
 
@@ -2659,6 +2939,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricProgrammableGetParamValueInfoExp");
+        }
+
         return driver_result;
     }
 
@@ -2724,6 +3009,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricCreateFromProgrammableExp2");
+        }
+
         return driver_result;
     }
 
@@ -2789,6 +3079,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricCreateFromProgrammableExp");
+        }
+
         return driver_result;
     }
 
@@ -2857,6 +3152,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetDeviceCreateMetricGroupsFromMetricsExp");
+        }
+
         return driver_result;
     }
 
@@ -2912,6 +3212,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupCreateExp");
+        }
+
         return driver_result;
     }
 
@@ -2959,6 +3264,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupAddMetricExp");
+        }
+
         return driver_result;
     }
 
@@ -2997,6 +3307,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricGroupRemoveMetricExpEpilogue( hMetricGroup, hMetric ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupRemoveMetricExp");
         }
 
         return driver_result;
@@ -3038,6 +3353,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupCloseExp");
+        }
+
         return driver_result;
     }
 
@@ -3077,6 +3397,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricGroupDestroyExp");
+        }
+
         return driver_result;
     }
 
@@ -3114,6 +3439,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zetValidation->zetMetricDestroyExpEpilogue( hMetric ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zetMetricDestroyExp");
         }
 
         return driver_result;

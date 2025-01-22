@@ -111,6 +111,11 @@ ${line} \
             %endfor
         }
         %endif
+
+        if( driver_result == ${X}_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("${th.make_func_name(n, tags, obj)}");
+        }
+
         return driver_result;
     }
     %if 'condition' in obj:

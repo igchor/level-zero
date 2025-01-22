@@ -50,6 +50,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeInit");
+        }
+
         return driver_result;
     }
 
@@ -106,6 +111,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGet");
+        }
+
         return driver_result;
     }
 
@@ -154,6 +164,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeInitDrivers");
+        }
+
         return driver_result;
     }
 
@@ -192,6 +207,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDriverGetApiVersionEpilogue( hDriver, version ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGetApiVersion");
         }
 
         return driver_result;
@@ -234,6 +254,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGetProperties");
+        }
+
         return driver_result;
     }
 
@@ -272,6 +297,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDriverGetIpcPropertiesEpilogue( hDriver, pIpcProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGetIpcProperties");
         }
 
         return driver_result;
@@ -323,6 +353,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGetExtensionProperties");
+        }
+
         return driver_result;
     }
 
@@ -364,6 +399,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGetExtensionFunctionAddress");
+        }
+
         return driver_result;
     }
 
@@ -403,6 +443,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDriverGetLastErrorDescriptionEpilogue( hDriver, ppString ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverGetLastErrorDescription");
         }
 
         return driver_result;
@@ -462,6 +507,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGet");
+        }
+
         return driver_result;
     }
 
@@ -500,6 +550,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetRootDeviceEpilogue( hDevice, phRootDevice ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetRootDevice");
         }
 
         return driver_result;
@@ -559,6 +614,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetSubDevices");
+        }
+
         return driver_result;
     }
 
@@ -597,6 +657,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetPropertiesEpilogue( hDevice, pDeviceProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetProperties");
         }
 
         return driver_result;
@@ -639,6 +704,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetComputeProperties");
+        }
+
         return driver_result;
     }
 
@@ -677,6 +747,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetModulePropertiesEpilogue( hDevice, pModuleProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetModuleProperties");
         }
 
         return driver_result;
@@ -729,6 +804,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetCommandQueueGroupProperties");
+        }
+
         return driver_result;
     }
 
@@ -778,6 +858,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetMemoryProperties");
+        }
+
         return driver_result;
     }
 
@@ -816,6 +901,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetMemoryAccessPropertiesEpilogue( hDevice, pMemAccessProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetMemoryAccessProperties");
         }
 
         return driver_result;
@@ -866,6 +956,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetCacheProperties");
+        }
+
         return driver_result;
     }
 
@@ -906,6 +1001,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetImageProperties");
+        }
+
         return driver_result;
     }
 
@@ -944,6 +1044,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetExternalMemoryPropertiesEpilogue( hDevice, pExternalMemoryProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetExternalMemoryProperties");
         }
 
         return driver_result;
@@ -987,6 +1092,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetP2PProperties");
+        }
+
         return driver_result;
     }
 
@@ -1028,6 +1138,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceCanAccessPeer");
+        }
+
         return driver_result;
     }
 
@@ -1065,6 +1180,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetStatusEpilogue( hDevice ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetStatus");
         }
 
         return driver_result;
@@ -1108,6 +1228,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceGetGlobalTimestampsEpilogue( hDevice, hostTimestamp, deviceTimestamp ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetGlobalTimestamps");
         }
 
         return driver_result;
@@ -1160,6 +1285,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextCreate");
+        }
+
         return driver_result;
     }
 
@@ -1220,6 +1350,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextCreateEx");
+        }
+
         return driver_result;
     }
 
@@ -1259,6 +1394,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextDestroy");
+        }
+
         return driver_result;
     }
 
@@ -1296,6 +1436,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeContextGetStatusEpilogue( hContext ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextGetStatus");
         }
 
         return driver_result;
@@ -1349,6 +1494,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandQueueCreate");
+        }
+
         return driver_result;
     }
 
@@ -1386,6 +1536,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandQueueDestroyEpilogue( hCommandQueue ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandQueueDestroy");
         }
 
         return driver_result;
@@ -1429,6 +1584,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandQueueExecuteCommandListsEpilogue( hCommandQueue, numCommandLists, phCommandLists, hFence ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandQueueExecuteCommandLists");
         }
 
         return driver_result;
@@ -1477,6 +1637,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandQueueSynchronize");
+        }
+
         return driver_result;
     }
 
@@ -1517,6 +1682,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandQueueGetOrdinal");
+        }
+
         return driver_result;
     }
 
@@ -1555,6 +1725,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandQueueGetIndexEpilogue( hCommandQueue, pIndex ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandQueueGetIndex");
         }
 
         return driver_result;
@@ -1608,6 +1783,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListCreate");
+        }
+
         return driver_result;
     }
 
@@ -1657,6 +1837,11 @@ namespace validation_layer
                 context.handleLifetime->addHandle( *phCommandList , false);
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListCreateImmediate");
+        }
+
         return driver_result;
     }
 
@@ -1694,6 +1879,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListDestroyEpilogue( hCommandList ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListDestroy");
         }
 
         return driver_result;
@@ -1735,6 +1925,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListClose");
+        }
+
         return driver_result;
     }
 
@@ -1772,6 +1967,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListResetEpilogue( hCommandList ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListReset");
         }
 
         return driver_result;
@@ -1820,6 +2020,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendWriteGlobalTimestamp");
+        }
+
         return driver_result;
     }
 
@@ -1866,6 +2071,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListHostSynchronize");
+        }
+
         return driver_result;
     }
 
@@ -1904,6 +2114,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListGetDeviceHandleEpilogue( hCommandList, phDevice ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListGetDeviceHandle");
         }
 
         return driver_result;
@@ -1946,6 +2161,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListGetContextHandle");
+        }
+
         return driver_result;
     }
 
@@ -1984,6 +2204,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListGetOrdinalEpilogue( hCommandList, pOrdinal ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListGetOrdinal");
         }
 
         return driver_result;
@@ -2027,6 +2252,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListImmediateGetIndex");
+        }
+
         return driver_result;
     }
 
@@ -2066,6 +2296,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListIsImmediateEpilogue( hCommandList, pIsImmediate ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListIsImmediate");
         }
 
         return driver_result;
@@ -2110,6 +2345,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendBarrierEpilogue( hCommandList, hSignalEvent, numWaitEvents, phWaitEvents ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendBarrier");
         }
 
         return driver_result;
@@ -2159,6 +2399,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemoryRangesBarrier");
+        }
+
         return driver_result;
     }
 
@@ -2197,6 +2442,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeContextSystemBarrierEpilogue( hContext, hDevice ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextSystemBarrier");
         }
 
         return driver_result;
@@ -2246,6 +2496,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemoryCopy");
+        }
+
         return driver_result;
     }
 
@@ -2292,6 +2547,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendMemoryFillEpilogue( hCommandList, ptr, pattern, pattern_size, size, hSignalEvent, numWaitEvents, phWaitEvents ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemoryFill");
         }
 
         return driver_result;
@@ -2350,6 +2610,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemoryCopyRegion");
+        }
+
         return driver_result;
     }
 
@@ -2398,6 +2663,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemoryCopyFromContext");
+        }
+
         return driver_result;
     }
 
@@ -2442,6 +2712,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendImageCopyEpilogue( hCommandList, hDstImage, hSrcImage, hSignalEvent, numWaitEvents, phWaitEvents ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendImageCopy");
         }
 
         return driver_result;
@@ -2492,6 +2767,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendImageCopyRegion");
+        }
+
         return driver_result;
     }
 
@@ -2537,6 +2817,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendImageCopyToMemoryEpilogue( hCommandList, dstptr, hSrcImage, pSrcRegion, hSignalEvent, numWaitEvents, phWaitEvents ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendImageCopyToMemory");
         }
 
         return driver_result;
@@ -2586,6 +2871,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendImageCopyFromMemory");
+        }
+
         return driver_result;
     }
 
@@ -2625,6 +2915,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendMemoryPrefetchEpilogue( hCommandList, ptr, size ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemoryPrefetch");
         }
 
         return driver_result;
@@ -2668,6 +2963,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendMemAdviseEpilogue( hCommandList, hDevice, ptr, size, advice ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendMemAdvise");
         }
 
         return driver_result;
@@ -2726,6 +3026,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolCreate");
+        }
+
         return driver_result;
     }
 
@@ -2763,6 +3068,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventPoolDestroyEpilogue( hEventPool ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolDestroy");
         }
 
         return driver_result;
@@ -2815,6 +3125,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventCreate");
+        }
+
         return driver_result;
     }
 
@@ -2852,6 +3167,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventDestroyEpilogue( hEvent ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventDestroy");
         }
 
         return driver_result;
@@ -2898,6 +3218,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolGetIpcHandle");
+        }
+
         return driver_result;
     }
 
@@ -2937,6 +3262,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventPoolPutIpcHandleEpilogue( hContext, hIpc ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolPutIpcHandle");
         }
 
         return driver_result;
@@ -2981,6 +3311,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolOpenIpcHandle");
+        }
+
         return driver_result;
     }
 
@@ -3018,6 +3353,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventPoolCloseIpcHandleEpilogue( hEventPool ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolCloseIpcHandle");
         }
 
         return driver_result;
@@ -3058,6 +3398,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendSignalEventEpilogue( hCommandList, hEvent ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendSignalEvent");
         }
 
         return driver_result;
@@ -3102,6 +3447,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendWaitOnEvents");
+        }
+
         return driver_result;
     }
 
@@ -3139,6 +3489,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventHostSignalEpilogue( hEvent ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventHostSignal");
         }
 
         return driver_result;
@@ -3187,6 +3542,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventHostSynchronize");
+        }
+
         return driver_result;
     }
 
@@ -3224,6 +3584,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventQueryStatusEpilogue( hEvent ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventQueryStatus");
         }
 
         return driver_result;
@@ -3266,6 +3631,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendEventReset");
+        }
+
         return driver_result;
     }
 
@@ -3303,6 +3673,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventHostResetEpilogue( hEvent ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventHostReset");
         }
 
         return driver_result;
@@ -3343,6 +3718,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventQueryKernelTimestampEpilogue( hEvent, dstptr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventQueryKernelTimestamp");
         }
 
         return driver_result;
@@ -3396,6 +3776,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendQueryKernelTimestamps");
+        }
+
         return driver_result;
     }
 
@@ -3434,6 +3819,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventGetEventPoolEpilogue( hEvent, phEventPool ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventGetEventPool");
         }
 
         return driver_result;
@@ -3478,6 +3868,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventGetSignalScope");
+        }
+
         return driver_result;
     }
 
@@ -3520,6 +3915,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventGetWaitScope");
+        }
+
         return driver_result;
     }
 
@@ -3558,6 +3958,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventPoolGetContextHandleEpilogue( hEventPool, phContext ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolGetContextHandle");
         }
 
         return driver_result;
@@ -3599,6 +4004,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeEventPoolGetFlagsEpilogue( hEventPool, pFlags ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventPoolGetFlags");
         }
 
         return driver_result;
@@ -3651,6 +4061,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFenceCreate");
+        }
+
         return driver_result;
     }
 
@@ -3688,6 +4103,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeFenceDestroyEpilogue( hFence ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFenceDestroy");
         }
 
         return driver_result;
@@ -3736,6 +4156,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFenceHostSynchronize");
+        }
+
         return driver_result;
     }
 
@@ -3773,6 +4198,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeFenceQueryStatusEpilogue( hFence ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFenceQueryStatus");
         }
 
         return driver_result;
@@ -3814,6 +4244,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFenceReset");
+        }
+
         return driver_result;
     }
 
@@ -3853,6 +4288,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeImageGetPropertiesEpilogue( hDevice, desc, pImageProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageGetProperties");
         }
 
         return driver_result;
@@ -3906,6 +4346,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageCreate");
+        }
+
         return driver_result;
     }
 
@@ -3943,6 +4388,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeImageDestroyEpilogue( hImage ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageDestroy");
         }
 
         return driver_result;
@@ -3992,6 +4442,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemAllocShared");
+        }
+
         return driver_result;
     }
 
@@ -4036,6 +4491,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemAllocDeviceEpilogue( hContext, device_desc, size, alignment, hDevice, pptr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemAllocDevice");
         }
 
         return driver_result;
@@ -4083,6 +4543,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemAllocHost");
+        }
+
         return driver_result;
     }
 
@@ -4121,6 +4586,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemFreeEpilogue( hContext, ptr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemFree");
         }
 
         return driver_result;
@@ -4165,6 +4635,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetAllocProperties");
+        }
+
         return driver_result;
     }
 
@@ -4205,6 +4680,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemGetAddressRangeEpilogue( hContext, ptr, pBase, pSize ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetAddressRange");
         }
 
         return driver_result;
@@ -4252,6 +4732,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetIpcHandle");
+        }
+
         return driver_result;
     }
 
@@ -4297,6 +4782,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetIpcHandleFromFileDescriptorExp");
+        }
+
         return driver_result;
     }
 
@@ -4342,6 +4832,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetFileDescriptorFromIpcHandleExp");
+        }
+
         return driver_result;
     }
 
@@ -4380,6 +4875,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemPutIpcHandleEpilogue( hContext, handle ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemPutIpcHandle");
         }
 
         return driver_result;
@@ -4426,6 +4926,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemOpenIpcHandle");
+        }
+
         return driver_result;
     }
 
@@ -4464,6 +4969,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemCloseIpcHandleEpilogue( hContext, ptr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemCloseIpcHandle");
         }
 
         return driver_result;
@@ -4508,6 +5018,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemSetAtomicAccessAttributeExpEpilogue( hContext, hDevice, ptr, size, attr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemSetAtomicAccessAttributeExp");
         }
 
         return driver_result;
@@ -4557,6 +5072,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetAtomicAccessAttributeExp");
+        }
+
         return driver_result;
     }
 
@@ -4614,6 +5134,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleCreate");
+        }
+
         return driver_result;
     }
 
@@ -4651,6 +5176,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeModuleDestroyEpilogue( hModule ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleDestroy");
         }
 
         return driver_result;
@@ -4695,6 +5225,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleDynamicLink");
+        }
+
         return driver_result;
     }
 
@@ -4732,6 +5267,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeModuleBuildLogDestroyEpilogue( hModuleBuildLog ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleBuildLogDestroy");
         }
 
         return driver_result;
@@ -4775,6 +5315,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleBuildLogGetString");
+        }
+
         return driver_result;
     }
 
@@ -4814,6 +5359,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeModuleGetNativeBinaryEpilogue( hModule, pSize, pModuleNativeBinary ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleGetNativeBinary");
         }
 
         return driver_result;
@@ -4856,6 +5406,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeModuleGetGlobalPointerEpilogue( hModule, pGlobalName, pSize, pptr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleGetGlobalPointer");
         }
 
         return driver_result;
@@ -4905,6 +5460,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleGetKernelNames");
+        }
+
         return driver_result;
     }
 
@@ -4943,6 +5503,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeModuleGetPropertiesEpilogue( hModule, pModuleProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleGetProperties");
         }
 
         return driver_result;
@@ -4995,6 +5560,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelCreate");
+        }
+
         return driver_result;
     }
 
@@ -5032,6 +5602,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelDestroyEpilogue( hKernel ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelDestroy");
         }
 
         return driver_result;
@@ -5075,6 +5650,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleGetFunctionPointer");
+        }
+
         return driver_result;
     }
 
@@ -5115,6 +5695,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelSetGroupSizeEpilogue( hKernel, groupSizeX, groupSizeY, groupSizeZ ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSetGroupSize");
         }
 
         return driver_result;
@@ -5162,6 +5747,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSuggestGroupSize");
+        }
+
         return driver_result;
     }
 
@@ -5200,6 +5790,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelSuggestMaxCooperativeGroupCountEpilogue( hKernel, totalGroupCount ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSuggestMaxCooperativeGroupCount");
         }
 
         return driver_result;
@@ -5245,6 +5840,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSetArgumentValue");
+        }
+
         return driver_result;
     }
 
@@ -5285,6 +5885,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSetIndirectAccess");
+        }
+
         return driver_result;
     }
 
@@ -5323,6 +5928,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelGetIndirectAccessEpilogue( hKernel, pFlags ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelGetIndirectAccess");
         }
 
         return driver_result;
@@ -5373,6 +5983,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelGetSourceAttributes");
+        }
+
         return driver_result;
     }
 
@@ -5412,6 +6027,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelSetCacheConfigEpilogue( hKernel, flags ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSetCacheConfig");
         }
 
         return driver_result;
@@ -5454,6 +6074,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelGetProperties");
+        }
+
         return driver_result;
     }
 
@@ -5494,6 +6119,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelGetNameEpilogue( hKernel, pSize, pName ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelGetName");
         }
 
         return driver_result;
@@ -5542,6 +6172,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendLaunchKernel");
+        }
+
         return driver_result;
     }
 
@@ -5586,6 +6221,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendLaunchCooperativeKernelEpilogue( hCommandList, hKernel, pLaunchFuncArgs, hSignalEvent, numWaitEvents, phWaitEvents ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendLaunchCooperativeKernel");
         }
 
         return driver_result;
@@ -5633,6 +6273,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListAppendLaunchKernelIndirectEpilogue( hCommandList, hKernel, pLaunchArgumentsBuffer, hSignalEvent, numWaitEvents, phWaitEvents ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendLaunchKernelIndirect");
         }
 
         return driver_result;
@@ -5686,6 +6331,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendLaunchMultipleKernelsIndirect");
+        }
+
         return driver_result;
     }
 
@@ -5726,6 +6376,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeContextMakeMemoryResidentEpilogue( hContext, hDevice, ptr, size ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextMakeMemoryResident");
         }
 
         return driver_result;
@@ -5770,6 +6425,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextEvictMemory");
+        }
+
         return driver_result;
     }
 
@@ -5811,6 +6471,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextMakeImageResident");
+        }
+
         return driver_result;
     }
 
@@ -5850,6 +6515,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeContextEvictImageEpilogue( hContext, hDevice, hImage ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeContextEvictImage");
         }
 
         return driver_result;
@@ -5903,6 +6573,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeSamplerCreate");
+        }
+
         return driver_result;
     }
 
@@ -5940,6 +6615,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeSamplerDestroyEpilogue( hSampler ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeSamplerDestroy");
         }
 
         return driver_result;
@@ -5985,6 +6665,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemReserve");
+        }
+
         return driver_result;
     }
 
@@ -6024,6 +6709,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeVirtualMemFreeEpilogue( hContext, ptr, size ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemFree");
         }
 
         return driver_result;
@@ -6067,6 +6757,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeVirtualMemQueryPageSizeEpilogue( hContext, hDevice, size, pagesize ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemQueryPageSize");
         }
 
         return driver_result;
@@ -6121,6 +6816,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zePhysicalMemCreate");
+        }
+
         return driver_result;
     }
 
@@ -6159,6 +6859,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zePhysicalMemDestroyEpilogue( hContext, hPhysicalMemory ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zePhysicalMemDestroy");
         }
 
         return driver_result;
@@ -6208,6 +6913,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemMap");
+        }
+
         return driver_result;
     }
 
@@ -6247,6 +6957,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeVirtualMemUnmapEpilogue( hContext, ptr, size ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemUnmap");
         }
 
         return driver_result;
@@ -6290,6 +7005,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeVirtualMemSetAccessAttributeEpilogue( hContext, ptr, size, access ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemSetAccessAttribute");
         }
 
         return driver_result;
@@ -6336,6 +7056,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeVirtualMemGetAccessAttribute");
+        }
+
         return driver_result;
     }
 
@@ -6376,6 +7101,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeKernelSetGlobalOffsetExpEpilogue( hKernel, offsetX, offsetY, offsetZ ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSetGlobalOffsetExp");
         }
 
         return driver_result;
@@ -6423,6 +7153,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelGetBinaryExp");
+        }
+
         return driver_result;
     }
 
@@ -6464,6 +7199,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceImportExternalSemaphoreExt");
+        }
+
         return driver_result;
     }
 
@@ -6501,6 +7241,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceReleaseExternalSemaphoreExtEpilogue( hSemaphore ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceReleaseExternalSemaphoreExt");
         }
 
         return driver_result;
@@ -6551,6 +7296,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendSignalExternalSemaphoreExt");
+        }
+
         return driver_result;
     }
 
@@ -6599,6 +7349,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendWaitExternalSemaphoreExt");
+        }
+
         return driver_result;
     }
 
@@ -6643,6 +7398,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceReserveCacheExt");
+        }
+
         return driver_result;
     }
 
@@ -6683,6 +7443,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDeviceSetCacheAdviceExtEpilogue( hDevice, ptr, regionSize, cacheRegion ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceSetCacheAdviceExt");
         }
 
         return driver_result;
@@ -6733,6 +7498,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventQueryTimestampsExp");
+        }
+
         return driver_result;
     }
 
@@ -6777,6 +7547,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageGetMemoryPropertiesExp");
+        }
+
         return driver_result;
     }
 
@@ -6829,6 +7604,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageViewCreateExt");
+        }
+
         return driver_result;
     }
 
@@ -6881,6 +7661,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageViewCreateExp");
+        }
+
         return driver_result;
     }
 
@@ -6921,6 +7706,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeKernelSchedulingHintExp");
+        }
+
         return driver_result;
     }
 
@@ -6959,6 +7749,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDevicePciGetPropertiesExtEpilogue( hDevice, pPciProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDevicePciGetPropertiesExt");
         }
 
         return driver_result;
@@ -7012,6 +7807,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendImageCopyToMemoryExt");
+        }
+
         return driver_result;
     }
 
@@ -7063,6 +7863,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListAppendImageCopyFromMemoryExt");
+        }
+
         return driver_result;
     }
 
@@ -7102,6 +7907,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeImageGetAllocPropertiesExtEpilogue( hContext, hImage, pImageAllocProperties ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageGetAllocPropertiesExt");
         }
 
         return driver_result;
@@ -7148,6 +7958,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeModuleInspectLinkageExt");
+        }
+
         return driver_result;
     }
 
@@ -7187,6 +8002,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeMemFreeExtEpilogue( hContext, pMemFreeDesc, ptr ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemFreeExt");
         }
 
         return driver_result;
@@ -7247,6 +8067,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricVertexGetExp");
+        }
+
         return driver_result;
     }
 
@@ -7305,6 +8130,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricVertexGetSubVerticesExp");
+        }
+
         return driver_result;
     }
 
@@ -7349,6 +8179,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricVertexGetPropertiesExp");
+        }
+
         return driver_result;
     }
 
@@ -7398,6 +8233,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricVertexGetDeviceExp");
+        }
+
         return driver_result;
     }
 
@@ -7447,6 +8287,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDeviceGetFabricVertexExp");
+        }
+
         return driver_result;
     }
 
@@ -7506,6 +8351,11 @@ namespace validation_layer
                 }
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricEdgeGetExp");
+        }
+
         return driver_result;
     }
 
@@ -7561,6 +8411,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricEdgeGetVerticesExp");
+        }
+
         return driver_result;
     }
 
@@ -7605,6 +8460,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeFabricEdgeGetPropertiesExp");
+        }
+
         return driver_result;
     }
 
@@ -7660,6 +8520,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeEventQueryKernelTimestampsExt");
+        }
+
         return driver_result;
     }
 
@@ -7710,6 +8575,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASBuilderCreateExp");
+        }
+
         return driver_result;
     }
 
@@ -7755,6 +8625,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASBuilderGetBuildPropertiesExp");
+        }
+
         return driver_result;
     }
 
@@ -7794,6 +8669,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeDriverRTASFormatCompatibilityCheckExpEpilogue( hDriver, rtasFormatA, rtasFormatB ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeDriverRTASFormatCompatibilityCheckExp");
         }
 
         return driver_result;
@@ -7847,6 +8727,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASBuilderBuildExp");
+        }
+
         return driver_result;
     }
 
@@ -7884,6 +8769,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeRTASBuilderDestroyExpEpilogue( hBuilder ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASBuilderDestroyExp");
         }
 
         return driver_result;
@@ -7935,6 +8825,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASParallelOperationCreateExp");
+        }
+
         return driver_result;
     }
 
@@ -7979,6 +8874,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASParallelOperationGetPropertiesExp");
+        }
+
         return driver_result;
     }
 
@@ -8018,6 +8918,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASParallelOperationJoinExp");
+        }
+
         return driver_result;
     }
 
@@ -8055,6 +8960,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeRTASParallelOperationDestroyExpEpilogue( hParallelOperation ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeRTASParallelOperationDestroyExp");
         }
 
         return driver_result;
@@ -8101,6 +9011,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeMemGetPitchFor2dImage");
+        }
+
         return driver_result;
     }
 
@@ -8145,6 +9060,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeImageGetDeviceOffsetExp");
+        }
+
         return driver_result;
     }
 
@@ -8194,6 +9114,11 @@ namespace validation_layer
 
             }
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListCreateCloneExp");
+        }
+
         return driver_result;
     }
 
@@ -8244,6 +9169,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListImmediateAppendCommandListsExp");
+        }
+
         return driver_result;
     }
 
@@ -8289,6 +9219,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListGetNextCommandIdExp");
+        }
+
         return driver_result;
     }
 
@@ -8338,6 +9273,11 @@ namespace validation_layer
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListGetNextCommandIdWithKernelsExp");
+        }
+
         return driver_result;
     }
 
@@ -8379,6 +9319,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListUpdateMutableCommandsExp");
+        }
+
         return driver_result;
     }
 
@@ -8418,6 +9363,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListUpdateMutableCommandSignalEventExpEpilogue( hCommandList, commandId, hSignalEvent ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListUpdateMutableCommandSignalEventExp");
         }
 
         return driver_result;
@@ -8463,6 +9413,11 @@ namespace validation_layer
             if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListUpdateMutableCommandWaitEventsExp");
+        }
+
         return driver_result;
     }
 
@@ -8504,6 +9459,11 @@ namespace validation_layer
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zeValidation->zeCommandListUpdateMutableCommandKernelsExpEpilogue( hCommandList, numKernels, pCommandId, phKernels ,driver_result);
             if(result!=ZE_RESULT_SUCCESS) return result;
+        }
+
+
+        if( driver_result == ZE_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("zeCommandListUpdateMutableCommandKernelsExp");
         }
 
         return driver_result;
