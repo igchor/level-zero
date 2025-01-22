@@ -16,6 +16,7 @@
 #include "zes_ddi.h"
 #include "layers/zel_tracing_api.h"
 #include "layers/zel_tracing_ddi.h"
+#include "../utils/logging.h"
 #include "ze_util.h"
 #include <vector>
 #include <mutex>
@@ -62,6 +63,8 @@ namespace ze_lib
         bool inTeardown = false;
         bool zesInuse = false;
         bool zeInuse = false;
+        bool logAllApiCalls = false;
+        std::shared_ptr<loader::Logger> api_logger;
     };
 
     extern context_t *context;

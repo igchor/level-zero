@@ -132,7 +132,13 @@ zeDriverGet(
     }
     ze_lib::context->zeInuse = true;
 
-    return pfnGet( pCount, phDrivers );
+    ze_lib::context->api_logger->log_info("---> zeDriverGet");
+
+    ze_result_t ret = pfnGet( pCount, phDrivers );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGet");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -264,7 +270,13 @@ zeDriverGetApiVersion(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetApiVersion( hDriver, version );
+    ze_lib::context->api_logger->log_info("---> zeDriverGetApiVersion");
+
+    ze_result_t ret = pfnGetApiVersion( hDriver, version );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetApiVersion");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -306,7 +318,13 @@ zeDriverGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetProperties( hDriver, pDriverProperties );
+    ze_lib::context->api_logger->log_info("---> zeDriverGetProperties");
+
+    ze_result_t ret = pfnGetProperties( hDriver, pDriverProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -344,7 +362,13 @@ zeDriverGetIpcProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetIpcProperties( hDriver, pIpcProperties );
+    ze_lib::context->api_logger->log_info("---> zeDriverGetIpcProperties");
+
+    ze_result_t ret = pfnGetIpcProperties( hDriver, pIpcProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetIpcProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -395,7 +419,13 @@ zeDriverGetExtensionProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetExtensionProperties( hDriver, pCount, pExtensionProperties );
+    ze_lib::context->api_logger->log_info("---> zeDriverGetExtensionProperties");
+
+    ze_result_t ret = pfnGetExtensionProperties( hDriver, pCount, pExtensionProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetExtensionProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -436,7 +466,13 @@ zeDriverGetExtensionFunctionAddress(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetExtensionFunctionAddress( hDriver, name, ppFunctionAddress );
+    ze_lib::context->api_logger->log_info("---> zeDriverGetExtensionFunctionAddress");
+
+    ze_result_t ret = pfnGetExtensionFunctionAddress( hDriver, name, ppFunctionAddress );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetExtensionFunctionAddress");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -481,7 +517,13 @@ zeDriverGetLastErrorDescription(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetLastErrorDescription( hDriver, ppString );
+    ze_lib::context->api_logger->log_info("---> zeDriverGetLastErrorDescription");
+
+    ze_result_t ret = pfnGetLastErrorDescription( hDriver, ppString );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetLastErrorDescription");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -531,7 +573,13 @@ zeDeviceGet(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGet( hDriver, pCount, phDevices );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGet");
+
+    ze_result_t ret = pfnGet( hDriver, pCount, phDevices );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGet");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -577,7 +625,13 @@ zeDeviceGetRootDevice(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetRootDevice( hDevice, phRootDevice );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetRootDevice");
+
+    ze_result_t ret = pfnGetRootDevice( hDevice, phRootDevice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetRootDevice");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -632,7 +686,13 @@ zeDeviceGetSubDevices(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetSubDevices( hDevice, pCount, phSubdevices );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetSubDevices");
+
+    ze_result_t ret = pfnGetSubDevices( hDevice, pCount, phSubdevices );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetSubDevices");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -674,7 +734,13 @@ zeDeviceGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetProperties( hDevice, pDeviceProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetProperties");
+
+    ze_result_t ret = pfnGetProperties( hDevice, pDeviceProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -716,7 +782,13 @@ zeDeviceGetComputeProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetComputeProperties( hDevice, pComputeProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetComputeProperties");
+
+    ze_result_t ret = pfnGetComputeProperties( hDevice, pComputeProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetComputeProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -754,7 +826,13 @@ zeDeviceGetModuleProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetModuleProperties( hDevice, pModuleProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetModuleProperties");
+
+    ze_result_t ret = pfnGetModuleProperties( hDevice, pModuleProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetModuleProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -812,7 +890,13 @@ zeDeviceGetCommandQueueGroupProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetCommandQueueGroupProperties( hDevice, pCount, pCommandQueueGroupProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetCommandQueueGroupProperties");
+
+    ze_result_t ret = pfnGetCommandQueueGroupProperties( hDevice, pCount, pCommandQueueGroupProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetCommandQueueGroupProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -869,7 +953,13 @@ zeDeviceGetMemoryProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetMemoryProperties( hDevice, pCount, pMemProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetMemoryProperties");
+
+    ze_result_t ret = pfnGetMemoryProperties( hDevice, pCount, pMemProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetMemoryProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -911,7 +1001,13 @@ zeDeviceGetMemoryAccessProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetMemoryAccessProperties( hDevice, pMemAccessProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetMemoryAccessProperties");
+
+    ze_result_t ret = pfnGetMemoryAccessProperties( hDevice, pMemAccessProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetMemoryAccessProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -961,7 +1057,13 @@ zeDeviceGetCacheProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetCacheProperties( hDevice, pCount, pCacheProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetCacheProperties");
+
+    ze_result_t ret = pfnGetCacheProperties( hDevice, pCount, pCacheProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetCacheProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1000,7 +1102,13 @@ zeDeviceGetImageProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetImageProperties( hDevice, pImageProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetImageProperties");
+
+    ze_result_t ret = pfnGetImageProperties( hDevice, pImageProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetImageProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1038,7 +1146,13 @@ zeDeviceGetExternalMemoryProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetExternalMemoryProperties( hDevice, pExternalMemoryProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetExternalMemoryProperties");
+
+    ze_result_t ret = pfnGetExternalMemoryProperties( hDevice, pExternalMemoryProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetExternalMemoryProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1079,7 +1193,13 @@ zeDeviceGetP2PProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetP2PProperties( hDevice, hPeerDevice, pP2PProperties );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetP2PProperties");
+
+    ze_result_t ret = pfnGetP2PProperties( hDevice, hPeerDevice, pP2PProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetP2PProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1133,7 +1253,13 @@ zeDeviceCanAccessPeer(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCanAccessPeer( hDevice, hPeerDevice, value );
+    ze_lib::context->api_logger->log_info("---> zeDeviceCanAccessPeer");
+
+    ze_result_t ret = pfnCanAccessPeer( hDevice, hPeerDevice, value );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCanAccessPeer");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1175,7 +1301,13 @@ zeDeviceGetStatus(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetStatus( hDevice );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetStatus");
+
+    ze_result_t ret = pfnGetStatus( hDevice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetStatus");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1220,7 +1352,13 @@ zeDeviceGetGlobalTimestamps(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetGlobalTimestamps( hDevice, hostTimestamp, deviceTimestamp );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetGlobalTimestamps");
+
+    ze_result_t ret = pfnGetGlobalTimestamps( hDevice, hostTimestamp, deviceTimestamp );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetGlobalTimestamps");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1264,7 +1402,13 @@ zeContextCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hDriver, desc, phContext );
+    ze_lib::context->api_logger->log_info("---> zeContextCreate");
+
+    ze_result_t ret = pfnCreate( hDriver, desc, phContext );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1320,7 +1464,13 @@ zeContextCreateEx(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreateEx( hDriver, desc, numDevices, phDevices, phContext );
+    ze_lib::context->api_logger->log_info("---> zeContextCreateEx");
+
+    ze_result_t ret = pfnCreateEx( hDriver, desc, numDevices, phDevices, phContext );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreateEx");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1361,7 +1511,13 @@ zeContextDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hContext );
+    ze_lib::context->api_logger->log_info("---> zeContextDestroy");
+
+    ze_result_t ret = pfnDestroy( hContext );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1401,7 +1557,13 @@ zeContextGetStatus(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetStatus( hContext );
+    ze_lib::context->api_logger->log_info("---> zeContextGetStatus");
+
+    ze_result_t ret = pfnGetStatus( hContext );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetStatus");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1455,7 +1617,13 @@ zeCommandQueueCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, hDevice, desc, phCommandQueue );
+    ze_lib::context->api_logger->log_info("---> zeCommandQueueCreate");
+
+    ze_result_t ret = pfnCreate( hContext, hDevice, desc, phCommandQueue );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1502,7 +1670,13 @@ zeCommandQueueDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hCommandQueue );
+    ze_lib::context->api_logger->log_info("---> zeCommandQueueDestroy");
+
+    ze_result_t ret = pfnDestroy( hCommandQueue );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1566,7 +1740,13 @@ zeCommandQueueExecuteCommandLists(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnExecuteCommandLists( hCommandQueue, numCommandLists, phCommandLists, hFence );
+    ze_lib::context->api_logger->log_info("---> zeCommandQueueExecuteCommandLists");
+
+    ze_result_t ret = pfnExecuteCommandLists( hCommandQueue, numCommandLists, phCommandLists, hFence );
+
+    // ze_lib::context->api_logger->log_info("---> pfnExecuteCommandLists");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1610,7 +1790,13 @@ zeCommandQueueSynchronize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSynchronize( hCommandQueue, timeout );
+    ze_lib::context->api_logger->log_info("---> zeCommandQueueSynchronize");
+
+    ze_result_t ret = pfnSynchronize( hCommandQueue, timeout );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSynchronize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1648,7 +1834,13 @@ zeCommandQueueGetOrdinal(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetOrdinal( hCommandQueue, pOrdinal );
+    ze_lib::context->api_logger->log_info("---> zeCommandQueueGetOrdinal");
+
+    ze_result_t ret = pfnGetOrdinal( hCommandQueue, pOrdinal );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetOrdinal");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1686,7 +1878,13 @@ zeCommandQueueGetIndex(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetIndex( hCommandQueue, pIndex );
+    ze_lib::context->api_logger->log_info("---> zeCommandQueueGetIndex");
+
+    ze_result_t ret = pfnGetIndex( hCommandQueue, pIndex );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetIndex");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1735,7 +1933,13 @@ zeCommandListCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, hDevice, desc, phCommandList );
+    ze_lib::context->api_logger->log_info("---> zeCommandListCreate");
+
+    ze_result_t ret = pfnCreate( hContext, hDevice, desc, phCommandList );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1792,7 +1996,13 @@ zeCommandListCreateImmediate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreateImmediate( hContext, hDevice, altdesc, phCommandList );
+    ze_lib::context->api_logger->log_info("---> zeCommandListCreateImmediate");
+
+    ze_result_t ret = pfnCreateImmediate( hContext, hDevice, altdesc, phCommandList );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreateImmediate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1833,7 +2043,13 @@ zeCommandListDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hCommandList );
+    ze_lib::context->api_logger->log_info("---> zeCommandListDestroy");
+
+    ze_result_t ret = pfnDestroy( hCommandList );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1869,7 +2085,13 @@ zeCommandListClose(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnClose( hCommandList );
+    ze_lib::context->api_logger->log_info("---> zeCommandListClose");
+
+    ze_result_t ret = pfnClose( hCommandList );
+
+    // ze_lib::context->api_logger->log_info("---> pfnClose");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1908,7 +2130,13 @@ zeCommandListReset(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnReset( hCommandList );
+    ze_lib::context->api_logger->log_info("---> zeCommandListReset");
+
+    ze_result_t ret = pfnReset( hCommandList );
+
+    // ze_lib::context->api_logger->log_info("---> pfnReset");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1967,7 +2195,13 @@ zeCommandListAppendWriteGlobalTimestamp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendWriteGlobalTimestamp( hCommandList, dstptr, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendWriteGlobalTimestamp");
+
+    ze_result_t ret = pfnAppendWriteGlobalTimestamp( hCommandList, dstptr, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendWriteGlobalTimestamp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2020,7 +2254,13 @@ zeCommandListHostSynchronize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnHostSynchronize( hCommandList, timeout );
+    ze_lib::context->api_logger->log_info("---> zeCommandListHostSynchronize");
+
+    ze_result_t ret = pfnHostSynchronize( hCommandList, timeout );
+
+    // ze_lib::context->api_logger->log_info("---> pfnHostSynchronize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2058,7 +2298,13 @@ zeCommandListGetDeviceHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetDeviceHandle( hCommandList, phDevice );
+    ze_lib::context->api_logger->log_info("---> zeCommandListGetDeviceHandle");
+
+    ze_result_t ret = pfnGetDeviceHandle( hCommandList, phDevice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetDeviceHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2096,7 +2342,13 @@ zeCommandListGetContextHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetContextHandle( hCommandList, phContext );
+    ze_lib::context->api_logger->log_info("---> zeCommandListGetContextHandle");
+
+    ze_result_t ret = pfnGetContextHandle( hCommandList, phContext );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetContextHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2135,7 +2387,13 @@ zeCommandListGetOrdinal(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetOrdinal( hCommandList, pOrdinal );
+    ze_lib::context->api_logger->log_info("---> zeCommandListGetOrdinal");
+
+    ze_result_t ret = pfnGetOrdinal( hCommandList, pOrdinal );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetOrdinal");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2179,7 +2437,13 @@ zeCommandListImmediateGetIndex(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnImmediateGetIndex( hCommandListImmediate, pIndex );
+    ze_lib::context->api_logger->log_info("---> zeCommandListImmediateGetIndex");
+
+    ze_result_t ret = pfnImmediateGetIndex( hCommandListImmediate, pIndex );
+
+    // ze_lib::context->api_logger->log_info("---> pfnImmediateGetIndex");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2218,7 +2482,13 @@ zeCommandListIsImmediate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnIsImmediate( hCommandList, pIsImmediate );
+    ze_lib::context->api_logger->log_info("---> zeCommandListIsImmediate");
+
+    ze_result_t ret = pfnIsImmediate( hCommandList, pIsImmediate );
+
+    // ze_lib::context->api_logger->log_info("---> pfnIsImmediate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2276,7 +2546,13 @@ zeCommandListAppendBarrier(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendBarrier( hCommandList, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendBarrier");
+
+    ze_result_t ret = pfnAppendBarrier( hCommandList, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendBarrier");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2334,7 +2610,13 @@ zeCommandListAppendMemoryRangesBarrier(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemoryRangesBarrier( hCommandList, numRanges, pRangeSizes, pRanges, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemoryRangesBarrier");
+
+    ze_result_t ret = pfnAppendMemoryRangesBarrier( hCommandList, numRanges, pRangeSizes, pRanges, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemoryRangesBarrier");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2377,7 +2659,13 @@ zeContextSystemBarrier(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSystemBarrier( hContext, hDevice );
+    ze_lib::context->api_logger->log_info("---> zeContextSystemBarrier");
+
+    ze_result_t ret = pfnSystemBarrier( hContext, hDevice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSystemBarrier");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2443,7 +2731,13 @@ zeCommandListAppendMemoryCopy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemoryCopy( hCommandList, dstptr, srcptr, size, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemoryCopy");
+
+    ze_result_t ret = pfnAppendMemoryCopy( hCommandList, dstptr, srcptr, size, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemoryCopy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2513,7 +2807,13 @@ zeCommandListAppendMemoryFill(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemoryFill( hCommandList, ptr, pattern, pattern_size, size, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemoryFill");
+
+    ze_result_t ret = pfnAppendMemoryFill( hCommandList, ptr, pattern, pattern_size, size, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemoryFill");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2588,7 +2888,13 @@ zeCommandListAppendMemoryCopyRegion(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemoryCopyRegion( hCommandList, dstptr, dstRegion, dstPitch, dstSlicePitch, srcptr, srcRegion, srcPitch, srcSlicePitch, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemoryCopyRegion");
+
+    ze_result_t ret = pfnAppendMemoryCopyRegion( hCommandList, dstptr, dstRegion, dstPitch, dstSlicePitch, srcptr, srcRegion, srcPitch, srcSlicePitch, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemoryCopyRegion");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2650,7 +2956,13 @@ zeCommandListAppendMemoryCopyFromContext(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemoryCopyFromContext( hCommandList, dstptr, hContextSrc, srcptr, size, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemoryCopyFromContext");
+
+    ze_result_t ret = pfnAppendMemoryCopyFromContext( hCommandList, dstptr, hContextSrc, srcptr, size, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemoryCopyFromContext");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2708,7 +3020,13 @@ zeCommandListAppendImageCopy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendImageCopy( hCommandList, hDstImage, hSrcImage, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendImageCopy");
+
+    ze_result_t ret = pfnAppendImageCopy( hCommandList, hDstImage, hSrcImage, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendImageCopy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2768,7 +3086,13 @@ zeCommandListAppendImageCopyRegion(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendImageCopyRegion( hCommandList, hDstImage, hSrcImage, pDstRegion, pSrcRegion, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendImageCopyRegion");
+
+    ze_result_t ret = pfnAppendImageCopyRegion( hCommandList, hDstImage, hSrcImage, pDstRegion, pSrcRegion, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendImageCopyRegion");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2833,7 +3157,13 @@ zeCommandListAppendImageCopyToMemory(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendImageCopyToMemory( hCommandList, dstptr, hSrcImage, pSrcRegion, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendImageCopyToMemory");
+
+    ze_result_t ret = pfnAppendImageCopyToMemory( hCommandList, dstptr, hSrcImage, pSrcRegion, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendImageCopyToMemory");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2898,7 +3228,13 @@ zeCommandListAppendImageCopyFromMemory(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendImageCopyFromMemory( hCommandList, hDstImage, srcptr, pDstRegion, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendImageCopyFromMemory");
+
+    ze_result_t ret = pfnAppendImageCopyFromMemory( hCommandList, hDstImage, srcptr, pDstRegion, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendImageCopyFromMemory");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2959,7 +3295,13 @@ zeCommandListAppendMemoryPrefetch(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemoryPrefetch( hCommandList, ptr, size );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemoryPrefetch");
+
+    ze_result_t ret = pfnAppendMemoryPrefetch( hCommandList, ptr, size );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemoryPrefetch");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3020,7 +3362,13 @@ zeCommandListAppendMemAdvise(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendMemAdvise( hCommandList, hDevice, ptr, size, advice );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendMemAdvise");
+
+    ze_result_t ret = pfnAppendMemAdvise( hCommandList, hDevice, ptr, size, advice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendMemAdvise");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3073,7 +3421,13 @@ zeEventPoolCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, desc, numDevices, phDevices, phEventPool );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolCreate");
+
+    ze_result_t ret = pfnCreate( hContext, desc, numDevices, phDevices, phEventPool );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3116,7 +3470,13 @@ zeEventPoolDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hEventPool );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolDestroy");
+
+    ze_result_t ret = pfnDestroy( hEventPool );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3169,7 +3529,13 @@ zeEventCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hEventPool, desc, phEvent );
+    ze_lib::context->api_logger->log_info("---> zeEventCreate");
+
+    ze_result_t ret = pfnCreate( hEventPool, desc, phEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3215,7 +3581,13 @@ zeEventDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hEvent );
+    ze_lib::context->api_logger->log_info("---> zeEventDestroy");
+
+    ze_result_t ret = pfnDestroy( hEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3255,7 +3627,13 @@ zeEventPoolGetIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetIpcHandle( hEventPool, phIpc );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolGetIpcHandle");
+
+    ze_result_t ret = pfnGetIpcHandle( hEventPool, phIpc );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3301,7 +3679,13 @@ zeEventPoolPutIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnPutIpcHandle( hContext, hIpc );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolPutIpcHandle");
+
+    ze_result_t ret = pfnPutIpcHandle( hContext, hIpc );
+
+    // ze_lib::context->api_logger->log_info("---> pfnPutIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3357,7 +3741,13 @@ zeEventPoolOpenIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnOpenIpcHandle( hContext, hIpc, phEventPool );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolOpenIpcHandle");
+
+    ze_result_t ret = pfnOpenIpcHandle( hContext, hIpc, phEventPool );
+
+    // ze_lib::context->api_logger->log_info("---> pfnOpenIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3394,7 +3784,13 @@ zeEventPoolCloseIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCloseIpcHandle( hEventPool );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolCloseIpcHandle");
+
+    ze_result_t ret = pfnCloseIpcHandle( hEventPool );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCloseIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3447,7 +3843,13 @@ zeCommandListAppendSignalEvent(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendSignalEvent( hCommandList, hEvent );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendSignalEvent");
+
+    ze_result_t ret = pfnAppendSignalEvent( hCommandList, hEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendSignalEvent");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3493,7 +3895,13 @@ zeCommandListAppendWaitOnEvents(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendWaitOnEvents( hCommandList, numEvents, phEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendWaitOnEvents");
+
+    ze_result_t ret = pfnAppendWaitOnEvents( hCommandList, numEvents, phEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendWaitOnEvents");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3538,7 +3946,13 @@ zeEventHostSignal(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnHostSignal( hEvent );
+    ze_lib::context->api_logger->log_info("---> zeEventHostSignal");
+
+    ze_result_t ret = pfnHostSignal( hEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnHostSignal");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3587,7 +4001,13 @@ zeEventHostSynchronize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnHostSynchronize( hEvent, timeout );
+    ze_lib::context->api_logger->log_info("---> zeEventHostSynchronize");
+
+    ze_result_t ret = pfnHostSynchronize( hEvent, timeout );
+
+    // ze_lib::context->api_logger->log_info("---> pfnHostSynchronize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3630,7 +4050,13 @@ zeEventQueryStatus(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnQueryStatus( hEvent );
+    ze_lib::context->api_logger->log_info("---> zeEventQueryStatus");
+
+    ze_result_t ret = pfnQueryStatus( hEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnQueryStatus");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3678,7 +4104,13 @@ zeCommandListAppendEventReset(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendEventReset( hCommandList, hEvent );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendEventReset");
+
+    ze_result_t ret = pfnAppendEventReset( hCommandList, hEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendEventReset");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3718,7 +4150,13 @@ zeEventHostReset(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnHostReset( hEvent );
+    ze_lib::context->api_logger->log_info("---> zeEventHostReset");
+
+    ze_result_t ret = pfnHostReset( hEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnHostReset");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3764,7 +4202,13 @@ zeEventQueryKernelTimestamp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnQueryKernelTimestamp( hEvent, dstptr );
+    ze_lib::context->api_logger->log_info("---> zeEventQueryKernelTimestamp");
+
+    ze_result_t ret = pfnQueryKernelTimestamp( hEvent, dstptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnQueryKernelTimestamp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3831,7 +4275,13 @@ zeCommandListAppendQueryKernelTimestamps(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendQueryKernelTimestamps( hCommandList, numEvents, phEvents, dstptr, pOffsets, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendQueryKernelTimestamps");
+
+    ze_result_t ret = pfnAppendQueryKernelTimestamps( hCommandList, numEvents, phEvents, dstptr, pOffsets, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendQueryKernelTimestamps");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3869,7 +4319,13 @@ zeEventGetEventPool(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetEventPool( hEvent, phEventPool );
+    ze_lib::context->api_logger->log_info("---> zeEventGetEventPool");
+
+    ze_result_t ret = pfnGetEventPool( hEvent, phEventPool );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetEventPool");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3909,7 +4365,13 @@ zeEventGetSignalScope(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetSignalScope( hEvent, pSignalScope );
+    ze_lib::context->api_logger->log_info("---> zeEventGetSignalScope");
+
+    ze_result_t ret = pfnGetSignalScope( hEvent, pSignalScope );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetSignalScope");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3949,7 +4411,13 @@ zeEventGetWaitScope(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetWaitScope( hEvent, pWaitScope );
+    ze_lib::context->api_logger->log_info("---> zeEventGetWaitScope");
+
+    ze_result_t ret = pfnGetWaitScope( hEvent, pWaitScope );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetWaitScope");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3987,7 +4455,13 @@ zeEventPoolGetContextHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetContextHandle( hEventPool, phContext );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolGetContextHandle");
+
+    ze_result_t ret = pfnGetContextHandle( hEventPool, phContext );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetContextHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4026,7 +4500,13 @@ zeEventPoolGetFlags(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetFlags( hEventPool, pFlags );
+    ze_lib::context->api_logger->log_info("---> zeEventPoolGetFlags");
+
+    ze_result_t ret = pfnGetFlags( hEventPool, pFlags );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetFlags");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4076,7 +4556,13 @@ zeFenceCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hCommandQueue, desc, phFence );
+    ze_lib::context->api_logger->log_info("---> zeFenceCreate");
+
+    ze_result_t ret = pfnCreate( hCommandQueue, desc, phFence );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4121,7 +4607,13 @@ zeFenceDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hFence );
+    ze_lib::context->api_logger->log_info("---> zeFenceDestroy");
+
+    ze_result_t ret = pfnDestroy( hFence );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4170,7 +4662,13 @@ zeFenceHostSynchronize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnHostSynchronize( hFence, timeout );
+    ze_lib::context->api_logger->log_info("---> zeFenceHostSynchronize");
+
+    ze_result_t ret = pfnHostSynchronize( hFence, timeout );
+
+    // ze_lib::context->api_logger->log_info("---> pfnHostSynchronize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4212,7 +4710,13 @@ zeFenceQueryStatus(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnQueryStatus( hFence );
+    ze_lib::context->api_logger->log_info("---> zeFenceQueryStatus");
+
+    ze_result_t ret = pfnQueryStatus( hFence );
+
+    // ze_lib::context->api_logger->log_info("---> pfnQueryStatus");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4251,7 +4755,13 @@ zeFenceReset(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnReset( hFence );
+    ze_lib::context->api_logger->log_info("---> zeFenceReset");
+
+    ze_result_t ret = pfnReset( hFence );
+
+    // ze_lib::context->api_logger->log_info("---> pfnReset");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4294,7 +4804,13 @@ zeImageGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetProperties( hDevice, desc, pImageProperties );
+    ze_lib::context->api_logger->log_info("---> zeImageGetProperties");
+
+    ze_result_t ret = pfnGetProperties( hDevice, desc, pImageProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4346,7 +4862,13 @@ zeImageCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, hDevice, desc, phImage );
+    ze_lib::context->api_logger->log_info("---> zeImageCreate");
+
+    ze_result_t ret = pfnCreate( hContext, hDevice, desc, phImage );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4387,7 +4909,13 @@ zeImageDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hImage );
+    ze_lib::context->api_logger->log_info("---> zeImageDestroy");
+
+    ze_result_t ret = pfnDestroy( hImage );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4457,7 +4985,13 @@ zeMemAllocShared(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAllocShared( hContext, device_desc, host_desc, size, alignment, hDevice, pptr );
+    ze_lib::context->api_logger->log_info("---> zeMemAllocShared");
+
+    ze_result_t ret = pfnAllocShared( hContext, device_desc, host_desc, size, alignment, hDevice, pptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAllocShared");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4515,7 +5049,13 @@ zeMemAllocDevice(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAllocDevice( hContext, device_desc, size, alignment, hDevice, pptr );
+    ze_lib::context->api_logger->log_info("---> zeMemAllocDevice");
+
+    ze_result_t ret = pfnAllocDevice( hContext, device_desc, size, alignment, hDevice, pptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAllocDevice");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4573,7 +5113,13 @@ zeMemAllocHost(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAllocHost( hContext, host_desc, size, alignment, pptr );
+    ze_lib::context->api_logger->log_info("---> zeMemAllocHost");
+
+    ze_result_t ret = pfnAllocHost( hContext, host_desc, size, alignment, pptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAllocHost");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4617,7 +5163,13 @@ zeMemFree(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnFree( hContext, ptr );
+    ze_lib::context->api_logger->log_info("---> zeMemFree");
+
+    ze_result_t ret = pfnFree( hContext, ptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnFree");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4662,7 +5214,13 @@ zeMemGetAllocProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetAllocProperties( hContext, ptr, pMemAllocProperties, phDevice );
+    ze_lib::context->api_logger->log_info("---> zeMemGetAllocProperties");
+
+    ze_result_t ret = pfnGetAllocProperties( hContext, ptr, pMemAllocProperties, phDevice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetAllocProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4701,7 +5259,13 @@ zeMemGetAddressRange(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetAddressRange( hContext, ptr, pBase, pSize );
+    ze_lib::context->api_logger->log_info("---> zeMemGetAddressRange");
+
+    ze_result_t ret = pfnGetAddressRange( hContext, ptr, pBase, pSize );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetAddressRange");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4746,7 +5310,13 @@ zeMemGetIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetIpcHandle( hContext, ptr, pIpcHandle );
+    ze_lib::context->api_logger->log_info("---> zeMemGetIpcHandle");
+
+    ze_result_t ret = pfnGetIpcHandle( hContext, ptr, pIpcHandle );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4789,7 +5359,13 @@ zeMemGetIpcHandleFromFileDescriptorExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetIpcHandleFromFileDescriptorExp( hContext, handle, pIpcHandle );
+    ze_lib::context->api_logger->log_info("---> zeMemGetIpcHandleFromFileDescriptorExp");
+
+    ze_result_t ret = pfnGetIpcHandleFromFileDescriptorExp( hContext, handle, pIpcHandle );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetIpcHandleFromFileDescriptorExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4830,7 +5406,13 @@ zeMemGetFileDescriptorFromIpcHandleExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetFileDescriptorFromIpcHandleExp( hContext, ipcHandle, pHandle );
+    ze_lib::context->api_logger->log_info("---> zeMemGetFileDescriptorFromIpcHandleExp");
+
+    ze_result_t ret = pfnGetFileDescriptorFromIpcHandleExp( hContext, ipcHandle, pHandle );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetFileDescriptorFromIpcHandleExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4875,7 +5457,13 @@ zeMemPutIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnPutIpcHandle( hContext, handle );
+    ze_lib::context->api_logger->log_info("---> zeMemPutIpcHandle");
+
+    ze_result_t ret = pfnPutIpcHandle( hContext, handle );
+
+    // ze_lib::context->api_logger->log_info("---> pfnPutIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4927,7 +5515,13 @@ zeMemOpenIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnOpenIpcHandle( hContext, hDevice, handle, flags, pptr );
+    ze_lib::context->api_logger->log_info("---> zeMemOpenIpcHandle");
+
+    ze_result_t ret = pfnOpenIpcHandle( hContext, hDevice, handle, flags, pptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnOpenIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4968,7 +5562,13 @@ zeMemCloseIpcHandle(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCloseIpcHandle( hContext, ptr );
+    ze_lib::context->api_logger->log_info("---> zeMemCloseIpcHandle");
+
+    ze_result_t ret = pfnCloseIpcHandle( hContext, ptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCloseIpcHandle");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5029,7 +5629,13 @@ zeMemSetAtomicAccessAttributeExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetAtomicAccessAttributeExp( hContext, hDevice, ptr, size, attr );
+    ze_lib::context->api_logger->log_info("---> zeMemSetAtomicAccessAttributeExp");
+
+    ze_result_t ret = pfnSetAtomicAccessAttributeExp( hContext, hDevice, ptr, size, attr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetAtomicAccessAttributeExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5074,7 +5680,13 @@ zeMemGetAtomicAccessAttributeExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetAtomicAccessAttributeExp( hContext, hDevice, ptr, size, pAttr );
+    ze_lib::context->api_logger->log_info("---> zeMemGetAtomicAccessAttributeExp");
+
+    ze_result_t ret = pfnGetAtomicAccessAttributeExp( hContext, hDevice, ptr, size, pAttr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetAtomicAccessAttributeExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5133,7 +5745,13 @@ zeModuleCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, hDevice, desc, phModule, phBuildLog );
+    ze_lib::context->api_logger->log_info("---> zeModuleCreate");
+
+    ze_result_t ret = pfnCreate( hContext, hDevice, desc, phModule, phBuildLog );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5176,7 +5794,13 @@ zeModuleDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hModule );
+    ze_lib::context->api_logger->log_info("---> zeModuleDestroy");
+
+    ze_result_t ret = pfnDestroy( hModule );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5241,7 +5865,13 @@ zeModuleDynamicLink(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDynamicLink( numModules, phModules, phLinkLog );
+    ze_lib::context->api_logger->log_info("---> zeModuleDynamicLink");
+
+    ze_result_t ret = pfnDynamicLink( numModules, phModules, phLinkLog );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDynamicLink");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5282,7 +5912,13 @@ zeModuleBuildLogDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hModuleBuildLog );
+    ze_lib::context->api_logger->log_info("---> zeModuleBuildLogDestroy");
+
+    ze_result_t ret = pfnDestroy( hModuleBuildLog );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5323,7 +5959,13 @@ zeModuleBuildLogGetString(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetString( hModuleBuildLog, pSize, pBuildLog );
+    ze_lib::context->api_logger->log_info("---> zeModuleBuildLogGetString");
+
+    ze_result_t ret = pfnGetString( hModuleBuildLog, pSize, pBuildLog );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetString");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5370,7 +6012,13 @@ zeModuleGetNativeBinary(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetNativeBinary( hModule, pSize, pModuleNativeBinary );
+    ze_lib::context->api_logger->log_info("---> zeModuleGetNativeBinary");
+
+    ze_result_t ret = pfnGetNativeBinary( hModule, pSize, pModuleNativeBinary );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetNativeBinary");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5415,7 +6063,13 @@ zeModuleGetGlobalPointer(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetGlobalPointer( hModule, pGlobalName, pSize, pptr );
+    ze_lib::context->api_logger->log_info("---> zeModuleGetGlobalPointer");
+
+    ze_result_t ret = pfnGetGlobalPointer( hModule, pGlobalName, pSize, pptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetGlobalPointer");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5460,7 +6114,13 @@ zeModuleGetKernelNames(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetKernelNames( hModule, pCount, pNames );
+    ze_lib::context->api_logger->log_info("---> zeModuleGetKernelNames");
+
+    ze_result_t ret = pfnGetKernelNames( hModule, pCount, pNames );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetKernelNames");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5498,7 +6158,13 @@ zeModuleGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetProperties( hModule, pModuleProperties );
+    ze_lib::context->api_logger->log_info("---> zeModuleGetProperties");
+
+    ze_result_t ret = pfnGetProperties( hModule, pModuleProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5545,7 +6211,13 @@ zeKernelCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hModule, desc, phKernel );
+    ze_lib::context->api_logger->log_info("---> zeKernelCreate");
+
+    ze_result_t ret = pfnCreate( hModule, desc, phKernel );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5586,7 +6258,13 @@ zeKernelDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hKernel );
+    ze_lib::context->api_logger->log_info("---> zeKernelDestroy");
+
+    ze_result_t ret = pfnDestroy( hKernel );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5632,7 +6310,13 @@ zeModuleGetFunctionPointer(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetFunctionPointer( hModule, pFunctionName, pfnFunction );
+    ze_lib::context->api_logger->log_info("---> zeModuleGetFunctionPointer");
+
+    ze_result_t ret = pfnGetFunctionPointer( hModule, pFunctionName, pfnFunction );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetFunctionPointer");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5674,7 +6358,13 @@ zeKernelSetGroupSize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetGroupSize( hKernel, groupSizeX, groupSizeY, groupSizeZ );
+    ze_lib::context->api_logger->log_info("---> zeKernelSetGroupSize");
+
+    ze_result_t ret = pfnSetGroupSize( hKernel, groupSizeX, groupSizeY, groupSizeZ );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetGroupSize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5723,7 +6413,13 @@ zeKernelSuggestGroupSize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSuggestGroupSize( hKernel, globalSizeX, globalSizeY, globalSizeZ, groupSizeX, groupSizeY, groupSizeZ );
+    ze_lib::context->api_logger->log_info("---> zeKernelSuggestGroupSize");
+
+    ze_result_t ret = pfnSuggestGroupSize( hKernel, globalSizeX, globalSizeY, globalSizeZ, groupSizeX, groupSizeY, groupSizeZ );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSuggestGroupSize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5761,7 +6457,13 @@ zeKernelSuggestMaxCooperativeGroupCount(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSuggestMaxCooperativeGroupCount( hKernel, totalGroupCount );
+    ze_lib::context->api_logger->log_info("---> zeKernelSuggestMaxCooperativeGroupCount");
+
+    ze_result_t ret = pfnSuggestMaxCooperativeGroupCount( hKernel, totalGroupCount );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSuggestMaxCooperativeGroupCount");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5805,7 +6507,13 @@ zeKernelSetArgumentValue(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetArgumentValue( hKernel, argIndex, argSize, pArgValue );
+    ze_lib::context->api_logger->log_info("---> zeKernelSetArgumentValue");
+
+    ze_result_t ret = pfnSetArgumentValue( hKernel, argIndex, argSize, pArgValue );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetArgumentValue");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5847,7 +6555,13 @@ zeKernelSetIndirectAccess(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetIndirectAccess( hKernel, flags );
+    ze_lib::context->api_logger->log_info("---> zeKernelSetIndirectAccess");
+
+    ze_result_t ret = pfnSetIndirectAccess( hKernel, flags );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetIndirectAccess");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5886,7 +6600,13 @@ zeKernelGetIndirectAccess(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetIndirectAccess( hKernel, pFlags );
+    ze_lib::context->api_logger->log_info("---> zeKernelGetIndirectAccess");
+
+    ze_result_t ret = pfnGetIndirectAccess( hKernel, pFlags );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetIndirectAccess");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5934,7 +6654,13 @@ zeKernelGetSourceAttributes(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetSourceAttributes( hKernel, pSize, pString );
+    ze_lib::context->api_logger->log_info("---> zeKernelGetSourceAttributes");
+
+    ze_result_t ret = pfnGetSourceAttributes( hKernel, pSize, pString );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetSourceAttributes");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5977,7 +6703,13 @@ zeKernelSetCacheConfig(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetCacheConfig( hKernel, flags );
+    ze_lib::context->api_logger->log_info("---> zeKernelSetCacheConfig");
+
+    ze_result_t ret = pfnSetCacheConfig( hKernel, flags );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetCacheConfig");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6015,7 +6747,13 @@ zeKernelGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetProperties( hKernel, pKernelProperties );
+    ze_lib::context->api_logger->log_info("---> zeKernelGetProperties");
+
+    ze_result_t ret = pfnGetProperties( hKernel, pKernelProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6058,7 +6796,13 @@ zeKernelGetName(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetName( hKernel, pSize, pName );
+    ze_lib::context->api_logger->log_info("---> zeKernelGetName");
+
+    ze_result_t ret = pfnGetName( hKernel, pSize, pName );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetName");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6113,7 +6857,13 @@ zeCommandListAppendLaunchKernel(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendLaunchKernel( hCommandList, hKernel, pLaunchFuncArgs, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendLaunchKernel");
+
+    ze_result_t ret = pfnAppendLaunchKernel( hCommandList, hKernel, pLaunchFuncArgs, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendLaunchKernel");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6172,7 +6922,13 @@ zeCommandListAppendLaunchCooperativeKernel(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendLaunchCooperativeKernel( hCommandList, hKernel, pLaunchFuncArgs, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendLaunchCooperativeKernel");
+
+    ze_result_t ret = pfnAppendLaunchCooperativeKernel( hCommandList, hKernel, pLaunchFuncArgs, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendLaunchCooperativeKernel");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6233,7 +6989,13 @@ zeCommandListAppendLaunchKernelIndirect(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendLaunchKernelIndirect( hCommandList, hKernel, pLaunchArgumentsBuffer, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendLaunchKernelIndirect");
+
+    ze_result_t ret = pfnAppendLaunchKernelIndirect( hCommandList, hKernel, pLaunchArgumentsBuffer, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendLaunchKernelIndirect");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6301,7 +7063,13 @@ zeCommandListAppendLaunchMultipleKernelsIndirect(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendLaunchMultipleKernelsIndirect( hCommandList, numKernels, phKernels, pCountBuffer, pLaunchArgumentsBuffer, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendLaunchMultipleKernelsIndirect");
+
+    ze_result_t ret = pfnAppendLaunchMultipleKernelsIndirect( hCommandList, numKernels, phKernels, pCountBuffer, pLaunchArgumentsBuffer, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendLaunchMultipleKernelsIndirect");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6346,7 +7114,13 @@ zeContextMakeMemoryResident(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnMakeMemoryResident( hContext, hDevice, ptr, size );
+    ze_lib::context->api_logger->log_info("---> zeContextMakeMemoryResident");
+
+    ze_result_t ret = pfnMakeMemoryResident( hContext, hDevice, ptr, size );
+
+    // ze_lib::context->api_logger->log_info("---> pfnMakeMemoryResident");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6391,7 +7165,13 @@ zeContextEvictMemory(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnEvictMemory( hContext, hDevice, ptr, size );
+    ze_lib::context->api_logger->log_info("---> zeContextEvictMemory");
+
+    ze_result_t ret = pfnEvictMemory( hContext, hDevice, ptr, size );
+
+    // ze_lib::context->api_logger->log_info("---> pfnEvictMemory");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6432,7 +7212,13 @@ zeContextMakeImageResident(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnMakeImageResident( hContext, hDevice, hImage );
+    ze_lib::context->api_logger->log_info("---> zeContextMakeImageResident");
+
+    ze_result_t ret = pfnMakeImageResident( hContext, hDevice, hImage );
+
+    // ze_lib::context->api_logger->log_info("---> pfnMakeImageResident");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6475,7 +7261,13 @@ zeContextEvictImage(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnEvictImage( hContext, hDevice, hImage );
+    ze_lib::context->api_logger->log_info("---> zeContextEvictImage");
+
+    ze_result_t ret = pfnEvictImage( hContext, hDevice, hImage );
+
+    // ze_lib::context->api_logger->log_info("---> pfnEvictImage");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6522,7 +7314,13 @@ zeSamplerCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, hDevice, desc, phSampler );
+    ze_lib::context->api_logger->log_info("---> zeSamplerCreate");
+
+    ze_result_t ret = pfnCreate( hContext, hDevice, desc, phSampler );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6563,7 +7361,13 @@ zeSamplerDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hSampler );
+    ze_lib::context->api_logger->log_info("---> zeSamplerDestroy");
+
+    ze_result_t ret = pfnDestroy( hSampler );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6615,7 +7419,13 @@ zeVirtualMemReserve(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnReserve( hContext, pStart, size, pptr );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemReserve");
+
+    ze_result_t ret = pfnReserve( hContext, pStart, size, pptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnReserve");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6660,7 +7470,13 @@ zeVirtualMemFree(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnFree( hContext, ptr, size );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemFree");
+
+    ze_result_t ret = pfnFree( hContext, ptr, size );
+
+    // ze_lib::context->api_logger->log_info("---> pfnFree");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6705,7 +7521,13 @@ zeVirtualMemQueryPageSize(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnQueryPageSize( hContext, hDevice, size, pagesize );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemQueryPageSize");
+
+    ze_result_t ret = pfnQueryPageSize( hContext, hDevice, size, pagesize );
+
+    // ze_lib::context->api_logger->log_info("---> pfnQueryPageSize");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6758,7 +7580,13 @@ zePhysicalMemCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreate( hContext, hDevice, desc, phPhysicalMemory );
+    ze_lib::context->api_logger->log_info("---> zePhysicalMemCreate");
+
+    ze_result_t ret = pfnCreate( hContext, hDevice, desc, phPhysicalMemory );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreate");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6799,7 +7627,13 @@ zePhysicalMemDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroy( hContext, hPhysicalMemory );
+    ze_lib::context->api_logger->log_info("---> zePhysicalMemDestroy");
+
+    ze_result_t ret = pfnDestroy( hContext, hPhysicalMemory );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6859,7 +7693,13 @@ zeVirtualMemMap(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnMap( hContext, ptr, size, hPhysicalMemory, offset, access );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemMap");
+
+    ze_result_t ret = pfnMap( hContext, ptr, size, hPhysicalMemory, offset, access );
+
+    // ze_lib::context->api_logger->log_info("---> pfnMap");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6906,7 +7746,13 @@ zeVirtualMemUnmap(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnUnmap( hContext, ptr, size );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemUnmap");
+
+    ze_result_t ret = pfnUnmap( hContext, ptr, size );
+
+    // ze_lib::context->api_logger->log_info("---> pfnUnmap");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6955,7 +7801,13 @@ zeVirtualMemSetAccessAttribute(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetAccessAttribute( hContext, ptr, size, access );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemSetAccessAttribute");
+
+    ze_result_t ret = pfnSetAccessAttribute( hContext, ptr, size, access );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetAccessAttribute");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7007,7 +7859,13 @@ zeVirtualMemGetAccessAttribute(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetAccessAttribute( hContext, ptr, size, access, outSize );
+    ze_lib::context->api_logger->log_info("---> zeVirtualMemGetAccessAttribute");
+
+    ze_result_t ret = pfnGetAccessAttribute( hContext, ptr, size, access, outSize );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetAccessAttribute");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7048,7 +7906,13 @@ zeKernelSetGlobalOffsetExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetGlobalOffsetExp( hKernel, offsetX, offsetY, offsetZ );
+    ze_lib::context->api_logger->log_info("---> zeKernelSetGlobalOffsetExp");
+
+    ze_result_t ret = pfnSetGlobalOffsetExp( hKernel, offsetX, offsetY, offsetZ );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetGlobalOffsetExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7091,7 +7955,13 @@ zeKernelGetBinaryExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetBinaryExp( hKernel, pSize, pKernelBinary );
+    ze_lib::context->api_logger->log_info("---> zeKernelGetBinaryExp");
+
+    ze_result_t ret = pfnGetBinaryExp( hKernel, pSize, pKernelBinary );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetBinaryExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7135,7 +8005,13 @@ zeDeviceImportExternalSemaphoreExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnImportExternalSemaphoreExt( hDevice, desc, phSemaphore );
+    ze_lib::context->api_logger->log_info("---> zeDeviceImportExternalSemaphoreExt");
+
+    ze_result_t ret = pfnImportExternalSemaphoreExt( hDevice, desc, phSemaphore );
+
+    // ze_lib::context->api_logger->log_info("---> pfnImportExternalSemaphoreExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7174,7 +8050,13 @@ zeDeviceReleaseExternalSemaphoreExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnReleaseExternalSemaphoreExt( hSemaphore );
+    ze_lib::context->api_logger->log_info("---> zeDeviceReleaseExternalSemaphoreExt");
+
+    ze_result_t ret = pfnReleaseExternalSemaphoreExt( hSemaphore );
+
+    // ze_lib::context->api_logger->log_info("---> pfnReleaseExternalSemaphoreExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7231,7 +8113,13 @@ zeCommandListAppendSignalExternalSemaphoreExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendSignalExternalSemaphoreExt( hCommandList, numSemaphores, phSemaphores, signalParams, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendSignalExternalSemaphoreExt");
+
+    ze_result_t ret = pfnAppendSignalExternalSemaphoreExt( hCommandList, numSemaphores, phSemaphores, signalParams, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendSignalExternalSemaphoreExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7288,7 +8176,13 @@ zeCommandListAppendWaitExternalSemaphoreExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendWaitExternalSemaphoreExt( hCommandList, numSemaphores, phSemaphores, waitParams, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendWaitExternalSemaphoreExt");
+
+    ze_result_t ret = pfnAppendWaitExternalSemaphoreExt( hCommandList, numSemaphores, phSemaphores, waitParams, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendWaitExternalSemaphoreExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7332,7 +8226,13 @@ zeDeviceReserveCacheExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnReserveCacheExt( hDevice, cacheLevel, cacheReservationSize );
+    ze_lib::context->api_logger->log_info("---> zeDeviceReserveCacheExt");
+
+    ze_result_t ret = pfnReserveCacheExt( hDevice, cacheLevel, cacheReservationSize );
+
+    // ze_lib::context->api_logger->log_info("---> pfnReserveCacheExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7374,7 +8274,13 @@ zeDeviceSetCacheAdviceExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSetCacheAdviceExt( hDevice, ptr, regionSize, cacheRegion );
+    ze_lib::context->api_logger->log_info("---> zeDeviceSetCacheAdviceExt");
+
+    ze_result_t ret = pfnSetCacheAdviceExt( hDevice, ptr, regionSize, cacheRegion );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSetCacheAdviceExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7433,7 +8339,13 @@ zeEventQueryTimestampsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnQueryTimestampsExp( hEvent, hDevice, pCount, pTimestamps );
+    ze_lib::context->api_logger->log_info("---> zeEventQueryTimestampsExp");
+
+    ze_result_t ret = pfnQueryTimestampsExp( hEvent, hDevice, pCount, pTimestamps );
+
+    // ze_lib::context->api_logger->log_info("---> pfnQueryTimestampsExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7477,7 +8389,13 @@ zeImageGetMemoryPropertiesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetMemoryPropertiesExp( hImage, pMemoryProperties );
+    ze_lib::context->api_logger->log_info("---> zeImageGetMemoryPropertiesExp");
+
+    ze_result_t ret = pfnGetMemoryPropertiesExp( hImage, pMemoryProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetMemoryPropertiesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7538,7 +8456,13 @@ zeImageViewCreateExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnViewCreateExt( hContext, hDevice, desc, hImage, phImageView );
+    ze_lib::context->api_logger->log_info("---> zeImageViewCreateExt");
+
+    ze_result_t ret = pfnViewCreateExt( hContext, hDevice, desc, hImage, phImageView );
+
+    // ze_lib::context->api_logger->log_info("---> pfnViewCreateExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7602,7 +8526,13 @@ zeImageViewCreateExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnViewCreateExp( hContext, hDevice, desc, hImage, phImageView );
+    ze_lib::context->api_logger->log_info("---> zeImageViewCreateExp");
+
+    ze_result_t ret = pfnViewCreateExp( hContext, hDevice, desc, hImage, phImageView );
+
+    // ze_lib::context->api_logger->log_info("---> pfnViewCreateExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7649,7 +8579,13 @@ zeKernelSchedulingHintExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnSchedulingHintExp( hKernel, pHint );
+    ze_lib::context->api_logger->log_info("---> zeKernelSchedulingHintExp");
+
+    ze_result_t ret = pfnSchedulingHintExp( hKernel, pHint );
+
+    // ze_lib::context->api_logger->log_info("---> pfnSchedulingHintExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7691,7 +8627,13 @@ zeDevicePciGetPropertiesExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnPciGetPropertiesExt( hDevice, pPciProperties );
+    ze_lib::context->api_logger->log_info("---> zeDevicePciGetPropertiesExt");
+
+    ze_result_t ret = pfnPciGetPropertiesExt( hDevice, pPciProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnPciGetPropertiesExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7770,7 +8712,13 @@ zeCommandListAppendImageCopyToMemoryExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendImageCopyToMemoryExt( hCommandList, dstptr, hSrcImage, pSrcRegion, destRowPitch, destSlicePitch, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendImageCopyToMemoryExt");
+
+    ze_result_t ret = pfnAppendImageCopyToMemoryExt( hCommandList, dstptr, hSrcImage, pSrcRegion, destRowPitch, destSlicePitch, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendImageCopyToMemoryExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7849,7 +8797,13 @@ zeCommandListAppendImageCopyFromMemoryExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnAppendImageCopyFromMemoryExt( hCommandList, hDstImage, srcptr, pDstRegion, srcRowPitch, srcSlicePitch, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListAppendImageCopyFromMemoryExt");
+
+    ze_result_t ret = pfnAppendImageCopyFromMemoryExt( hCommandList, hDstImage, srcptr, pDstRegion, srcRowPitch, srcSlicePitch, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnAppendImageCopyFromMemoryExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7888,7 +8842,13 @@ zeImageGetAllocPropertiesExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetAllocPropertiesExt( hContext, hImage, pImageAllocProperties );
+    ze_lib::context->api_logger->log_info("---> zeImageGetAllocPropertiesExt");
+
+    ze_result_t ret = pfnGetAllocPropertiesExt( hContext, hImage, pImageAllocProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetAllocPropertiesExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7936,7 +8896,13 @@ zeModuleInspectLinkageExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnInspectLinkageExt( pInspectDesc, numModules, phModules, phLog );
+    ze_lib::context->api_logger->log_info("---> zeModuleInspectLinkageExt");
+
+    ze_result_t ret = pfnInspectLinkageExt( pInspectDesc, numModules, phModules, phLog );
+
+    // ze_lib::context->api_logger->log_info("---> pfnInspectLinkageExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -7981,7 +8947,13 @@ zeMemFreeExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnFreeExt( hContext, pMemFreeDesc, ptr );
+    ze_lib::context->api_logger->log_info("---> zeMemFreeExt");
+
+    ze_result_t ret = pfnFreeExt( hContext, pMemFreeDesc, ptr );
+
+    // ze_lib::context->api_logger->log_info("---> pfnFreeExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8029,7 +9001,13 @@ zeFabricVertexGetExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetExp( hDriver, pCount, phVertices );
+    ze_lib::context->api_logger->log_info("---> zeFabricVertexGetExp");
+
+    ze_result_t ret = pfnGetExp( hDriver, pCount, phVertices );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8079,7 +9057,13 @@ zeFabricVertexGetSubVerticesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetSubVerticesExp( hVertex, pCount, phSubvertices );
+    ze_lib::context->api_logger->log_info("---> zeFabricVertexGetSubVerticesExp");
+
+    ze_result_t ret = pfnGetSubVerticesExp( hVertex, pCount, phSubvertices );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetSubVerticesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8117,7 +9101,13 @@ zeFabricVertexGetPropertiesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetPropertiesExp( hVertex, pVertexProperties );
+    ze_lib::context->api_logger->log_info("---> zeFabricVertexGetPropertiesExp");
+
+    ze_result_t ret = pfnGetPropertiesExp( hVertex, pVertexProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetPropertiesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8159,7 +9149,13 @@ zeFabricVertexGetDeviceExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetDeviceExp( hVertex, phDevice );
+    ze_lib::context->api_logger->log_info("---> zeFabricVertexGetDeviceExp");
+
+    ze_result_t ret = pfnGetDeviceExp( hVertex, phDevice );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetDeviceExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8199,7 +9195,13 @@ zeDeviceGetFabricVertexExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetFabricVertexExp( hDevice, phVertex );
+    ze_lib::context->api_logger->log_info("---> zeDeviceGetFabricVertexExp");
+
+    ze_result_t ret = pfnGetFabricVertexExp( hDevice, phVertex );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetFabricVertexExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8249,7 +9251,13 @@ zeFabricEdgeGetExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetExp( hVertexA, hVertexB, pCount, phEdges );
+    ze_lib::context->api_logger->log_info("---> zeFabricEdgeGetExp");
+
+    ze_result_t ret = pfnGetExp( hVertexA, hVertexB, pCount, phEdges );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8291,7 +9299,13 @@ zeFabricEdgeGetVerticesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetVerticesExp( hEdge, phVertexA, phVertexB );
+    ze_lib::context->api_logger->log_info("---> zeFabricEdgeGetVerticesExp");
+
+    ze_result_t ret = pfnGetVerticesExp( hEdge, phVertexA, phVertexB );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetVerticesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8329,7 +9343,13 @@ zeFabricEdgeGetPropertiesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetPropertiesExp( hEdge, pEdgeProperties );
+    ze_lib::context->api_logger->log_info("---> zeFabricEdgeGetPropertiesExp");
+
+    ze_result_t ret = pfnGetPropertiesExp( hEdge, pEdgeProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetPropertiesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8401,7 +9421,13 @@ zeEventQueryKernelTimestampsExt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnQueryKernelTimestampsExt( hEvent, hDevice, pCount, pResults );
+    ze_lib::context->api_logger->log_info("---> zeEventQueryKernelTimestampsExt");
+
+    ze_result_t ret = pfnQueryKernelTimestampsExt( hEvent, hDevice, pCount, pResults );
+
+    // ze_lib::context->api_logger->log_info("---> pfnQueryKernelTimestampsExt");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8445,7 +9471,13 @@ zeRTASBuilderCreateExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreateExp( hDriver, pDescriptor, phBuilder );
+    ze_lib::context->api_logger->log_info("---> zeRTASBuilderCreateExp");
+
+    ze_result_t ret = pfnCreateExp( hDriver, pDescriptor, phBuilder );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreateExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8489,7 +9521,13 @@ zeRTASBuilderGetBuildPropertiesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetBuildPropertiesExp( hBuilder, pBuildOpDescriptor, pProperties );
+    ze_lib::context->api_logger->log_info("---> zeRTASBuilderGetBuildPropertiesExp");
+
+    ze_result_t ret = pfnGetBuildPropertiesExp( hBuilder, pBuildOpDescriptor, pProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetBuildPropertiesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8533,7 +9571,13 @@ zeDriverRTASFormatCompatibilityCheckExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnRTASFormatCompatibilityCheckExp( hDriver, rtasFormatA, rtasFormatB );
+    ze_lib::context->api_logger->log_info("---> zeDriverRTASFormatCompatibilityCheckExp");
+
+    ze_result_t ret = pfnRTASFormatCompatibilityCheckExp( hDriver, rtasFormatA, rtasFormatB );
+
+    // ze_lib::context->api_logger->log_info("---> pfnRTASFormatCompatibilityCheckExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8637,7 +9681,13 @@ zeRTASBuilderBuildExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnBuildExp( hBuilder, pBuildOpDescriptor, pScratchBuffer, scratchBufferSizeBytes, pRtasBuffer, rtasBufferSizeBytes, hParallelOperation, pBuildUserPtr, pBounds, pRtasBufferSizeBytes );
+    ze_lib::context->api_logger->log_info("---> zeRTASBuilderBuildExp");
+
+    ze_result_t ret = pfnBuildExp( hBuilder, pBuildOpDescriptor, pScratchBuffer, scratchBufferSizeBytes, pRtasBuffer, rtasBufferSizeBytes, hParallelOperation, pBuildUserPtr, pBounds, pRtasBufferSizeBytes );
+
+    // ze_lib::context->api_logger->log_info("---> pfnBuildExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8676,7 +9726,13 @@ zeRTASBuilderDestroyExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroyExp( hBuilder );
+    ze_lib::context->api_logger->log_info("---> zeRTASBuilderDestroyExp");
+
+    ze_result_t ret = pfnDestroyExp( hBuilder );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroyExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8717,7 +9773,13 @@ zeRTASParallelOperationCreateExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreateExp( hDriver, phParallelOperation );
+    ze_lib::context->api_logger->log_info("---> zeRTASParallelOperationCreateExp");
+
+    ze_result_t ret = pfnCreateExp( hDriver, phParallelOperation );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreateExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8761,7 +9823,13 @@ zeRTASParallelOperationGetPropertiesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetPropertiesExp( hParallelOperation, pProperties );
+    ze_lib::context->api_logger->log_info("---> zeRTASParallelOperationGetPropertiesExp");
+
+    ze_result_t ret = pfnGetPropertiesExp( hParallelOperation, pProperties );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetPropertiesExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8796,7 +9864,13 @@ zeRTASParallelOperationJoinExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnJoinExp( hParallelOperation );
+    ze_lib::context->api_logger->log_info("---> zeRTASParallelOperationJoinExp");
+
+    ze_result_t ret = pfnJoinExp( hParallelOperation );
+
+    // ze_lib::context->api_logger->log_info("---> pfnJoinExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8836,7 +9910,13 @@ zeRTASParallelOperationDestroyExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnDestroyExp( hParallelOperation );
+    ze_lib::context->api_logger->log_info("---> zeRTASParallelOperationDestroyExp");
+
+    ze_result_t ret = pfnDestroyExp( hParallelOperation );
+
+    // ze_lib::context->api_logger->log_info("---> pfnDestroyExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8882,7 +9962,13 @@ zeMemGetPitchFor2dImage(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetPitchFor2dImage( hContext, hDevice, imageWidth, imageHeight, elementSizeInBytes, rowPitch );
+    ze_lib::context->api_logger->log_info("---> zeMemGetPitchFor2dImage");
+
+    ze_result_t ret = pfnGetPitchFor2dImage( hContext, hDevice, imageWidth, imageHeight, elementSizeInBytes, rowPitch );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetPitchFor2dImage");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8923,7 +10009,13 @@ zeImageGetDeviceOffsetExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetDeviceOffsetExp( hImage, pDeviceOffset );
+    ze_lib::context->api_logger->log_info("---> zeImageGetDeviceOffsetExp");
+
+    ze_result_t ret = pfnGetDeviceOffsetExp( hImage, pDeviceOffset );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetDeviceOffsetExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -8972,7 +10064,13 @@ zeCommandListCreateCloneExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnCreateCloneExp( hCommandList, phClonedCommandList );
+    ze_lib::context->api_logger->log_info("---> zeCommandListCreateCloneExp");
+
+    ze_result_t ret = pfnCreateCloneExp( hCommandList, phClonedCommandList );
+
+    // ze_lib::context->api_logger->log_info("---> pfnCreateCloneExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9025,7 +10123,13 @@ zeCommandListImmediateAppendCommandListsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnImmediateAppendCommandListsExp( hCommandListImmediate, numCommandLists, phCommandLists, hSignalEvent, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListImmediateAppendCommandListsExp");
+
+    ze_result_t ret = pfnImmediateAppendCommandListsExp( hCommandListImmediate, numCommandLists, phCommandLists, hSignalEvent, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnImmediateAppendCommandListsExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9071,7 +10175,13 @@ zeCommandListGetNextCommandIdExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetNextCommandIdExp( hCommandList, desc, pCommandId );
+    ze_lib::context->api_logger->log_info("---> zeCommandListGetNextCommandIdExp");
+
+    ze_result_t ret = pfnGetNextCommandIdExp( hCommandList, desc, pCommandId );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetNextCommandIdExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9123,7 +10233,13 @@ zeCommandListGetNextCommandIdWithKernelsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnGetNextCommandIdWithKernelsExp( hCommandList, desc, numKernels, phKernels, pCommandId );
+    ze_lib::context->api_logger->log_info("---> zeCommandListGetNextCommandIdWithKernelsExp");
+
+    ze_result_t ret = pfnGetNextCommandIdWithKernelsExp( hCommandList, desc, numKernels, phKernels, pCommandId );
+
+    // ze_lib::context->api_logger->log_info("---> pfnGetNextCommandIdWithKernelsExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9170,7 +10286,13 @@ zeCommandListUpdateMutableCommandsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnUpdateMutableCommandsExp( hCommandList, desc );
+    ze_lib::context->api_logger->log_info("---> zeCommandListUpdateMutableCommandsExp");
+
+    ze_result_t ret = pfnUpdateMutableCommandsExp( hCommandList, desc );
+
+    // ze_lib::context->api_logger->log_info("---> pfnUpdateMutableCommandsExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9216,7 +10338,13 @@ zeCommandListUpdateMutableCommandSignalEventExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnUpdateMutableCommandSignalEventExp( hCommandList, commandId, hSignalEvent );
+    ze_lib::context->api_logger->log_info("---> zeCommandListUpdateMutableCommandSignalEventExp");
+
+    ze_result_t ret = pfnUpdateMutableCommandSignalEventExp( hCommandList, commandId, hSignalEvent );
+
+    // ze_lib::context->api_logger->log_info("---> pfnUpdateMutableCommandSignalEventExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9271,7 +10399,13 @@ zeCommandListUpdateMutableCommandWaitEventsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnUpdateMutableCommandWaitEventsExp( hCommandList, commandId, numWaitEvents, phWaitEvents );
+    ze_lib::context->api_logger->log_info("---> zeCommandListUpdateMutableCommandWaitEventsExp");
+
+    ze_result_t ret = pfnUpdateMutableCommandWaitEventsExp( hCommandList, commandId, numWaitEvents, phWaitEvents );
+
+    // ze_lib::context->api_logger->log_info("---> pfnUpdateMutableCommandWaitEventsExp");
+
+    return ret;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -9324,7 +10458,13 @@ zeCommandListUpdateMutableCommandKernelsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    return pfnUpdateMutableCommandKernelsExp( hCommandList, numKernels, pCommandId, phKernels );
+    ze_lib::context->api_logger->log_info("---> zeCommandListUpdateMutableCommandKernelsExp");
+
+    ze_result_t ret = pfnUpdateMutableCommandKernelsExp( hCommandList, numKernels, pCommandId, phKernels );
+
+    // ze_lib::context->api_logger->log_info("---> pfnUpdateMutableCommandKernelsExp");
+
+    return ret;
 }
 
 } // extern "C"

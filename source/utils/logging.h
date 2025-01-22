@@ -20,16 +20,19 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <variant>
 
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/spdlog.h"
 
 namespace loader {
 
+struct stdout{};
+struct stderr{};
+
 class Logger {
 public:
   Logger(std::string logger_name, std::string filename, std::string log_level, bool logging_enabled_env) {
-
     if (logging_enabled_env) {
       logging_enabled = logging_enabled_env;
       try {
@@ -40,26 +43,39 @@ public:
         return;
       }
 
-      // validate log level
-      if ("trace" == log_level) {
-        _logger->set_level(spdlog::level::trace);
-      } else if ("debug" == log_level) {
-        _logger->set_level(spdlog::level::debug);
-      } else if ("info" == log_level) {
-        _logger->set_level(spdlog::level::info);
-      } else if ("warn" == log_level) {
-        _logger->set_level(spdlog::level::warn);
-      } else if ("error" == log_level) {
-        _logger->set_level(spdlog::level::err);
-      } else if ("critical" == log_level) {
-        _logger->set_level(spdlog::level::critical);
-      } else if ("off" == log_level) {
-        _logger->set_level(spdlog::level::off);
-      } else {
-        _logger->warn("Invalid logging level set: ", log_level);
+      setLogLevel(log_level);
+    }
+  }
+
+  Logger(std::string logger_name, stdout, std::string log_level, bool logging_enabled_env) {
+    if (logging_enabled_env) {
+      logging_enabled = logging_enabled_env;
+      try {
+        auto sink = std::make_shared<spdlog::sinks::ansicolor_stdout_sink_mt>();
+        _logger = std::make_shared<spdlog::logger>(logger_name, sink);
+      } catch (spdlog::spdlog_ex &exception) {
+        std::cerr << "Unable to create log stdout logger " << exception.what() << "\n";
+        logging_enabled = false;
+        return;
       }
 
-      spdlog::flush_on(spdlog::level::trace);
+      setLogLevel(log_level);
+    }
+  }
+
+  Logger(std::string logger_name, stderr, std::string log_level, bool logging_enabled_env) {
+    if (logging_enabled_env) {
+      logging_enabled = logging_enabled_env;
+      try {
+        auto sink = std::make_shared<spdlog::sinks::ansicolor_stderr_sink_mt>();
+        _logger = std::make_shared<spdlog::logger>(logger_name, sink);
+      } catch (spdlog::spdlog_ex &exception) {
+        std::cerr << "Unable to create log stderr logger " << exception.what() << "\n";
+        logging_enabled = false;
+        return;
+      }
+
+      setLogLevel(log_level);
     }
   }
 
@@ -113,6 +129,29 @@ public:
 bool log_to_console = true;
 bool logging_enabled = false;
 private:
+  void setLogLevel(std::string log_level) {
+    // validate log level
+    if ("trace" == log_level) {
+      _logger->set_level(spdlog::level::trace);
+    } else if ("debug" == log_level) {
+      _logger->set_level(spdlog::level::debug);
+    } else if ("info" == log_level) {
+      _logger->set_level(spdlog::level::info);
+    } else if ("warn" == log_level) {
+      _logger->set_level(spdlog::level::warn);
+    } else if ("error" == log_level) {
+      _logger->set_level(spdlog::level::err);
+    } else if ("critical" == log_level) {
+      _logger->set_level(spdlog::level::critical);
+    } else if ("off" == log_level) {
+      _logger->set_level(spdlog::level::off);
+    } else {
+      _logger->warn("Invalid logging level set: ", log_level);
+    }
+
+    spdlog::flush_on(spdlog::level::trace);
+  }
+
   std::shared_ptr<spdlog::logger> _logger = nullptr;
 };
 
