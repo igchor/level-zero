@@ -22,6 +22,16 @@ from templates import helper as th
 
 namespace validation_layer
 {
+    static bool leakCheckerInit = []() {
+        context_t::getInstance().leakChecker.initialize({
+            %for obj in th.extract_objs(specs, r"function"):
+            "${th.make_func_name(n, tags, obj)}",
+            %endfor
+            ""
+        });
+        return true;
+    }();
+
     %for obj in th.extract_objs(specs, r"function"):
     ///////////////////////////////////////////////////////////////////////////////
     /// @brief Intercept function for ${th.make_func_name(n, tags, obj)}
@@ -111,6 +121,11 @@ ${line} \
             %endfor
         }
         %endif
+
+        if( driver_result == ${X}_RESULT_SUCCESS && context.enableBasicLeakChecking ) {
+            context.leakChecker.countFunctionCall("${th.make_func_name(n, tags, obj)}");
+        }
+
         return driver_result;
     }
     %if 'condition' in obj:

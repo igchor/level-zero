@@ -17,6 +17,7 @@
 #include "ze_entry_points.h"
 #include "zet_entry_points.h"
 #include "zes_entry_points.h"
+#include "basic_leak/leak_checker.h"
 #include <memory>
 #include <vector>
 
@@ -39,6 +40,7 @@ namespace validation_layer
 
         bool enableHandleLifetime = false;
         bool enableThreadingValidation = false;
+        bool enableBasicLeakChecking = false;
 
         ze_dditable_t   zeDdiTable = {};
         zet_dditable_t  zetDdiTable = {};
@@ -46,6 +48,7 @@ namespace validation_layer
 
         std::vector<validationChecker *> validationHandlers;
         std::unique_ptr<HandleLifetimeValidation> handleLifetime;
+        LeakChecker leakChecker;
 
         static context_t& getInstance() {
             static context_t instance;
