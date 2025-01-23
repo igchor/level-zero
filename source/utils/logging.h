@@ -32,7 +32,7 @@ struct stderr{};
 
 class Logger {
 public:
-  Logger(std::string logger_name, std::string filename, std::string log_level, bool logging_enabled_env) {
+  Logger(std::string logger_name, std::string filename, std::string log_level, bool logging_enabled_env, std::string format = "") {
     if (logging_enabled_env) {
       logging_enabled = logging_enabled_env;
       try {
@@ -43,11 +43,15 @@ public:
         return;
       }
 
+      if (!format.empty()) {
+        _logger->set_pattern(format);
+      }
+
       setLogLevel(log_level);
     }
   }
 
-  Logger(std::string logger_name, stdout, std::string log_level, bool logging_enabled_env) {
+  Logger(std::string logger_name, stdout, std::string log_level, bool logging_enabled_env, std::string format = "") {
     if (logging_enabled_env) {
       logging_enabled = logging_enabled_env;
       try {
@@ -59,11 +63,15 @@ public:
         return;
       }
 
+      if (!format.empty()) {
+        _logger->set_pattern(format);
+      }
+
       setLogLevel(log_level);
     }
   }
 
-  Logger(std::string logger_name, stderr, std::string log_level, bool logging_enabled_env) {
+  Logger(std::string logger_name, stderr, std::string log_level, bool logging_enabled_env, std::string format = "") {
     if (logging_enabled_env) {
       logging_enabled = logging_enabled_env;
       try {
@@ -73,6 +81,10 @@ public:
         std::cerr << "Unable to create log stderr logger " << exception.what() << "\n";
         logging_enabled = false;
         return;
+      }
+
+      if (!format.empty()) {
+        _logger->set_pattern(format);
       }
 
       setLogLevel(log_level);

@@ -32,8 +32,13 @@ namespace loader
         // convert loader handle to driver handle
         hModule = reinterpret_cast<zet_module_object_t*>( hModule )->handle;
 
+        context->zel_api_logger->log_info("---> zetModuleGetDebugInfo(hModule, format, pSize, pDebugInfo)");
+
         // forward to device-driver
         result = pfnGetDebugInfo( hModule, format, pSize, pDebugInfo );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -57,8 +62,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetDeviceGetDebugProperties(hDevice, pDebugProperties)");
+
         // forward to device-driver
         result = pfnGetDebugProperties( hDevice, pDebugProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -83,8 +93,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugAttach(hDevice, config, phDebug)");
+
         // forward to device-driver
         result = pfnAttach( hDevice, config, phDebug );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -121,8 +136,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugDetach(hDebug)");
+
         // forward to device-driver
         result = pfnDetach( hDebug );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -159,8 +179,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugReadEvent(hDebug, timeout, event)");
+
         // forward to device-driver
         result = pfnReadEvent( hDebug, timeout, event );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -184,8 +209,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugAcknowledgeEvent(hDebug, event)");
+
         // forward to device-driver
         result = pfnAcknowledgeEvent( hDebug, event );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -209,8 +239,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugInterrupt(hDebug, thread)");
+
         // forward to device-driver
         result = pfnInterrupt( hDebug, thread );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -234,8 +269,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugResume(hDebug, thread)");
+
         // forward to device-driver
         result = pfnResume( hDebug, thread );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -262,8 +302,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugReadMemory(hDebug, thread, desc, size, buffer)");
+
         // forward to device-driver
         result = pfnReadMemory( hDebug, thread, desc, size, buffer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -290,8 +335,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugWriteMemory(hDebug, thread, desc, size, buffer)");
+
         // forward to device-driver
         result = pfnWriteMemory( hDebug, thread, desc, size, buffer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -324,8 +374,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugGetRegisterSetProperties(hDevice, pCount, pRegisterSetProperties)");
+
         // forward to device-driver
         result = pfnGetRegisterSetProperties( hDevice, pCount, pRegisterSetProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -359,8 +414,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugGetThreadRegisterSetProperties(hDebug, thread, pCount, pRegisterSetProperties)");
+
         // forward to device-driver
         result = pfnGetThreadRegisterSetProperties( hDebug, thread, pCount, pRegisterSetProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -392,8 +452,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugReadRegisters(hDebug, thread, type, start, count, pRegisterValues)");
+
         // forward to device-driver
         result = pfnReadRegisters( hDebug, thread, type, start, count, pRegisterValues );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -425,8 +490,13 @@ namespace loader
         // convert loader handle to driver handle
         hDebug = reinterpret_cast<zet_debug_session_object_t*>( hDebug )->handle;
 
+        context->zel_api_logger->log_info("---> zetDebugWriteRegisters(hDebug, thread, type, start, count, pRegisterValues)");
+
         // forward to device-driver
         result = pfnWriteRegisters( hDebug, thread, type, start, count, pRegisterValues );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -458,8 +528,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupGet(hDevice, pCount, phMetricGroups)");
+
         // forward to device-driver
         result = pfnGet( hDevice, pCount, phMetricGroups );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -498,8 +573,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupGetProperties(hMetricGroup, pProperties)");
+
         // forward to device-driver
         result = pfnGetProperties( hMetricGroup, pProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -534,8 +614,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupCalculateMetricValues(hMetricGroup, type, rawDataSize, pRawData, pMetricValueCount, pMetricValues)");
+
         // forward to device-driver
         result = pfnCalculateMetricValues( hMetricGroup, type, rawDataSize, pRawData, pMetricValueCount, pMetricValues );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -566,8 +651,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGet(hMetricGroup, pCount, phMetrics)");
+
         // forward to device-driver
         result = pfnGet( hMetricGroup, pCount, phMetrics );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -606,8 +696,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetric = reinterpret_cast<zet_metric_object_t*>( hMetric )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGetProperties(hMetric, pProperties)");
+
         // forward to device-driver
         result = pfnGetProperties( hMetric, pProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -645,9 +740,14 @@ namespace loader
         for( size_t i = 0; ( nullptr != phMetricGroups ) && ( i < count ); ++i )
             phMetricGroupsLocal[ i ] = reinterpret_cast<zet_metric_group_object_t*>( phMetricGroups[ i ] )->handle;
 
+        context->zel_api_logger->log_info("---> zetContextActivateMetricGroups(hContext, hDevice, count, phMetricGroupsLocal)");
+
         // forward to device-driver
         result = pfnActivateMetricGroups( hContext, hDevice, count, phMetricGroupsLocal );
         delete []phMetricGroupsLocal;
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -684,8 +784,13 @@ namespace loader
         // convert loader handle to driver handle
         hNotificationEvent = ( hNotificationEvent ) ? reinterpret_cast<ze_event_object_t*>( hNotificationEvent )->handle : nullptr;
 
+        context->zel_api_logger->log_info("---> zetMetricStreamerOpen(hContext, hDevice, hMetricGroup, desc, hNotificationEvent, phMetricStreamer)");
+
         // forward to device-driver
         result = pfnOpen( hContext, hDevice, hMetricGroup, desc, hNotificationEvent, phMetricStreamer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -727,8 +832,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricStreamer = reinterpret_cast<zet_metric_streamer_object_t*>( hMetricStreamer )->handle;
 
+        context->zel_api_logger->log_info("---> zetCommandListAppendMetricStreamerMarker(hCommandList, hMetricStreamer, value)");
+
         // forward to device-driver
         result = pfnAppendMetricStreamerMarker( hCommandList, hMetricStreamer, value );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -751,8 +861,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricStreamer = reinterpret_cast<zet_metric_streamer_object_t*>( hMetricStreamer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricStreamerClose(hMetricStreamer)");
+
         // forward to device-driver
         result = pfnClose( hMetricStreamer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -792,8 +907,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricStreamer = reinterpret_cast<zet_metric_streamer_object_t*>( hMetricStreamer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricStreamerReadData(hMetricStreamer, maxReportCount, pRawDataSize, pRawData)");
+
         // forward to device-driver
         result = pfnReadData( hMetricStreamer, maxReportCount, pRawDataSize, pRawData );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -826,8 +946,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricQueryPoolCreate(hContext, hDevice, hMetricGroup, desc, phMetricQueryPool)");
+
         // forward to device-driver
         result = pfnCreate( hContext, hDevice, hMetricGroup, desc, phMetricQueryPool );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -864,8 +989,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricQueryPool = reinterpret_cast<zet_metric_query_pool_object_t*>( hMetricQueryPool )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricQueryPoolDestroy(hMetricQueryPool)");
+
         // forward to device-driver
         result = pfnDestroy( hMetricQueryPool );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -896,8 +1026,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricQueryPool = reinterpret_cast<zet_metric_query_pool_object_t*>( hMetricQueryPool )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricQueryCreate(hMetricQueryPool, index, phMetricQuery)");
+
         // forward to device-driver
         result = pfnCreate( hMetricQueryPool, index, phMetricQuery );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -934,8 +1069,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricQuery = reinterpret_cast<zet_metric_query_object_t*>( hMetricQuery )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricQueryDestroy(hMetricQuery)");
+
         // forward to device-driver
         result = pfnDestroy( hMetricQuery );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -964,8 +1104,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricQuery = reinterpret_cast<zet_metric_query_object_t*>( hMetricQuery )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricQueryReset(hMetricQuery)");
+
         // forward to device-driver
         result = pfnReset( hMetricQuery );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -992,8 +1137,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricQuery = reinterpret_cast<zet_metric_query_object_t*>( hMetricQuery )->handle;
 
+        context->zel_api_logger->log_info("---> zetCommandListAppendMetricQueryBegin(hCommandList, hMetricQuery)");
+
         // forward to device-driver
         result = pfnAppendMetricQueryBegin( hCommandList, hMetricQuery );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1026,6 +1176,8 @@ namespace loader
         // convert loader handle to driver handle
         hSignalEvent = ( hSignalEvent ) ? reinterpret_cast<ze_event_object_t*>( hSignalEvent )->handle : nullptr;
 
+        context->zel_api_logger->log_info("---> zetCommandListAppendMetricQueryEnd(hCommandList, hMetricQuery, hSignalEvent, numWaitEvents, phWaitEventsLocal)");
+
         // convert loader handles to driver handles
         auto phWaitEventsLocal = new ze_event_handle_t [numWaitEvents];
         for( size_t i = 0; ( nullptr != phWaitEvents ) && ( i < numWaitEvents ); ++i )
@@ -1034,6 +1186,9 @@ namespace loader
         // forward to device-driver
         result = pfnAppendMetricQueryEnd( hCommandList, hMetricQuery, hSignalEvent, numWaitEvents, phWaitEventsLocal );
         delete []phWaitEventsLocal;
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1056,8 +1211,13 @@ namespace loader
         // convert loader handle to driver handle
         hCommandList = reinterpret_cast<zet_command_list_object_t*>( hCommandList )->handle;
 
+        context->zel_api_logger->log_info("---> zetCommandListAppendMetricMemoryBarrier(hCommandList)");
+
         // forward to device-driver
         result = pfnAppendMetricMemoryBarrier( hCommandList );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1089,8 +1249,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricQuery = reinterpret_cast<zet_metric_query_object_t*>( hMetricQuery )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricQueryGetData(hMetricQuery, pRawDataSize, pRawData)");
+
         // forward to device-driver
         result = pfnGetData( hMetricQuery, pRawDataSize, pRawData );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1114,8 +1279,13 @@ namespace loader
         // convert loader handle to driver handle
         hKernel = reinterpret_cast<zet_kernel_object_t*>( hKernel )->handle;
 
+        context->zel_api_logger->log_info("---> zetKernelGetProfileInfo(hKernel, pProfileProperties)");
+
         // forward to device-driver
         result = pfnGetProfileInfo( hKernel, pProfileProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1140,8 +1310,13 @@ namespace loader
         // convert loader handle to driver handle
         hContext = reinterpret_cast<zet_context_object_t*>( hContext )->handle;
 
+        context->zel_api_logger->log_info("---> zetTracerExpCreate(hContext, desc, phTracer)");
+
         // forward to device-driver
         result = pfnCreate( hContext, desc, phTracer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -1178,8 +1353,13 @@ namespace loader
         // convert loader handle to driver handle
         hTracer = reinterpret_cast<zet_tracer_exp_object_t*>( hTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetTracerExpDestroy(hTracer)");
+
         // forward to device-driver
         result = pfnDestroy( hTracer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -1209,8 +1389,13 @@ namespace loader
         // convert loader handle to driver handle
         hTracer = reinterpret_cast<zet_tracer_exp_object_t*>( hTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetTracerExpSetPrologues(hTracer, pCoreCbs)");
+
         // forward to device-driver
         result = pfnSetPrologues( hTracer, pCoreCbs );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1234,8 +1419,13 @@ namespace loader
         // convert loader handle to driver handle
         hTracer = reinterpret_cast<zet_tracer_exp_object_t*>( hTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetTracerExpSetEpilogues(hTracer, pCoreCbs)");
+
         // forward to device-driver
         result = pfnSetEpilogues( hTracer, pCoreCbs );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1259,8 +1449,13 @@ namespace loader
         // convert loader handle to driver handle
         hTracer = reinterpret_cast<zet_tracer_exp_object_t*>( hTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetTracerExpSetEnabled(hTracer, enable)");
+
         // forward to device-driver
         result = pfnSetEnabled( hTracer, enable );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1291,8 +1486,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetDeviceGetConcurrentMetricGroupsExp(hDevice, metricGroupCount, phMetricGroups, pMetricGroupsCountPerConcurrentGroup, pConcurrentGroupCount)");
+
         // forward to device-driver
         result = pfnGetConcurrentMetricGroupsExp( hDevice, metricGroupCount, phMetricGroups, pMetricGroupsCountPerConcurrentGroup, pConcurrentGroupCount );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1335,9 +1535,14 @@ namespace loader
         // convert loader handle to driver handle
         hNotificationEvent = ( hNotificationEvent ) ? reinterpret_cast<ze_event_object_t*>( hNotificationEvent )->handle : nullptr;
 
+        context->zel_api_logger->log_info("---> zetMetricTracerCreateExp(hContext, hDevice, metricGroupCount, phMetricGroupsLocal, desc, hNotificationEvent, phMetricTracer)");
+
         // forward to device-driver
         result = pfnCreateExp( hContext, hDevice, metricGroupCount, phMetricGroupsLocal, desc, hNotificationEvent, phMetricTracer );
         delete []phMetricGroupsLocal;
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -1374,8 +1579,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricTracer = reinterpret_cast<zet_metric_tracer_exp_object_t*>( hMetricTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricTracerDestroyExp(hMetricTracer)");
+
         // forward to device-driver
         result = pfnDestroyExp( hMetricTracer );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1403,8 +1613,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricTracer = reinterpret_cast<zet_metric_tracer_exp_object_t*>( hMetricTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricTracerEnableExp(hMetricTracer, synchronous)");
+
         // forward to device-driver
         result = pfnEnableExp( hMetricTracer, synchronous );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1433,8 +1648,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricTracer = reinterpret_cast<zet_metric_tracer_exp_object_t*>( hMetricTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricTracerDisableExp(hMetricTracer, synchronous)");
+
         // forward to device-driver
         result = pfnDisableExp( hMetricTracer, synchronous );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1466,8 +1686,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricTracer = reinterpret_cast<zet_metric_tracer_exp_object_t*>( hMetricTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricTracerReadDataExp(hMetricTracer, pRawDataSize, pRawData)");
+
         // forward to device-driver
         result = pfnReadDataExp( hMetricTracer, pRawDataSize, pRawData );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1491,8 +1716,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricTracer = reinterpret_cast<zet_metric_tracer_exp_object_t*>( hMetricTracer )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricDecoderCreateExp(hMetricTracer, phMetricDecoder)");
+
         // forward to device-driver
         result = pfnCreateExp( hMetricTracer, phMetricDecoder );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -1529,8 +1759,13 @@ namespace loader
         // convert loader handle to driver handle
         phMetricDecoder = reinterpret_cast<zet_metric_decoder_exp_object_t*>( phMetricDecoder )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricDecoderDestroyExp(phMetricDecoder)");
+
         // forward to device-driver
         result = pfnDestroyExp( phMetricDecoder );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1564,8 +1799,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricDecoder = reinterpret_cast<zet_metric_decoder_exp_object_t*>( hMetricDecoder )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricDecoderGetDecodableMetricsExp(hMetricDecoder, pCount, phMetrics)");
+
         // forward to device-driver
         result = pfnGetDecodableMetricsExp( hMetricDecoder, pCount, phMetrics );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -1647,9 +1887,14 @@ namespace loader
         for( size_t i = 0; ( nullptr != phMetrics ) && ( i < metricsCount ); ++i )
             phMetricsLocal[ i ] = reinterpret_cast<zet_metric_object_t*>( phMetrics[ i ] )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricTracerDecodeExp(phMetricDecoder, pRawDataSize, pRawData, metricsCount, phMetricsLocal, pSetCount, pMetricEntriesCountPerSet, pMetricEntriesCount, pMetricEntries)");
+
         // forward to device-driver
         result = pfnDecodeExp( phMetricDecoder, pRawDataSize, pRawData, metricsCount, phMetricsLocal, pSetCount, pMetricEntriesCountPerSet, pMetricEntriesCount, pMetricEntries );
         delete []phMetricsLocal;
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1694,8 +1939,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupCalculateMultipleMetricValuesExp(hMetricGroup, type, rawDataSize, pRawData, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues)");
+
         // forward to device-driver
         result = pfnCalculateMultipleMetricValuesExp( hMetricGroup, type, rawDataSize, pRawData, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1721,8 +1971,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupGetGlobalTimestampsExp(hMetricGroup, synchronizedWithHost, globalTimestamp, metricTimestamp)");
+
         // forward to device-driver
         result = pfnGetGlobalTimestampsExp( hMetricGroup, synchronizedWithHost, globalTimestamp, metricTimestamp );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1753,8 +2008,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupGetExportDataExp(hMetricGroup, pRawData, rawDataSize, pExportDataSize, pExportData)");
+
         // forward to device-driver
         result = pfnGetExportDataExp( hMetricGroup, pRawData, rawDataSize, pExportDataSize, pExportData );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1800,8 +2060,13 @@ namespace loader
         // convert loader handle to driver handle
         hDriver = reinterpret_cast<ze_driver_object_t*>( hDriver )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupCalculateMetricExportDataExp(hDriver, type, exportDataSize, pExportData, pCalculateDescriptor, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues)");
+
         // forward to device-driver
         result = pfnCalculateMetricExportDataExp( hDriver, type, exportDataSize, pExportData, pCalculateDescriptor, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1833,8 +2098,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricProgrammableGetExp(hDevice, pCount, phMetricProgrammables)");
+
         // forward to device-driver
         result = pfnGetExp( hDevice, pCount, phMetricProgrammables );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -1873,8 +2143,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricProgrammable = reinterpret_cast<zet_metric_programmable_exp_object_t*>( hMetricProgrammable )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricProgrammableGetPropertiesExp(hMetricProgrammable, pProperties)");
+
         // forward to device-driver
         result = pfnGetPropertiesExp( hMetricProgrammable, pProperties );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1905,8 +2180,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricProgrammable = reinterpret_cast<zet_metric_programmable_exp_object_t*>( hMetricProgrammable )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricProgrammableGetParamInfoExp(hMetricProgrammable, pParameterCount, pParameterInfo)");
+
         // forward to device-driver
         result = pfnGetParamInfoExp( hMetricProgrammable, pParameterCount, pParameterInfo );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1938,8 +2218,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricProgrammable = reinterpret_cast<zet_metric_programmable_exp_object_t*>( hMetricProgrammable )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricProgrammableGetParamValueInfoExp(hMetricProgrammable, parameterOrdinal, pValueInfoCount, pValueInfo)");
+
         // forward to device-driver
         result = pfnGetParamValueInfoExp( hMetricProgrammable, parameterOrdinal, pValueInfoCount, pValueInfo );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -1978,8 +2263,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricProgrammable = reinterpret_cast<zet_metric_programmable_exp_object_t*>( hMetricProgrammable )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricCreateFromProgrammableExp2(hMetricProgrammable, parameterCount, pParameterValues, pName, pDescription, pMetricHandleCount, phMetricHandles)");
+
         // forward to device-driver
         result = pfnCreateFromProgrammableExp2( hMetricProgrammable, parameterCount, pParameterValues, pName, pDescription, pMetricHandleCount, phMetricHandles );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -2033,8 +2323,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricProgrammable = reinterpret_cast<zet_metric_programmable_exp_object_t*>( hMetricProgrammable )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricCreateFromProgrammableExp(hMetricProgrammable, pParameterValues, parameterCount, pName, pDescription, pMetricHandleCount, phMetricHandles)");
+
         // forward to device-driver
         result = pfnCreateFromProgrammableExp( hMetricProgrammable, pParameterValues, parameterCount, pName, pDescription, pMetricHandleCount, phMetricHandles );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -2091,8 +2386,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetDeviceCreateMetricGroupsFromMetricsExp(hDevice, metricCount, phMetrics, pMetricGroupNamePrefix, pDescription, pMetricGroupCount, phMetricGroup)");
+
         // forward to device-driver
         result = pfnCreateMetricGroupsFromMetricsExp( hDevice, metricCount, phMetrics, pMetricGroupNamePrefix, pDescription, pMetricGroupCount, phMetricGroup );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -2137,8 +2437,13 @@ namespace loader
         // convert loader handle to driver handle
         hDevice = reinterpret_cast<zet_device_object_t*>( hDevice )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupCreateExp(hDevice, pName, pDescription, samplingType, phMetricGroup)");
+
         // forward to device-driver
         result = pfnCreateExp( hDevice, pName, pDescription, samplingType, phMetricGroup );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         if( ZE_RESULT_SUCCESS != result )
             return result;
@@ -2186,8 +2491,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetric = reinterpret_cast<zet_metric_object_t*>( hMetric )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupAddMetricExp(hMetricGroup, hMetric, pErrorStringSize, pErrorString)");
+
         // forward to device-driver
         result = pfnAddMetricExp( hMetricGroup, hMetric, pErrorStringSize, pErrorString );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -2214,8 +2524,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetric = reinterpret_cast<zet_metric_object_t*>( hMetric )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupRemoveMetricExp(hMetricGroup, hMetric)");
+
         // forward to device-driver
         result = pfnRemoveMetricExp( hMetricGroup, hMetric );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -2238,8 +2553,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupCloseExp(hMetricGroup)");
+
         // forward to device-driver
         result = pfnCloseExp( hMetricGroup );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -2262,8 +2582,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetricGroup = reinterpret_cast<zet_metric_group_object_t*>( hMetricGroup )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricGroupDestroyExp(hMetricGroup)");
+
         // forward to device-driver
         result = pfnDestroyExp( hMetricGroup );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }
@@ -2286,8 +2611,13 @@ namespace loader
         // convert loader handle to driver handle
         hMetric = reinterpret_cast<zet_metric_object_t*>( hMetric )->handle;
 
+        context->zel_api_logger->log_info("---> zetMetricDestroyExp(hMetric)");
+
         // forward to device-driver
         result = pfnDestroyExp( hMetric );
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 
         return result;
     }

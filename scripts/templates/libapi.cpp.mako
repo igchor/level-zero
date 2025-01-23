@@ -166,13 +166,7 @@ ${th.make_func_name(n, tags, obj)}(
     ze_lib::context->${n}Inuse = true;
 %endif
 
-    ze_lib::context->api_logger->log_info("---> ${th.make_func_name(n, tags, obj)}");
-
-    ze_result_t ret = ${th.make_pfn_name(n, tags, obj)}( ${", ".join(th.make_param_lines(n, tags, obj, format=["name"]))} );
-
-    // ze_lib::context->api_logger->log_info("---> ${th.make_pfn_name(n, tags, obj)}");
-
-    return ret;
+    return ${th.make_pfn_name(n, tags, obj)}( ${", ".join(th.make_param_lines(n, tags, obj, format=["name"]))} );
 }
 %endif
 %if 'condition' in obj:

@@ -150,9 +150,6 @@ namespace ze_lib
             isInitialized = true;
         }
 
-        logAllApiCalls = getenv_tobool("ZE_LOG_API_CALLS");
-        api_logger = std::make_shared<loader::Logger>("ze_lib", loader::stdout{}, "info", logAllApiCalls);
-
         return result;
     }
 

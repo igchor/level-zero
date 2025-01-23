@@ -204,6 +204,8 @@ namespace loader
             }
         }
         %endif
+        context->zel_api_logger->log_info("---> ${th.make_func_name(n, tags, obj)}(${", ".join(th.make_param_lines(n, tags, obj, format=["name", "local"]))})");
+
         ## Workaround due to incorrect defintion of phWaitEvents in the ze headers which missed the range values.
         ## To be removed once the headers have been updated in a new spec release.
         %if re.match(r"\w+CommandListAppendMetricQueryEnd$", th.make_func_name(n, tags, obj)):
@@ -230,6 +232,9 @@ namespace loader
         %endif
         %endif
         %endif
+
+        if (result != ZE_RESULT_SUCCESS)
+            context->zel_api_logger->log_info("Error " + loader::to_string(result));
 <%
         del arrays_to_delete
         del add_local%>

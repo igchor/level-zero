@@ -538,6 +538,8 @@ namespace loader
 
         driverEnvironmentQueried = true;
 
+        zel_api_logger = std::make_shared<Logger>("ze_api", stdout{}, "info", getenv_tobool( "ZEL_ENABLE_API_LOGGING" ), "%v");
+
         zel_logger->log_info("zeInit succeeded");
         return ZE_RESULT_SUCCESS;
     };

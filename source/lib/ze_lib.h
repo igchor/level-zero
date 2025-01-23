@@ -63,8 +63,6 @@ namespace ze_lib
         bool inTeardown = false;
         bool zesInuse = false;
         bool zeInuse = false;
-        bool logAllApiCalls = false;
-        std::shared_ptr<loader::Logger> api_logger;
     };
 
     extern context_t *context;

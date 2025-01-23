@@ -56,13 +56,7 @@ zetModuleGetDebugInfo(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetModuleGetDebugInfo");
-
-    ze_result_t ret = pfnGetDebugInfo( hModule, format, pSize, pDebugInfo );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetDebugInfo");
-
-    return ret;
+    return pfnGetDebugInfo( hModule, format, pSize, pDebugInfo );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,13 +90,7 @@ zetDeviceGetDebugProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDeviceGetDebugProperties");
-
-    ze_result_t ret = pfnGetDebugProperties( hDevice, pDebugProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetDebugProperties");
-
-    return ret;
+    return pfnGetDebugProperties( hDevice, pDebugProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -148,13 +136,7 @@ zetDebugAttach(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugAttach");
-
-    ze_result_t ret = pfnAttach( hDevice, config, phDebug );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAttach");
-
-    return ret;
+    return pfnAttach( hDevice, config, phDebug );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -185,13 +167,7 @@ zetDebugDetach(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugDetach");
-
-    ze_result_t ret = pfnDetach( hDebug );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDetach");
-
-    return ret;
+    return pfnDetach( hDebug );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -234,13 +210,7 @@ zetDebugReadEvent(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugReadEvent");
-
-    ze_result_t ret = pfnReadEvent( hDebug, timeout, event );
-
-    // ze_lib::context->api_logger->log_info("---> pfnReadEvent");
-
-    return ret;
+    return pfnReadEvent( hDebug, timeout, event );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -274,13 +244,7 @@ zetDebugAcknowledgeEvent(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugAcknowledgeEvent");
-
-    ze_result_t ret = pfnAcknowledgeEvent( hDebug, event );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAcknowledgeEvent");
-
-    return ret;
+    return pfnAcknowledgeEvent( hDebug, event );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -314,13 +278,7 @@ zetDebugInterrupt(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugInterrupt");
-
-    ze_result_t ret = pfnInterrupt( hDebug, thread );
-
-    // ze_lib::context->api_logger->log_info("---> pfnInterrupt");
-
-    return ret;
+    return pfnInterrupt( hDebug, thread );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -354,13 +312,7 @@ zetDebugResume(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugResume");
-
-    ze_result_t ret = pfnResume( hDebug, thread );
-
-    // ze_lib::context->api_logger->log_info("---> pfnResume");
-
-    return ret;
+    return pfnResume( hDebug, thread );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -407,13 +359,7 @@ zetDebugReadMemory(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugReadMemory");
-
-    ze_result_t ret = pfnReadMemory( hDebug, thread, desc, size, buffer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnReadMemory");
-
-    return ret;
+    return pfnReadMemory( hDebug, thread, desc, size, buffer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -460,13 +406,7 @@ zetDebugWriteMemory(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugWriteMemory");
-
-    ze_result_t ret = pfnWriteMemory( hDebug, thread, desc, size, buffer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnWriteMemory");
-
-    return ret;
+    return pfnWriteMemory( hDebug, thread, desc, size, buffer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -509,13 +449,7 @@ zetDebugGetRegisterSetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugGetRegisterSetProperties");
-
-    ze_result_t ret = pfnGetRegisterSetProperties( hDevice, pCount, pRegisterSetProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetRegisterSetProperties");
-
-    return ret;
+    return pfnGetRegisterSetProperties( hDevice, pCount, pRegisterSetProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -563,13 +497,7 @@ zetDebugGetThreadRegisterSetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugGetThreadRegisterSetProperties");
-
-    ze_result_t ret = pfnGetThreadRegisterSetProperties( hDebug, thread, pCount, pRegisterSetProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetThreadRegisterSetProperties");
-
-    return ret;
+    return pfnGetThreadRegisterSetProperties( hDebug, thread, pCount, pRegisterSetProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -611,13 +539,7 @@ zetDebugReadRegisters(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugReadRegisters");
-
-    ze_result_t ret = pfnReadRegisters( hDebug, thread, type, start, count, pRegisterValues );
-
-    // ze_lib::context->api_logger->log_info("---> pfnReadRegisters");
-
-    return ret;
+    return pfnReadRegisters( hDebug, thread, type, start, count, pRegisterValues );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -659,13 +581,7 @@ zetDebugWriteRegisters(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDebugWriteRegisters");
-
-    ze_result_t ret = pfnWriteRegisters( hDebug, thread, type, start, count, pRegisterValues );
-
-    // ze_lib::context->api_logger->log_info("---> pfnWriteRegisters");
-
-    return ret;
+    return pfnWriteRegisters( hDebug, thread, type, start, count, pRegisterValues );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -710,13 +626,7 @@ zetMetricGroupGet(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupGet");
-
-    ze_result_t ret = pfnGet( hDevice, pCount, phMetricGroups );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGet");
-
-    return ret;
+    return pfnGet( hDevice, pCount, phMetricGroups );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -753,13 +663,7 @@ zetMetricGroupGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupGetProperties");
-
-    ze_result_t ret = pfnGetProperties( hMetricGroup, pProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
-
-    return ret;
+    return pfnGetProperties( hMetricGroup, pProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -810,13 +714,7 @@ zetMetricGroupCalculateMetricValues(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupCalculateMetricValues");
-
-    ze_result_t ret = pfnCalculateMetricValues( hMetricGroup, type, rawDataSize, pRawData, pMetricValueCount, pMetricValues );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCalculateMetricValues");
-
-    return ret;
+    return pfnCalculateMetricValues( hMetricGroup, type, rawDataSize, pRawData, pMetricValueCount, pMetricValues );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -860,13 +758,7 @@ zetMetricGet(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGet");
-
-    ze_result_t ret = pfnGet( hMetricGroup, pCount, phMetrics );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGet");
-
-    return ret;
+    return pfnGet( hMetricGroup, pCount, phMetrics );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -903,13 +795,7 @@ zetMetricGetProperties(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGetProperties");
-
-    ze_result_t ret = pfnGetProperties( hMetric, pProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetProperties");
-
-    return ret;
+    return pfnGetProperties( hMetric, pProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -964,13 +850,7 @@ zetContextActivateMetricGroups(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetContextActivateMetricGroups");
-
-    ze_result_t ret = pfnActivateMetricGroups( hContext, hDevice, count, phMetricGroups );
-
-    // ze_lib::context->api_logger->log_info("---> pfnActivateMetricGroups");
-
-    return ret;
+    return pfnActivateMetricGroups( hContext, hDevice, count, phMetricGroups );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1022,13 +902,7 @@ zetMetricStreamerOpen(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricStreamerOpen");
-
-    ze_result_t ret = pfnOpen( hContext, hDevice, hMetricGroup, desc, hNotificationEvent, phMetricStreamer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnOpen");
-
-    return ret;
+    return pfnOpen( hContext, hDevice, hMetricGroup, desc, hNotificationEvent, phMetricStreamer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1072,13 +946,7 @@ zetCommandListAppendMetricStreamerMarker(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetCommandListAppendMetricStreamerMarker");
-
-    ze_result_t ret = pfnAppendMetricStreamerMarker( hCommandList, hMetricStreamer, value );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAppendMetricStreamerMarker");
-
-    return ret;
+    return pfnAppendMetricStreamerMarker( hCommandList, hMetricStreamer, value );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1113,13 +981,7 @@ zetMetricStreamerClose(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricStreamerClose");
-
-    ze_result_t ret = pfnClose( hMetricStreamer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnClose");
-
-    return ret;
+    return pfnClose( hMetricStreamer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1168,13 +1030,7 @@ zetMetricStreamerReadData(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricStreamerReadData");
-
-    ze_result_t ret = pfnReadData( hMetricStreamer, maxReportCount, pRawDataSize, pRawData );
-
-    // ze_lib::context->api_logger->log_info("---> pfnReadData");
-
-    return ret;
+    return pfnReadData( hMetricStreamer, maxReportCount, pRawDataSize, pRawData );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1220,13 +1076,7 @@ zetMetricQueryPoolCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricQueryPoolCreate");
-
-    ze_result_t ret = pfnCreate( hContext, hDevice, hMetricGroup, desc, phMetricQueryPool );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreate");
-
-    return ret;
+    return pfnCreate( hContext, hDevice, hMetricGroup, desc, phMetricQueryPool );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1267,13 +1117,7 @@ zetMetricQueryPoolDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricQueryPoolDestroy");
-
-    ze_result_t ret = pfnDestroy( hMetricQueryPool );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
-
-    return ret;
+    return pfnDestroy( hMetricQueryPool );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1312,13 +1156,7 @@ zetMetricQueryCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricQueryCreate");
-
-    ze_result_t ret = pfnCreate( hMetricQueryPool, index, phMetricQuery );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreate");
-
-    return ret;
+    return pfnCreate( hMetricQueryPool, index, phMetricQuery );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1357,13 +1195,7 @@ zetMetricQueryDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricQueryDestroy");
-
-    ze_result_t ret = pfnDestroy( hMetricQuery );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
-
-    return ret;
+    return pfnDestroy( hMetricQuery );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1400,13 +1232,7 @@ zetMetricQueryReset(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricQueryReset");
-
-    ze_result_t ret = pfnReset( hMetricQuery );
-
-    // ze_lib::context->api_logger->log_info("---> pfnReset");
-
-    return ret;
+    return pfnReset( hMetricQuery );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1449,13 +1275,7 @@ zetCommandListAppendMetricQueryBegin(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetCommandListAppendMetricQueryBegin");
-
-    ze_result_t ret = pfnAppendMetricQueryBegin( hCommandList, hMetricQuery );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAppendMetricQueryBegin");
-
-    return ret;
+    return pfnAppendMetricQueryBegin( hCommandList, hMetricQuery );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1512,13 +1332,7 @@ zetCommandListAppendMetricQueryEnd(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetCommandListAppendMetricQueryEnd");
-
-    ze_result_t ret = pfnAppendMetricQueryEnd( hCommandList, hMetricQuery, hSignalEvent, numWaitEvents, phWaitEvents );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAppendMetricQueryEnd");
-
-    return ret;
+    return pfnAppendMetricQueryEnd( hCommandList, hMetricQuery, hSignalEvent, numWaitEvents, phWaitEvents );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1553,13 +1367,7 @@ zetCommandListAppendMetricMemoryBarrier(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetCommandListAppendMetricMemoryBarrier");
-
-    ze_result_t ret = pfnAppendMetricMemoryBarrier( hCommandList );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAppendMetricMemoryBarrier");
-
-    return ret;
+    return pfnAppendMetricMemoryBarrier( hCommandList );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1604,13 +1412,7 @@ zetMetricQueryGetData(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricQueryGetData");
-
-    ze_result_t ret = pfnGetData( hMetricQuery, pRawDataSize, pRawData );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetData");
-
-    return ret;
+    return pfnGetData( hMetricQuery, pRawDataSize, pRawData );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1652,13 +1454,7 @@ zetKernelGetProfileInfo(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetKernelGetProfileInfo");
-
-    ze_result_t ret = pfnGetProfileInfo( hKernel, pProfileProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetProfileInfo");
-
-    return ret;
+    return pfnGetProfileInfo( hKernel, pProfileProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1702,13 +1498,7 @@ zetTracerExpCreate(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetTracerExpCreate");
-
-    ze_result_t ret = pfnCreate( hContext, desc, phTracer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreate");
-
-    return ret;
+    return pfnCreate( hContext, desc, phTracer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1748,13 +1538,7 @@ zetTracerExpDestroy(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetTracerExpDestroy");
-
-    ze_result_t ret = pfnDestroy( hTracer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroy");
-
-    return ret;
+    return pfnDestroy( hTracer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1797,13 +1581,7 @@ zetTracerExpSetPrologues(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetTracerExpSetPrologues");
-
-    ze_result_t ret = pfnSetPrologues( hTracer, pCoreCbs );
-
-    // ze_lib::context->api_logger->log_info("---> pfnSetPrologues");
-
-    return ret;
+    return pfnSetPrologues( hTracer, pCoreCbs );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1846,13 +1624,7 @@ zetTracerExpSetEpilogues(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetTracerExpSetEpilogues");
-
-    ze_result_t ret = pfnSetEpilogues( hTracer, pCoreCbs );
-
-    // ze_lib::context->api_logger->log_info("---> pfnSetEpilogues");
-
-    return ret;
+    return pfnSetEpilogues( hTracer, pCoreCbs );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1888,13 +1660,7 @@ zetTracerExpSetEnabled(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetTracerExpSetEnabled");
-
-    ze_result_t ret = pfnSetEnabled( hTracer, enable );
-
-    // ze_lib::context->api_logger->log_info("---> pfnSetEnabled");
-
-    return ret;
+    return pfnSetEnabled( hTracer, enable );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1938,13 +1704,7 @@ zetDeviceGetConcurrentMetricGroupsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDeviceGetConcurrentMetricGroupsExp");
-
-    ze_result_t ret = pfnGetConcurrentMetricGroupsExp( hDevice, metricGroupCount, phMetricGroups, pMetricGroupsCountPerConcurrentGroup, pConcurrentGroupCount );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetConcurrentMetricGroupsExp");
-
-    return ret;
+    return pfnGetConcurrentMetricGroupsExp( hDevice, metricGroupCount, phMetricGroups, pMetricGroupsCountPerConcurrentGroup, pConcurrentGroupCount );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2004,13 +1764,7 @@ zetMetricTracerCreateExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricTracerCreateExp");
-
-    ze_result_t ret = pfnCreateExp( hContext, hDevice, metricGroupCount, phMetricGroups, desc, hNotificationEvent, phMetricTracer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreateExp");
-
-    return ret;
+    return pfnCreateExp( hContext, hDevice, metricGroupCount, phMetricGroups, desc, hNotificationEvent, phMetricTracer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2045,13 +1799,7 @@ zetMetricTracerDestroyExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricTracerDestroyExp");
-
-    ze_result_t ret = pfnDestroyExp( hMetricTracer );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroyExp");
-
-    return ret;
+    return pfnDestroyExp( hMetricTracer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2094,13 +1842,7 @@ zetMetricTracerEnableExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricTracerEnableExp");
-
-    ze_result_t ret = pfnEnableExp( hMetricTracer, synchronous );
-
-    // ze_lib::context->api_logger->log_info("---> pfnEnableExp");
-
-    return ret;
+    return pfnEnableExp( hMetricTracer, synchronous );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2144,13 +1886,7 @@ zetMetricTracerDisableExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricTracerDisableExp");
-
-    ze_result_t ret = pfnDisableExp( hMetricTracer, synchronous );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDisableExp");
-
-    return ret;
+    return pfnDisableExp( hMetricTracer, synchronous );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2202,13 +1938,7 @@ zetMetricTracerReadDataExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricTracerReadDataExp");
-
-    ze_result_t ret = pfnReadDataExp( hMetricTracer, pRawDataSize, pRawData );
-
-    // ze_lib::context->api_logger->log_info("---> pfnReadDataExp");
-
-    return ret;
+    return pfnReadDataExp( hMetricTracer, pRawDataSize, pRawData );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2242,13 +1972,7 @@ zetMetricDecoderCreateExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricDecoderCreateExp");
-
-    ze_result_t ret = pfnCreateExp( hMetricTracer, phMetricDecoder );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreateExp");
-
-    return ret;
+    return pfnCreateExp( hMetricTracer, phMetricDecoder );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2279,13 +2003,7 @@ zetMetricDecoderDestroyExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricDecoderDestroyExp");
-
-    ze_result_t ret = pfnDestroyExp( phMetricDecoder );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroyExp");
-
-    return ret;
+    return pfnDestroyExp( phMetricDecoder );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2338,13 +2056,7 @@ zetMetricDecoderGetDecodableMetricsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricDecoderGetDecodableMetricsExp");
-
-    ze_result_t ret = pfnGetDecodableMetricsExp( hMetricDecoder, pCount, phMetrics );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetDecodableMetricsExp");
-
-    return ret;
+    return pfnGetDecodableMetricsExp( hMetricDecoder, pCount, phMetrics );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2419,13 +2131,7 @@ zetMetricTracerDecodeExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricTracerDecodeExp");
-
-    ze_result_t ret = pfnDecodeExp( phMetricDecoder, pRawDataSize, pRawData, metricsCount, phMetrics, pSetCount, pMetricEntriesCountPerSet, pMetricEntriesCount, pMetricEntries );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDecodeExp");
-
-    return ret;
+    return pfnDecodeExp( phMetricDecoder, pRawDataSize, pRawData, metricsCount, phMetrics, pSetCount, pMetricEntriesCountPerSet, pMetricEntriesCount, pMetricEntries );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2495,13 +2201,7 @@ zetMetricGroupCalculateMultipleMetricValuesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupCalculateMultipleMetricValuesExp");
-
-    ze_result_t ret = pfnCalculateMultipleMetricValuesExp( hMetricGroup, type, rawDataSize, pRawData, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCalculateMultipleMetricValuesExp");
-
-    return ret;
+    return pfnCalculateMultipleMetricValuesExp( hMetricGroup, type, rawDataSize, pRawData, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2544,13 +2244,7 @@ zetMetricGroupGetGlobalTimestampsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupGetGlobalTimestampsExp");
-
-    ze_result_t ret = pfnGetGlobalTimestampsExp( hMetricGroup, synchronizedWithHost, globalTimestamp, metricTimestamp );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetGlobalTimestampsExp");
-
-    return ret;
+    return pfnGetGlobalTimestampsExp( hMetricGroup, synchronizedWithHost, globalTimestamp, metricTimestamp );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2601,13 +2295,7 @@ zetMetricGroupGetExportDataExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupGetExportDataExp");
-
-    ze_result_t ret = pfnGetExportDataExp( hMetricGroup, pRawData, rawDataSize, pExportDataSize, pExportData );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetExportDataExp");
-
-    return ret;
+    return pfnGetExportDataExp( hMetricGroup, pRawData, rawDataSize, pExportDataSize, pExportData );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2678,13 +2366,7 @@ zetMetricGroupCalculateMetricExportDataExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupCalculateMetricExportDataExp");
-
-    ze_result_t ret = pfnCalculateMetricExportDataExp( hDriver, type, exportDataSize, pExportData, pCalculateDescriptor, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCalculateMetricExportDataExp");
-
-    return ret;
+    return pfnCalculateMetricExportDataExp( hDriver, type, exportDataSize, pExportData, pCalculateDescriptor, pSetCount, pTotalMetricValueCount, pMetricCounts, pMetricValues );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2731,13 +2413,7 @@ zetMetricProgrammableGetExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricProgrammableGetExp");
-
-    ze_result_t ret = pfnGetExp( hDevice, pCount, phMetricProgrammables );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetExp");
-
-    return ret;
+    return pfnGetExp( hDevice, pCount, phMetricProgrammables );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2774,13 +2450,7 @@ zetMetricProgrammableGetPropertiesExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricProgrammableGetPropertiesExp");
-
-    ze_result_t ret = pfnGetPropertiesExp( hMetricProgrammable, pProperties );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetPropertiesExp");
-
-    return ret;
+    return pfnGetPropertiesExp( hMetricProgrammable, pProperties );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2826,13 +2496,7 @@ zetMetricProgrammableGetParamInfoExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricProgrammableGetParamInfoExp");
-
-    ze_result_t ret = pfnGetParamInfoExp( hMetricProgrammable, pParameterCount, pParameterInfo );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetParamInfoExp");
-
-    return ret;
+    return pfnGetParamInfoExp( hMetricProgrammable, pParameterCount, pParameterInfo );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2880,13 +2544,7 @@ zetMetricProgrammableGetParamValueInfoExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricProgrammableGetParamValueInfoExp");
-
-    ze_result_t ret = pfnGetParamValueInfoExp( hMetricProgrammable, parameterOrdinal, pValueInfoCount, pValueInfo );
-
-    // ze_lib::context->api_logger->log_info("---> pfnGetParamValueInfoExp");
-
-    return ret;
+    return pfnGetParamValueInfoExp( hMetricProgrammable, parameterOrdinal, pValueInfoCount, pValueInfo );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2950,13 +2608,7 @@ zetMetricCreateFromProgrammableExp2(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricCreateFromProgrammableExp2");
-
-    ze_result_t ret = pfnCreateFromProgrammableExp2( hMetricProgrammable, parameterCount, pParameterValues, pName, pDescription, pMetricHandleCount, phMetricHandles );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreateFromProgrammableExp2");
-
-    return ret;
+    return pfnCreateFromProgrammableExp2( hMetricProgrammable, parameterCount, pParameterValues, pName, pDescription, pMetricHandleCount, phMetricHandles );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3013,13 +2665,7 @@ zetMetricCreateFromProgrammableExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricCreateFromProgrammableExp");
-
-    ze_result_t ret = pfnCreateFromProgrammableExp( hMetricProgrammable, pParameterValues, parameterCount, pName, pDescription, pMetricHandleCount, phMetricHandles );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreateFromProgrammableExp");
-
-    return ret;
+    return pfnCreateFromProgrammableExp( hMetricProgrammable, pParameterValues, parameterCount, pName, pDescription, pMetricHandleCount, phMetricHandles );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3081,13 +2727,7 @@ zetDeviceCreateMetricGroupsFromMetricsExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetDeviceCreateMetricGroupsFromMetricsExp");
-
-    ze_result_t ret = pfnCreateMetricGroupsFromMetricsExp( hDevice, metricCount, phMetrics, pMetricGroupNamePrefix, pDescription, pMetricGroupCount, phMetricGroup );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreateMetricGroupsFromMetricsExp");
-
-    return ret;
+    return pfnCreateMetricGroupsFromMetricsExp( hDevice, metricCount, phMetrics, pMetricGroupNamePrefix, pDescription, pMetricGroupCount, phMetricGroup );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3135,13 +2775,7 @@ zetMetricGroupCreateExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupCreateExp");
-
-    ze_result_t ret = pfnCreateExp( hDevice, pName, pDescription, samplingType, phMetricGroup );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCreateExp");
-
-    return ret;
+    return pfnCreateExp( hDevice, pName, pDescription, samplingType, phMetricGroup );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3197,13 +2831,7 @@ zetMetricGroupAddMetricExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupAddMetricExp");
-
-    ze_result_t ret = pfnAddMetricExp( hMetricGroup, hMetric, pErrorStringSize, pErrorString );
-
-    // ze_lib::context->api_logger->log_info("---> pfnAddMetricExp");
-
-    return ret;
+    return pfnAddMetricExp( hMetricGroup, hMetric, pErrorStringSize, pErrorString );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3245,13 +2873,7 @@ zetMetricGroupRemoveMetricExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupRemoveMetricExp");
-
-    ze_result_t ret = pfnRemoveMetricExp( hMetricGroup, hMetric );
-
-    // ze_lib::context->api_logger->log_info("---> pfnRemoveMetricExp");
-
-    return ret;
+    return pfnRemoveMetricExp( hMetricGroup, hMetric );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3302,13 +2924,7 @@ zetMetricGroupCloseExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupCloseExp");
-
-    ze_result_t ret = pfnCloseExp( hMetricGroup );
-
-    // ze_lib::context->api_logger->log_info("---> pfnCloseExp");
-
-    return ret;
+    return pfnCloseExp( hMetricGroup );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3351,13 +2967,7 @@ zetMetricGroupDestroyExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricGroupDestroyExp");
-
-    ze_result_t ret = pfnDestroyExp( hMetricGroup );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroyExp");
-
-    return ret;
+    return pfnDestroyExp( hMetricGroup );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3396,13 +3006,7 @@ zetMetricDestroyExp(
             return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
     }
 
-    ze_lib::context->api_logger->log_info("---> zetMetricDestroyExp");
-
-    ze_result_t ret = pfnDestroyExp( hMetric );
-
-    // ze_lib::context->api_logger->log_info("---> pfnDestroyExp");
-
-    return ret;
+    return pfnDestroyExp( hMetric );
 }
 
 } // extern "C"
