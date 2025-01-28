@@ -200,6 +200,30 @@ def _mako_tracing_layer_h(path, namespace, tags, version, specs, meta):
         specs=specs,
         meta=meta)
 
+"""
+    generates c/c++ files from the specification documents
+"""
+def _mako_gen_ze_calls(path, namespace, tags, version, specs, meta):
+    dstpath = os.path.join(path, "generator")
+    os.makedirs(dstpath, exist_ok=True)
+
+    template = "trace_gen.h.mako"
+    fin = os.path.join(tracing_templates_dir, template)
+
+    name = "trace_gen"
+    filename = "%s.h"%(name)
+    fout = os.path.join(dstpath, filename)
+
+    print("Generating %s..."%fout)
+    return util.makoWrite(
+        fin, fout,
+        name=name,
+        ver=version,
+        namespace=namespace,
+        tags=tags,
+        specs=specs,
+        meta=meta)
+
 
 """
     generates c/c++ files from the specification documents
@@ -355,6 +379,7 @@ def generate_layers(path, section, namespace, tags, version, specs, meta):
         print("TRACING Generated %s lines of code.\n"%loc)       
         loc += _mako_tracing_layer_h(include_dstpath, namespace, tags, version, specs, meta)
         print("TRACING header Generated %s lines of code.\n"%loc)
+        loc += _mako_gen_ze_calls(include_dstpath, namespace, tags, version, specs, meta)
 
 """
 Entry-point:

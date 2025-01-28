@@ -1025,6 +1025,29 @@ def get_func_descs(namespace, tags, obj):
 
     return descs
 
+def xxxx(specs, value):
+    objs = []
+    for s in specs:
+        for obj in s['objects']:
+            if "desc_t" in obj['name']:
+                objs.append(obj)
+    return objs
+
+def get_object_from_pointer(specs, obj):
+    for s in specs:
+        for o in s['objects']:
+            if obj in o['name']:
+                return o
+    return None
+
+def get_descriptor_objects(specs, namespace, tags, obj, cpp=False, py=False, decl=False, meta=None, format=["type", "name", "init", "delim", "desc"], delim=","):
+    ret = []
+    params = obj['params']
+    for i, item in enumerate(params):
+        if type_traits.is_descriptor(item['type']):
+            ret.append(get_object_from_pointer(specs, item['type'].replace("*","").replace("const","").replace("$x_","").strip()))
+    return ret
+
 """
 Public:
     returns a list of c++ strings for each parameter of a function
