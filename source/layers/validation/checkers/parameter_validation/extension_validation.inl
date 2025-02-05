@@ -9,6 +9,8 @@
  */
 #include <type_traits>
 
+#define ZEX_INTEL_STRUCTURE_TYPE_QUEUE_COPY_OPERATIONS_OFFLOAD_HINT_EXP_PROPERTIES (ze_structure_type_t)0x0003001B
+
 template <typename S, typename B>
 inline ze_result_t validateStructureTypes(const void *descriptorPtr,
                                    std::vector<S> &baseTypesVector,
@@ -285,7 +287,7 @@ template <>
 inline ze_result_t ParameterValidation::validateExtensions(const ze_command_queue_desc_t *descriptor) {
 
     std::vector<ze_structure_type_t> baseTypes = {ZE_STRUCTURE_TYPE_COMMAND_QUEUE_DESC};
-    std::vector<ze_structure_type_t> types = {};
+    std::vector<ze_structure_type_t> types = {ZEX_INTEL_STRUCTURE_TYPE_QUEUE_COPY_OPERATIONS_OFFLOAD_HINT_EXP_PROPERTIES};
 
     return validateStructureTypes<ze_structure_type_t, ze_base_properties_t>(descriptor, baseTypes, types);
 }
@@ -295,7 +297,7 @@ inline ze_result_t ParameterValidation::validateExtensions(const ze_command_list
 
     std::vector<ze_structure_type_t> baseTypes = {ZE_STRUCTURE_TYPE_COMMAND_LIST_DESC};
 //    std::vector<ze_structure_type_t> types = {ZEX_STRUCTURE_TYPE_MUTABLE_COMMAND_LIST_DESCRIPTOR};
-    std::vector<ze_structure_type_t> types = {};
+    std::vector<ze_structure_type_t> types = {ZEX_INTEL_STRUCTURE_TYPE_QUEUE_COPY_OPERATIONS_OFFLOAD_HINT_EXP_PROPERTIES};
 
     return validateStructureTypes<ze_structure_type_t, ze_base_properties_t>(descriptor, baseTypes, types);
 }
@@ -304,7 +306,7 @@ template <>
 inline ze_result_t ParameterValidation::validateExtensions(const ze_event_pool_desc_t *descriptor) {
 
     std::vector<ze_structure_type_t> baseTypes = {ZE_STRUCTURE_TYPE_EVENT_POOL_DESC};
-    std::vector<ze_structure_type_t> types = {};
+    std::vector<ze_structure_type_t> types = {ZE_STRUCTURE_TYPE_COUNTER_BASED_EVENT_POOL_EXP_DESC};
 
     return validateStructureTypes<ze_structure_type_t, ze_base_properties_t>(descriptor, baseTypes, types);
 }
