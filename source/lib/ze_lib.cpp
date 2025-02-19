@@ -24,6 +24,12 @@ namespace ze_lib
     ///////////////////////////////////////////////////////////////////////////////
     context_t::context_t()
     {
+    #ifdef DYNAMIC_LOAD_LOADER
+    std::cout << "Static lib ptr:";
+    #else
+    std::cout << "Dynamic lib ptr:";
+    #endif
+        std::cout << &context << std::endl;
         debugTraceEnabled = getenv_tobool( "ZE_ENABLE_LOADER_DEBUG_TRACE" );
     };
 

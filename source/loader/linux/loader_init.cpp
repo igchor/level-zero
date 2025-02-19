@@ -13,6 +13,8 @@ namespace loader
 #ifndef DYNAMIC_LOAD_LOADER
     void __attribute__((constructor)) createLoaderContext() {
         context = new context_t;
+        std::cout << "createLoaderContext:\n";
+        std::cout << context << std::endl;
     }
 
     void __attribute__((destructor)) deleteLoaderContext() {

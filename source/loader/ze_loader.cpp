@@ -394,6 +394,12 @@ namespace loader
     ///////////////////////////////////////////////////////////////////////////////
     ze_result_t context_t::init()
     {
+        #ifdef DYNAMIC_LOAD_LOADER
+        std::cout << "Static loader ptr:";
+        #else
+        std::cout << "Dynamic loader ptr:";
+        #endif
+
         if (driverEnvironmentQueried) {
             return ZE_RESULT_SUCCESS;
         }

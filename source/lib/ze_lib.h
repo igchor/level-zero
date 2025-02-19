@@ -30,10 +30,6 @@ namespace ze_lib
     class context_t
     {
     public:
-#ifdef DYNAMIC_LOAD_LOADER
-        HMODULE loader = nullptr;
-#endif
-
         context_t();
         ~context_t();
 
@@ -173,6 +169,10 @@ namespace ze_lib
         bool zesInuse = false;
         bool zeInuse = false;
         bool debugTraceEnabled = false;
+
+#ifdef DYNAMIC_LOAD_LOADER
+        HMODULE loader = nullptr;
+#endif
     };
 
     extern context_t *context;
