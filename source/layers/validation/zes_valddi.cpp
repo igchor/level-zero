@@ -13,13 +13,6 @@
 
 namespace validation_layer
 {
-    static ze_result_t logAndPropagateResult(const char* fname, ze_result_t result) {
-        if (result != ZE_RESULT_SUCCESS) {
-            context.logger->log_trace("Error (" + loader::to_string(result) + ") in " + std::string(fname));
-        }
-        return result;
-    }
-
     ///////////////////////////////////////////////////////////////////////////////
     /// @brief Intercept function for zesInit
     __zedlllocal ze_result_t ZE_APICALL
@@ -28,17 +21,15 @@ namespace validation_layer
                                                         ///< currently unused, must be 0 (default).
         )
     {
-        context.logger->log_trace("zesInit(flags)");
-
         auto pfnInit = context.zesDdiTable.Global.pfnInit;
 
         if( nullptr == pfnInit )
-            return logAndPropagateResult("zesInit", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesInitPrologue( flags );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesInit", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -49,17 +40,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesInitPrologue( flags );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesInit", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnInit( flags );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesInitEpilogue( flags ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesInit", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesInit", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -77,17 +68,15 @@ namespace validation_layer
                                                         ///< loader shall only retrieve that number of sysman drivers.
         )
     {
-        context.logger->log_trace("zesDriverGet(pCount, phDrivers)");
-
         auto pfnGet = context.zesDdiTable.Driver.pfnGet;
 
         if( nullptr == pfnGet )
-            return logAndPropagateResult("zesDriverGet", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetPrologue( pCount, phDrivers );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGet", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -98,14 +87,14 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDriverGetPrologue( pCount, phDrivers );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGet", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGet( pCount, phDrivers );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetEpilogue( pCount, phDrivers ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGet", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -118,7 +107,7 @@ namespace validation_layer
                 }
             }
         }
-        return logAndPropagateResult("zesDriverGet", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -138,17 +127,15 @@ namespace validation_layer
                                                         ///< then driver shall only retrieve that number of extension properties.
         )
     {
-        context.logger->log_trace("zesDriverGetExtensionProperties(hDriver, pCount, pExtensionProperties)");
-
         auto pfnGetExtensionProperties = context.zesDdiTable.Driver.pfnGetExtensionProperties;
 
         if( nullptr == pfnGetExtensionProperties )
-            return logAndPropagateResult("zesDriverGetExtensionProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetExtensionPropertiesPrologue( hDriver, pCount, pExtensionProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetExtensionProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -159,17 +146,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDriverGetExtensionPropertiesPrologue( hDriver, pCount, pExtensionProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetExtensionProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetExtensionProperties( hDriver, pCount, pExtensionProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetExtensionPropertiesEpilogue( hDriver, pCount, pExtensionProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetExtensionProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDriverGetExtensionProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -181,17 +168,15 @@ namespace validation_layer
         void** ppFunctionAddress                        ///< [out] pointer to function pointer
         )
     {
-        context.logger->log_trace("zesDriverGetExtensionFunctionAddress(hDriver, name, ppFunctionAddress)");
-
         auto pfnGetExtensionFunctionAddress = context.zesDdiTable.Driver.pfnGetExtensionFunctionAddress;
 
         if( nullptr == pfnGetExtensionFunctionAddress )
-            return logAndPropagateResult("zesDriverGetExtensionFunctionAddress", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetExtensionFunctionAddressPrologue( hDriver, name, ppFunctionAddress );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetExtensionFunctionAddress", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -202,17 +187,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDriverGetExtensionFunctionAddressPrologue( hDriver, name, ppFunctionAddress );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetExtensionFunctionAddress", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetExtensionFunctionAddress( hDriver, name, ppFunctionAddress );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetExtensionFunctionAddressEpilogue( hDriver, name, ppFunctionAddress ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetExtensionFunctionAddress", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDriverGetExtensionFunctionAddress", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -231,17 +216,15 @@ namespace validation_layer
                                                         ///< driver shall only retrieve that number of sysman devices.
         )
     {
-        context.logger->log_trace("zesDeviceGet(hDriver, pCount, phDevices)");
-
         auto pfnGet = context.zesDdiTable.Device.pfnGet;
 
         if( nullptr == pfnGet )
-            return logAndPropagateResult("zesDeviceGet", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetPrologue( hDriver, pCount, phDevices );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGet", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -252,14 +235,14 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetPrologue( hDriver, pCount, phDevices );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGet", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGet( hDriver, pCount, phDevices );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetEpilogue( hDriver, pCount, phDevices ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGet", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -272,7 +255,7 @@ namespace validation_layer
                 }
             }
         }
-        return logAndPropagateResult("zesDeviceGet", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -283,17 +266,15 @@ namespace validation_layer
         zes_device_properties_t* pProperties            ///< [in,out] Structure that will contain information about the device.
         )
     {
-        context.logger->log_trace("zesDeviceGetProperties(hDevice, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Device.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesDeviceGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetPropertiesPrologue( hDevice, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -304,17 +285,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetPropertiesPrologue( hDevice, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hDevice, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetPropertiesEpilogue( hDevice, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -325,17 +306,15 @@ namespace validation_layer
         zes_device_state_t* pState                      ///< [in,out] Structure that will contain information about the device.
         )
     {
-        context.logger->log_trace("zesDeviceGetState(hDevice, pState)");
-
         auto pfnGetState = context.zesDdiTable.Device.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesDeviceGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetStatePrologue( hDevice, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -346,17 +325,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetStatePrologue( hDevice, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hDevice, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetStateEpilogue( hDevice, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -368,17 +347,15 @@ namespace validation_layer
                                                         ///< device will be forcibly killed.
         )
     {
-        context.logger->log_trace("zesDeviceReset(hDevice, force)");
-
         auto pfnReset = context.zesDdiTable.Device.pfnReset;
 
         if( nullptr == pfnReset )
-            return logAndPropagateResult("zesDeviceReset", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceResetPrologue( hDevice, force );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceReset", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -389,17 +366,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceResetPrologue( hDevice, force );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceReset", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnReset( hDevice, force );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceResetEpilogue( hDevice, force ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceReset", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceReset", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -410,17 +387,15 @@ namespace validation_layer
         zes_reset_properties_t* pProperties             ///< [in] Device reset properties to apply
         )
     {
-        context.logger->log_trace("zesDeviceResetExt(hDevice, pProperties)");
-
         auto pfnResetExt = context.zesDdiTable.Device.pfnResetExt;
 
         if( nullptr == pfnResetExt )
-            return logAndPropagateResult("zesDeviceResetExt", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceResetExtPrologue( hDevice, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceResetExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -431,17 +406,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceResetExtPrologue( hDevice, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceResetExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnResetExt( hDevice, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceResetExtEpilogue( hDevice, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceResetExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceResetExt", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -461,17 +436,15 @@ namespace validation_layer
                                                         ///< number of processes. In this case, the return code will ::ZE_RESULT_ERROR_INVALID_SIZE.
         )
     {
-        context.logger->log_trace("zesDeviceProcessesGetState(hDevice, pCount, pProcesses)");
-
         auto pfnProcessesGetState = context.zesDdiTable.Device.pfnProcessesGetState;
 
         if( nullptr == pfnProcessesGetState )
-            return logAndPropagateResult("zesDeviceProcessesGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceProcessesGetStatePrologue( hDevice, pCount, pProcesses );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceProcessesGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -482,17 +455,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceProcessesGetStatePrologue( hDevice, pCount, pProcesses );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceProcessesGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnProcessesGetState( hDevice, pCount, pProcesses );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceProcessesGetStateEpilogue( hDevice, pCount, pProcesses ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceProcessesGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceProcessesGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -503,17 +476,15 @@ namespace validation_layer
         zes_pci_properties_t* pProperties               ///< [in,out] Will contain the PCI properties.
         )
     {
-        context.logger->log_trace("zesDevicePciGetProperties(hDevice, pProperties)");
-
         auto pfnPciGetProperties = context.zesDdiTable.Device.pfnPciGetProperties;
 
         if( nullptr == pfnPciGetProperties )
-            return logAndPropagateResult("zesDevicePciGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetPropertiesPrologue( hDevice, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -524,17 +495,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDevicePciGetPropertiesPrologue( hDevice, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnPciGetProperties( hDevice, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetPropertiesEpilogue( hDevice, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDevicePciGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -545,17 +516,15 @@ namespace validation_layer
         zes_pci_state_t* pState                         ///< [in,out] Will contain the PCI properties.
         )
     {
-        context.logger->log_trace("zesDevicePciGetState(hDevice, pState)");
-
         auto pfnPciGetState = context.zesDdiTable.Device.pfnPciGetState;
 
         if( nullptr == pfnPciGetState )
-            return logAndPropagateResult("zesDevicePciGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetStatePrologue( hDevice, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -566,17 +535,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDevicePciGetStatePrologue( hDevice, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnPciGetState( hDevice, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetStateEpilogue( hDevice, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDevicePciGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -595,17 +564,15 @@ namespace validation_layer
                                                         ///< driver shall only retrieve information about that number of PCI bars.
         )
     {
-        context.logger->log_trace("zesDevicePciGetBars(hDevice, pCount, pProperties)");
-
         auto pfnPciGetBars = context.zesDdiTable.Device.pfnPciGetBars;
 
         if( nullptr == pfnPciGetBars )
-            return logAndPropagateResult("zesDevicePciGetBars", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetBarsPrologue( hDevice, pCount, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetBars", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -616,17 +583,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDevicePciGetBarsPrologue( hDevice, pCount, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetBars", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnPciGetBars( hDevice, pCount, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetBarsEpilogue( hDevice, pCount, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetBars", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDevicePciGetBars", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -637,17 +604,15 @@ namespace validation_layer
         zes_pci_stats_t* pStats                         ///< [in,out] Will contain a snapshot of the latest stats.
         )
     {
-        context.logger->log_trace("zesDevicePciGetStats(hDevice, pStats)");
-
         auto pfnPciGetStats = context.zesDdiTable.Device.pfnPciGetStats;
 
         if( nullptr == pfnPciGetStats )
-            return logAndPropagateResult("zesDevicePciGetStats", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetStatsPrologue( hDevice, pStats );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetStats", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -658,17 +623,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDevicePciGetStatsPrologue( hDevice, pStats );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetStats", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnPciGetStats( hDevice, pStats );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDevicePciGetStatsEpilogue( hDevice, pStats ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDevicePciGetStats", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDevicePciGetStats", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -678,17 +643,15 @@ namespace validation_layer
         zes_device_handle_t hDevice                     ///< [in] Sysman handle of the device.
         )
     {
-        context.logger->log_trace("zesDeviceSetOverclockWaiver(hDevice)");
-
         auto pfnSetOverclockWaiver = context.zesDdiTable.Device.pfnSetOverclockWaiver;
 
         if( nullptr == pfnSetOverclockWaiver )
-            return logAndPropagateResult("zesDeviceSetOverclockWaiver", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceSetOverclockWaiverPrologue( hDevice );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceSetOverclockWaiver", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -699,17 +662,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceSetOverclockWaiverPrologue( hDevice );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceSetOverclockWaiver", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetOverclockWaiver( hDevice );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceSetOverclockWaiverEpilogue( hDevice ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceSetOverclockWaiver", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceSetOverclockWaiver", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -722,17 +685,15 @@ namespace validation_layer
                                                         ///< doesn't support overclocking.
         )
     {
-        context.logger->log_trace("zesDeviceGetOverclockDomains(hDevice, pOverclockDomains)");
-
         auto pfnGetOverclockDomains = context.zesDdiTable.Device.pfnGetOverclockDomains;
 
         if( nullptr == pfnGetOverclockDomains )
-            return logAndPropagateResult("zesDeviceGetOverclockDomains", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetOverclockDomainsPrologue( hDevice, pOverclockDomains );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetOverclockDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -743,17 +704,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetOverclockDomainsPrologue( hDevice, pOverclockDomains );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetOverclockDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetOverclockDomains( hDevice, pOverclockDomains );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetOverclockDomainsEpilogue( hDevice, pOverclockDomains ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetOverclockDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceGetOverclockDomains", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -767,17 +728,15 @@ namespace validation_layer
                                                         ///< ::zes_overclock_control_t).
         )
     {
-        context.logger->log_trace("zesDeviceGetOverclockControls(hDevice, domainType, pAvailableControls)");
-
         auto pfnGetOverclockControls = context.zesDdiTable.Device.pfnGetOverclockControls;
 
         if( nullptr == pfnGetOverclockControls )
-            return logAndPropagateResult("zesDeviceGetOverclockControls", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetOverclockControlsPrologue( hDevice, domainType, pAvailableControls );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetOverclockControls", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -788,17 +747,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetOverclockControlsPrologue( hDevice, domainType, pAvailableControls );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetOverclockControls", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetOverclockControls( hDevice, domainType, pAvailableControls );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetOverclockControlsEpilogue( hDevice, domainType, pAvailableControls ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetOverclockControls", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceGetOverclockControls", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -810,17 +769,15 @@ namespace validation_layer
                                                         ///< manufacturing state
         )
     {
-        context.logger->log_trace("zesDeviceResetOverclockSettings(hDevice, onShippedState)");
-
         auto pfnResetOverclockSettings = context.zesDdiTable.Device.pfnResetOverclockSettings;
 
         if( nullptr == pfnResetOverclockSettings )
-            return logAndPropagateResult("zesDeviceResetOverclockSettings", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceResetOverclockSettingsPrologue( hDevice, onShippedState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceResetOverclockSettings", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -831,17 +788,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceResetOverclockSettingsPrologue( hDevice, onShippedState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceResetOverclockSettings", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnResetOverclockSettings( hDevice, onShippedState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceResetOverclockSettingsEpilogue( hDevice, onShippedState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceResetOverclockSettings", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceResetOverclockSettings", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -857,17 +814,15 @@ namespace validation_layer
         ze_bool_t* pPendingReset                        ///< [out] Pending reset 0 =manufacturing state, 1= shipped state)..
         )
     {
-        context.logger->log_trace("zesDeviceReadOverclockState(hDevice, pOverclockMode, pWaiverSetting, pOverclockState, pPendingAction, pPendingReset)");
-
         auto pfnReadOverclockState = context.zesDdiTable.Device.pfnReadOverclockState;
 
         if( nullptr == pfnReadOverclockState )
-            return logAndPropagateResult("zesDeviceReadOverclockState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceReadOverclockStatePrologue( hDevice, pOverclockMode, pWaiverSetting, pOverclockState, pPendingAction, pPendingReset );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceReadOverclockState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -878,17 +833,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceReadOverclockStatePrologue( hDevice, pOverclockMode, pWaiverSetting, pOverclockState, pPendingAction, pPendingReset );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceReadOverclockState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnReadOverclockState( hDevice, pOverclockMode, pWaiverSetting, pOverclockState, pPendingAction, pPendingReset );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceReadOverclockStateEpilogue( hDevice, pOverclockMode, pWaiverSetting, pOverclockState, pPendingAction, pPendingReset ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceReadOverclockState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceReadOverclockState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -909,17 +864,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumOverclockDomains(hDevice, pCount, phDomainHandle)");
-
         auto pfnEnumOverclockDomains = context.zesDdiTable.Device.pfnEnumOverclockDomains;
 
         if( nullptr == pfnEnumOverclockDomains )
-            return logAndPropagateResult("zesDeviceEnumOverclockDomains", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumOverclockDomainsPrologue( hDevice, pCount, phDomainHandle );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumOverclockDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -930,17 +883,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumOverclockDomainsPrologue( hDevice, pCount, phDomainHandle );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumOverclockDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumOverclockDomains( hDevice, pCount, phDomainHandle );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumOverclockDomainsEpilogue( hDevice, pCount, phDomainHandle ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumOverclockDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumOverclockDomains", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -951,17 +904,15 @@ namespace validation_layer
         zes_overclock_properties_t* pDomainProperties   ///< [in,out] The overclock properties for the specified domain.
         )
     {
-        context.logger->log_trace("zesOverclockGetDomainProperties(hDomainHandle, pDomainProperties)");
-
         auto pfnGetDomainProperties = context.zesDdiTable.Overclock.pfnGetDomainProperties;
 
         if( nullptr == pfnGetDomainProperties )
-            return logAndPropagateResult("zesOverclockGetDomainProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetDomainPropertiesPrologue( hDomainHandle, pDomainProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -972,17 +923,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetDomainPropertiesPrologue( hDomainHandle, pDomainProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetDomainProperties( hDomainHandle, pDomainProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetDomainPropertiesEpilogue( hDomainHandle, pDomainProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetDomainProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -993,17 +944,15 @@ namespace validation_layer
         zes_vf_property_t* pVFProperties                ///< [in,out] The VF min,max,step for a specified domain.
         )
     {
-        context.logger->log_trace("zesOverclockGetDomainVFProperties(hDomainHandle, pVFProperties)");
-
         auto pfnGetDomainVFProperties = context.zesDdiTable.Overclock.pfnGetDomainVFProperties;
 
         if( nullptr == pfnGetDomainVFProperties )
-            return logAndPropagateResult("zesOverclockGetDomainVFProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetDomainVFPropertiesPrologue( hDomainHandle, pVFProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainVFProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1014,17 +963,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetDomainVFPropertiesPrologue( hDomainHandle, pVFProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainVFProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetDomainVFProperties( hDomainHandle, pVFProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetDomainVFPropertiesEpilogue( hDomainHandle, pVFProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainVFProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetDomainVFProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1036,17 +985,15 @@ namespace validation_layer
         zes_control_property_t* pControlProperties      ///< [in,out] overclock control values.
         )
     {
-        context.logger->log_trace("zesOverclockGetDomainControlProperties(hDomainHandle, DomainControl, pControlProperties)");
-
         auto pfnGetDomainControlProperties = context.zesDdiTable.Overclock.pfnGetDomainControlProperties;
 
         if( nullptr == pfnGetDomainControlProperties )
-            return logAndPropagateResult("zesOverclockGetDomainControlProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetDomainControlPropertiesPrologue( hDomainHandle, DomainControl, pControlProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainControlProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1057,17 +1004,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetDomainControlPropertiesPrologue( hDomainHandle, DomainControl, pControlProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainControlProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetDomainControlProperties( hDomainHandle, DomainControl, pControlProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetDomainControlPropertiesEpilogue( hDomainHandle, DomainControl, pControlProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetDomainControlProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetDomainControlProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1079,17 +1026,15 @@ namespace validation_layer
         double* pValue                                  ///< [in,out] Getting overclock control value for the specified control.
         )
     {
-        context.logger->log_trace("zesOverclockGetControlCurrentValue(hDomainHandle, DomainControl, pValue)");
-
         auto pfnGetControlCurrentValue = context.zesDdiTable.Overclock.pfnGetControlCurrentValue;
 
         if( nullptr == pfnGetControlCurrentValue )
-            return logAndPropagateResult("zesOverclockGetControlCurrentValue", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetControlCurrentValuePrologue( hDomainHandle, DomainControl, pValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlCurrentValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1100,17 +1045,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetControlCurrentValuePrologue( hDomainHandle, DomainControl, pValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlCurrentValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetControlCurrentValue( hDomainHandle, DomainControl, pValue );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetControlCurrentValueEpilogue( hDomainHandle, DomainControl, pValue ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlCurrentValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetControlCurrentValue", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1123,17 +1068,15 @@ namespace validation_layer
                                                         ///< format of the value depend on the control type.
         )
     {
-        context.logger->log_trace("zesOverclockGetControlPendingValue(hDomainHandle, DomainControl, pValue)");
-
         auto pfnGetControlPendingValue = context.zesDdiTable.Overclock.pfnGetControlPendingValue;
 
         if( nullptr == pfnGetControlPendingValue )
-            return logAndPropagateResult("zesOverclockGetControlPendingValue", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetControlPendingValuePrologue( hDomainHandle, DomainControl, pValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlPendingValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1144,17 +1087,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetControlPendingValuePrologue( hDomainHandle, DomainControl, pValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlPendingValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetControlPendingValue( hDomainHandle, DomainControl, pValue );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetControlPendingValueEpilogue( hDomainHandle, DomainControl, pValue ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlPendingValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetControlPendingValue", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1168,17 +1111,15 @@ namespace validation_layer
         zes_pending_action_t* pPendingAction            ///< [out] Pending overclock setting.
         )
     {
-        context.logger->log_trace("zesOverclockSetControlUserValue(hDomainHandle, DomainControl, pValue, pPendingAction)");
-
         auto pfnSetControlUserValue = context.zesDdiTable.Overclock.pfnSetControlUserValue;
 
         if( nullptr == pfnSetControlUserValue )
-            return logAndPropagateResult("zesOverclockSetControlUserValue", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockSetControlUserValuePrologue( hDomainHandle, DomainControl, pValue, pPendingAction );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockSetControlUserValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1189,17 +1130,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockSetControlUserValuePrologue( hDomainHandle, DomainControl, pValue, pPendingAction );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockSetControlUserValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetControlUserValue( hDomainHandle, DomainControl, pValue, pPendingAction );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockSetControlUserValueEpilogue( hDomainHandle, DomainControl, pValue, pPendingAction ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockSetControlUserValue", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockSetControlUserValue", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1212,17 +1153,15 @@ namespace validation_layer
         zes_pending_action_t* pPendingAction            ///< [out] Pending overclock setting.
         )
     {
-        context.logger->log_trace("zesOverclockGetControlState(hDomainHandle, DomainControl, pControlState, pPendingAction)");
-
         auto pfnGetControlState = context.zesDdiTable.Overclock.pfnGetControlState;
 
         if( nullptr == pfnGetControlState )
-            return logAndPropagateResult("zesOverclockGetControlState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetControlStatePrologue( hDomainHandle, DomainControl, pControlState, pPendingAction );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1233,17 +1172,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetControlStatePrologue( hDomainHandle, DomainControl, pControlState, pPendingAction );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetControlState( hDomainHandle, DomainControl, pControlState, pPendingAction );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetControlStateEpilogue( hDomainHandle, DomainControl, pControlState, pPendingAction ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetControlState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetControlState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1258,17 +1197,15 @@ namespace validation_layer
                                                         ///< units from the custom V-F curve at the specified zero-based index 
         )
     {
-        context.logger->log_trace("zesOverclockGetVFPointValues(hDomainHandle, VFType, VFArrayType, PointIndex, PointValue)");
-
         auto pfnGetVFPointValues = context.zesDdiTable.Overclock.pfnGetVFPointValues;
 
         if( nullptr == pfnGetVFPointValues )
-            return logAndPropagateResult("zesOverclockGetVFPointValues", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetVFPointValuesPrologue( hDomainHandle, VFType, VFArrayType, PointIndex, PointValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetVFPointValues", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1279,17 +1216,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockGetVFPointValuesPrologue( hDomainHandle, VFType, VFArrayType, PointIndex, PointValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetVFPointValues", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFPointValues( hDomainHandle, VFType, VFArrayType, PointIndex, PointValue );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockGetVFPointValuesEpilogue( hDomainHandle, VFType, VFArrayType, PointIndex, PointValue ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockGetVFPointValues", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockGetVFPointValues", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1303,17 +1240,15 @@ namespace validation_layer
                                                         ///< custom V-F curve at the specified zero-based index 
         )
     {
-        context.logger->log_trace("zesOverclockSetVFPointValues(hDomainHandle, VFType, PointIndex, PointValue)");
-
         auto pfnSetVFPointValues = context.zesDdiTable.Overclock.pfnSetVFPointValues;
 
         if( nullptr == pfnSetVFPointValues )
-            return logAndPropagateResult("zesOverclockSetVFPointValues", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockSetVFPointValuesPrologue( hDomainHandle, VFType, PointIndex, PointValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockSetVFPointValues", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1324,17 +1259,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesOverclockSetVFPointValuesPrologue( hDomainHandle, VFType, PointIndex, PointValue );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockSetVFPointValues", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetVFPointValues( hDomainHandle, VFType, PointIndex, PointValue );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesOverclockSetVFPointValuesEpilogue( hDomainHandle, VFType, PointIndex, PointValue ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesOverclockSetVFPointValues", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesOverclockSetVFPointValues", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1355,17 +1290,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumDiagnosticTestSuites(hDevice, pCount, phDiagnostics)");
-
         auto pfnEnumDiagnosticTestSuites = context.zesDdiTable.Device.pfnEnumDiagnosticTestSuites;
 
         if( nullptr == pfnEnumDiagnosticTestSuites )
-            return logAndPropagateResult("zesDeviceEnumDiagnosticTestSuites", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumDiagnosticTestSuitesPrologue( hDevice, pCount, phDiagnostics );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumDiagnosticTestSuites", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1376,17 +1309,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumDiagnosticTestSuitesPrologue( hDevice, pCount, phDiagnostics );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumDiagnosticTestSuites", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumDiagnosticTestSuites( hDevice, pCount, phDiagnostics );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumDiagnosticTestSuitesEpilogue( hDevice, pCount, phDiagnostics ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumDiagnosticTestSuites", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumDiagnosticTestSuites", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1398,17 +1331,15 @@ namespace validation_layer
                                                         ///< suite
         )
     {
-        context.logger->log_trace("zesDiagnosticsGetProperties(hDiagnostics, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Diagnostics.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesDiagnosticsGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDiagnosticsGetPropertiesPrologue( hDiagnostics, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1419,17 +1350,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDiagnosticsGetPropertiesPrologue( hDiagnostics, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hDiagnostics, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDiagnosticsGetPropertiesEpilogue( hDiagnostics, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDiagnosticsGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1448,17 +1379,15 @@ namespace validation_layer
                                                         ///< driver shall only retrieve that number of tests.
         )
     {
-        context.logger->log_trace("zesDiagnosticsGetTests(hDiagnostics, pCount, pTests)");
-
         auto pfnGetTests = context.zesDdiTable.Diagnostics.pfnGetTests;
 
         if( nullptr == pfnGetTests )
-            return logAndPropagateResult("zesDiagnosticsGetTests", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDiagnosticsGetTestsPrologue( hDiagnostics, pCount, pTests );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsGetTests", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1469,17 +1398,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDiagnosticsGetTestsPrologue( hDiagnostics, pCount, pTests );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsGetTests", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetTests( hDiagnostics, pCount, pTests );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDiagnosticsGetTestsEpilogue( hDiagnostics, pCount, pTests ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsGetTests", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDiagnosticsGetTests", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1494,17 +1423,15 @@ namespace validation_layer
         zes_diag_result_t* pResult                      ///< [in,out] The result of the diagnostics
         )
     {
-        context.logger->log_trace("zesDiagnosticsRunTests(hDiagnostics, startIndex, endIndex, pResult)");
-
         auto pfnRunTests = context.zesDdiTable.Diagnostics.pfnRunTests;
 
         if( nullptr == pfnRunTests )
-            return logAndPropagateResult("zesDiagnosticsRunTests", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDiagnosticsRunTestsPrologue( hDiagnostics, startIndex, endIndex, pResult );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsRunTests", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1515,17 +1442,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDiagnosticsRunTestsPrologue( hDiagnostics, startIndex, endIndex, pResult );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsRunTests", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnRunTests( hDiagnostics, startIndex, endIndex, pResult );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDiagnosticsRunTestsEpilogue( hDiagnostics, startIndex, endIndex, pResult ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDiagnosticsRunTests", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDiagnosticsRunTests", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1536,17 +1463,15 @@ namespace validation_layer
         ze_bool_t* pAvailable                           ///< [out] ECC functionality is available (true)/unavailable (false).
         )
     {
-        context.logger->log_trace("zesDeviceEccAvailable(hDevice, pAvailable)");
-
         auto pfnEccAvailable = context.zesDdiTable.Device.pfnEccAvailable;
 
         if( nullptr == pfnEccAvailable )
-            return logAndPropagateResult("zesDeviceEccAvailable", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEccAvailablePrologue( hDevice, pAvailable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEccAvailable", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1557,17 +1482,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEccAvailablePrologue( hDevice, pAvailable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEccAvailable", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEccAvailable( hDevice, pAvailable );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEccAvailableEpilogue( hDevice, pAvailable ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEccAvailable", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEccAvailable", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1578,17 +1503,15 @@ namespace validation_layer
         ze_bool_t* pConfigurable                        ///< [out] ECC can be enabled/disabled (true)/enabled/disabled (false).
         )
     {
-        context.logger->log_trace("zesDeviceEccConfigurable(hDevice, pConfigurable)");
-
         auto pfnEccConfigurable = context.zesDdiTable.Device.pfnEccConfigurable;
 
         if( nullptr == pfnEccConfigurable )
-            return logAndPropagateResult("zesDeviceEccConfigurable", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEccConfigurablePrologue( hDevice, pConfigurable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEccConfigurable", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1599,17 +1522,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEccConfigurablePrologue( hDevice, pConfigurable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEccConfigurable", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEccConfigurable( hDevice, pConfigurable );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEccConfigurableEpilogue( hDevice, pConfigurable ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEccConfigurable", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEccConfigurable", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1620,17 +1543,15 @@ namespace validation_layer
         zes_device_ecc_properties_t* pState             ///< [out] ECC state, pending state, and pending action for state change.
         )
     {
-        context.logger->log_trace("zesDeviceGetEccState(hDevice, pState)");
-
         auto pfnGetEccState = context.zesDdiTable.Device.pfnGetEccState;
 
         if( nullptr == pfnGetEccState )
-            return logAndPropagateResult("zesDeviceGetEccState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetEccStatePrologue( hDevice, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetEccState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1641,17 +1562,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetEccStatePrologue( hDevice, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetEccState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetEccState( hDevice, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetEccStateEpilogue( hDevice, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetEccState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceGetEccState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1663,17 +1584,15 @@ namespace validation_layer
         zes_device_ecc_properties_t* pState             ///< [out] ECC state, pending state, and pending action for state change.
         )
     {
-        context.logger->log_trace("zesDeviceSetEccState(hDevice, newState, pState)");
-
         auto pfnSetEccState = context.zesDdiTable.Device.pfnSetEccState;
 
         if( nullptr == pfnSetEccState )
-            return logAndPropagateResult("zesDeviceSetEccState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceSetEccStatePrologue( hDevice, newState, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceSetEccState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1684,17 +1603,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceSetEccStatePrologue( hDevice, newState, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceSetEccState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetEccState( hDevice, newState, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceSetEccStateEpilogue( hDevice, newState, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceSetEccState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceSetEccState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1715,17 +1634,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumEngineGroups(hDevice, pCount, phEngine)");
-
         auto pfnEnumEngineGroups = context.zesDdiTable.Device.pfnEnumEngineGroups;
 
         if( nullptr == pfnEnumEngineGroups )
-            return logAndPropagateResult("zesDeviceEnumEngineGroups", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumEngineGroupsPrologue( hDevice, pCount, phEngine );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumEngineGroups", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1736,17 +1653,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumEngineGroupsPrologue( hDevice, pCount, phEngine );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumEngineGroups", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumEngineGroups( hDevice, pCount, phEngine );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumEngineGroupsEpilogue( hDevice, pCount, phEngine ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumEngineGroups", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumEngineGroups", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1757,17 +1674,15 @@ namespace validation_layer
         zes_engine_properties_t* pProperties            ///< [in,out] The properties for the specified engine group.
         )
     {
-        context.logger->log_trace("zesEngineGetProperties(hEngine, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Engine.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesEngineGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesEngineGetPropertiesPrologue( hEngine, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1778,17 +1693,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesEngineGetPropertiesPrologue( hEngine, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hEngine, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesEngineGetPropertiesEpilogue( hEngine, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesEngineGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1800,17 +1715,15 @@ namespace validation_layer
                                                         ///< counters.
         )
     {
-        context.logger->log_trace("zesEngineGetActivity(hEngine, pStats)");
-
         auto pfnGetActivity = context.zesDdiTable.Engine.pfnGetActivity;
 
         if( nullptr == pfnGetActivity )
-            return logAndPropagateResult("zesEngineGetActivity", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesEngineGetActivityPrologue( hEngine, pStats );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetActivity", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1821,17 +1734,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesEngineGetActivityPrologue( hEngine, pStats );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetActivity", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetActivity( hEngine, pStats );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesEngineGetActivityEpilogue( hEngine, pStats ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetActivity", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesEngineGetActivity", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1842,17 +1755,15 @@ namespace validation_layer
         zes_event_type_flags_t events                   ///< [in] List of events to listen to.
         )
     {
-        context.logger->log_trace("zesDeviceEventRegister(hDevice, events)");
-
         auto pfnEventRegister = context.zesDdiTable.Device.pfnEventRegister;
 
         if( nullptr == pfnEventRegister )
-            return logAndPropagateResult("zesDeviceEventRegister", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEventRegisterPrologue( hDevice, events );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEventRegister", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1863,17 +1774,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEventRegisterPrologue( hDevice, events );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEventRegister", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEventRegister( hDevice, events );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEventRegisterEpilogue( hDevice, events ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEventRegister", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEventRegister", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1900,17 +1811,15 @@ namespace validation_layer
                                                         ///< entry will be zero.
         )
     {
-        context.logger->log_trace("zesDriverEventListen(hDriver, timeout, count, phDevicesLocal, pNumDeviceEvents, pEvents)");
-
         auto pfnEventListen = context.zesDdiTable.Driver.pfnEventListen;
 
         if( nullptr == pfnEventListen )
-            return logAndPropagateResult("zesDriverEventListen", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverEventListenPrologue( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverEventListen", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1921,17 +1830,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDriverEventListenPrologue( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverEventListen", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEventListen( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverEventListenEpilogue( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverEventListen", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDriverEventListen", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -1958,17 +1867,15 @@ namespace validation_layer
                                                         ///< entry will be zero.
         )
     {
-        context.logger->log_trace("zesDriverEventListenEx(hDriver, timeout, count, phDevicesLocal, pNumDeviceEvents, pEvents)");
-
         auto pfnEventListenEx = context.zesDdiTable.Driver.pfnEventListenEx;
 
         if( nullptr == pfnEventListenEx )
-            return logAndPropagateResult("zesDriverEventListenEx", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverEventListenExPrologue( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverEventListenEx", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -1979,17 +1886,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDriverEventListenExPrologue( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverEventListenEx", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEventListenEx( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverEventListenExEpilogue( hDriver, timeout, count, phDevices, pNumDeviceEvents, pEvents ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverEventListenEx", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDriverEventListenEx", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2010,17 +1917,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumFabricPorts(hDevice, pCount, phPort)");
-
         auto pfnEnumFabricPorts = context.zesDdiTable.Device.pfnEnumFabricPorts;
 
         if( nullptr == pfnEnumFabricPorts )
-            return logAndPropagateResult("zesDeviceEnumFabricPorts", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFabricPortsPrologue( hDevice, pCount, phPort );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFabricPorts", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2031,17 +1936,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumFabricPortsPrologue( hDevice, pCount, phPort );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFabricPorts", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumFabricPorts( hDevice, pCount, phPort );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFabricPortsEpilogue( hDevice, pCount, phPort ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFabricPorts", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumFabricPorts", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2052,17 +1957,15 @@ namespace validation_layer
         zes_fabric_port_properties_t* pProperties       ///< [in,out] Will contain properties of the Fabric Port.
         )
     {
-        context.logger->log_trace("zesFabricPortGetProperties(hPort, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.FabricPort.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesFabricPortGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetPropertiesPrologue( hPort, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2073,17 +1976,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetPropertiesPrologue( hPort, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hPort, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetPropertiesEpilogue( hPort, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2095,17 +1998,15 @@ namespace validation_layer
                                                         ///< port.
         )
     {
-        context.logger->log_trace("zesFabricPortGetLinkType(hPort, pLinkType)");
-
         auto pfnGetLinkType = context.zesDdiTable.FabricPort.pfnGetLinkType;
 
         if( nullptr == pfnGetLinkType )
-            return logAndPropagateResult("zesFabricPortGetLinkType", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetLinkTypePrologue( hPort, pLinkType );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetLinkType", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2116,17 +2017,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetLinkTypePrologue( hPort, pLinkType );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetLinkType", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetLinkType( hPort, pLinkType );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetLinkTypeEpilogue( hPort, pLinkType ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetLinkType", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetLinkType", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2137,17 +2038,15 @@ namespace validation_layer
         zes_fabric_port_config_t* pConfig               ///< [in,out] Will contain configuration of the Fabric Port.
         )
     {
-        context.logger->log_trace("zesFabricPortGetConfig(hPort, pConfig)");
-
         auto pfnGetConfig = context.zesDdiTable.FabricPort.pfnGetConfig;
 
         if( nullptr == pfnGetConfig )
-            return logAndPropagateResult("zesFabricPortGetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetConfigPrologue( hPort, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2158,17 +2057,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetConfigPrologue( hPort, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetConfig( hPort, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetConfigEpilogue( hPort, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2179,17 +2078,15 @@ namespace validation_layer
         const zes_fabric_port_config_t* pConfig         ///< [in] Contains new configuration of the Fabric Port.
         )
     {
-        context.logger->log_trace("zesFabricPortSetConfig(hPort, pConfig)");
-
         auto pfnSetConfig = context.zesDdiTable.FabricPort.pfnSetConfig;
 
         if( nullptr == pfnSetConfig )
-            return logAndPropagateResult("zesFabricPortSetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortSetConfigPrologue( hPort, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2200,17 +2097,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortSetConfigPrologue( hPort, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetConfig( hPort, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortSetConfigEpilogue( hPort, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortSetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2221,17 +2118,15 @@ namespace validation_layer
         zes_fabric_port_state_t* pState                 ///< [in,out] Will contain the current state of the Fabric Port
         )
     {
-        context.logger->log_trace("zesFabricPortGetState(hPort, pState)");
-
         auto pfnGetState = context.zesDdiTable.FabricPort.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesFabricPortGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetStatePrologue( hPort, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2242,17 +2137,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetStatePrologue( hPort, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hPort, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetStateEpilogue( hPort, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2263,17 +2158,15 @@ namespace validation_layer
         zes_fabric_port_throughput_t* pThroughput       ///< [in,out] Will contain the Fabric port throughput counters.
         )
     {
-        context.logger->log_trace("zesFabricPortGetThroughput(hPort, pThroughput)");
-
         auto pfnGetThroughput = context.zesDdiTable.FabricPort.pfnGetThroughput;
 
         if( nullptr == pfnGetThroughput )
-            return logAndPropagateResult("zesFabricPortGetThroughput", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetThroughputPrologue( hPort, pThroughput );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetThroughput", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2284,17 +2177,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetThroughputPrologue( hPort, pThroughput );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetThroughput", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetThroughput( hPort, pThroughput );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetThroughputEpilogue( hPort, pThroughput ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetThroughput", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetThroughput", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2305,17 +2198,15 @@ namespace validation_layer
         zes_fabric_port_error_counters_t* pErrors       ///< [in,out] Will contain the Fabric port Error counters.
         )
     {
-        context.logger->log_trace("zesFabricPortGetFabricErrorCounters(hPort, pErrors)");
-
         auto pfnGetFabricErrorCounters = context.zesDdiTable.FabricPort.pfnGetFabricErrorCounters;
 
         if( nullptr == pfnGetFabricErrorCounters )
-            return logAndPropagateResult("zesFabricPortGetFabricErrorCounters", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetFabricErrorCountersPrologue( hPort, pErrors );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetFabricErrorCounters", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2326,17 +2217,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetFabricErrorCountersPrologue( hPort, pErrors );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetFabricErrorCounters", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetFabricErrorCounters( hPort, pErrors );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetFabricErrorCountersEpilogue( hPort, pErrors ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetFabricErrorCounters", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetFabricErrorCounters", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2351,17 +2242,15 @@ namespace validation_layer
                                                         ///< from multiple ports of type ::zes_fabric_port_throughput_t.
         )
     {
-        context.logger->log_trace("zesFabricPortGetMultiPortThroughput(hDevice, numPorts, phPortLocal, pThroughput)");
-
         auto pfnGetMultiPortThroughput = context.zesDdiTable.FabricPort.pfnGetMultiPortThroughput;
 
         if( nullptr == pfnGetMultiPortThroughput )
-            return logAndPropagateResult("zesFabricPortGetMultiPortThroughput", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetMultiPortThroughputPrologue( hDevice, numPorts, phPort, pThroughput );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetMultiPortThroughput", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2372,17 +2261,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFabricPortGetMultiPortThroughputPrologue( hDevice, numPorts, phPort, pThroughput );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetMultiPortThroughput", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetMultiPortThroughput( hDevice, numPorts, phPort, pThroughput );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFabricPortGetMultiPortThroughputEpilogue( hDevice, numPorts, phPort, pThroughput ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFabricPortGetMultiPortThroughput", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFabricPortGetMultiPortThroughput", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2403,17 +2292,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumFans(hDevice, pCount, phFan)");
-
         auto pfnEnumFans = context.zesDdiTable.Device.pfnEnumFans;
 
         if( nullptr == pfnEnumFans )
-            return logAndPropagateResult("zesDeviceEnumFans", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFansPrologue( hDevice, pCount, phFan );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFans", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2424,17 +2311,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumFansPrologue( hDevice, pCount, phFan );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFans", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumFans( hDevice, pCount, phFan );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFansEpilogue( hDevice, pCount, phFan ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFans", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumFans", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2445,17 +2332,15 @@ namespace validation_layer
         zes_fan_properties_t* pProperties               ///< [in,out] Will contain the properties of the fan.
         )
     {
-        context.logger->log_trace("zesFanGetProperties(hFan, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Fan.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesFanGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanGetPropertiesPrologue( hFan, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2466,17 +2351,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFanGetPropertiesPrologue( hFan, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hFan, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanGetPropertiesEpilogue( hFan, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFanGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2487,17 +2372,15 @@ namespace validation_layer
         zes_fan_config_t* pConfig                       ///< [in,out] Will contain the current configuration of the fan.
         )
     {
-        context.logger->log_trace("zesFanGetConfig(hFan, pConfig)");
-
         auto pfnGetConfig = context.zesDdiTable.Fan.pfnGetConfig;
 
         if( nullptr == pfnGetConfig )
-            return logAndPropagateResult("zesFanGetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanGetConfigPrologue( hFan, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2508,17 +2391,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFanGetConfigPrologue( hFan, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetConfig( hFan, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanGetConfigEpilogue( hFan, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFanGetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2528,17 +2411,15 @@ namespace validation_layer
         zes_fan_handle_t hFan                           ///< [in] Handle for the component.
         )
     {
-        context.logger->log_trace("zesFanSetDefaultMode(hFan)");
-
         auto pfnSetDefaultMode = context.zesDdiTable.Fan.pfnSetDefaultMode;
 
         if( nullptr == pfnSetDefaultMode )
-            return logAndPropagateResult("zesFanSetDefaultMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanSetDefaultModePrologue( hFan );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetDefaultMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2549,17 +2430,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFanSetDefaultModePrologue( hFan );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetDefaultMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetDefaultMode( hFan );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanSetDefaultModeEpilogue( hFan ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetDefaultMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFanSetDefaultMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2570,17 +2451,15 @@ namespace validation_layer
         const zes_fan_speed_t* speed                    ///< [in] The fixed fan speed setting
         )
     {
-        context.logger->log_trace("zesFanSetFixedSpeedMode(hFan, speed)");
-
         auto pfnSetFixedSpeedMode = context.zesDdiTable.Fan.pfnSetFixedSpeedMode;
 
         if( nullptr == pfnSetFixedSpeedMode )
-            return logAndPropagateResult("zesFanSetFixedSpeedMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanSetFixedSpeedModePrologue( hFan, speed );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetFixedSpeedMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2591,17 +2470,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFanSetFixedSpeedModePrologue( hFan, speed );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetFixedSpeedMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetFixedSpeedMode( hFan, speed );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanSetFixedSpeedModeEpilogue( hFan, speed ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetFixedSpeedMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFanSetFixedSpeedMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2612,17 +2491,15 @@ namespace validation_layer
         const zes_fan_speed_table_t* speedTable         ///< [in] A table containing temperature/speed pairs.
         )
     {
-        context.logger->log_trace("zesFanSetSpeedTableMode(hFan, speedTable)");
-
         auto pfnSetSpeedTableMode = context.zesDdiTable.Fan.pfnSetSpeedTableMode;
 
         if( nullptr == pfnSetSpeedTableMode )
-            return logAndPropagateResult("zesFanSetSpeedTableMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanSetSpeedTableModePrologue( hFan, speedTable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetSpeedTableMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2633,17 +2510,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFanSetSpeedTableModePrologue( hFan, speedTable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetSpeedTableMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetSpeedTableMode( hFan, speedTable );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanSetSpeedTableModeEpilogue( hFan, speedTable ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanSetSpeedTableMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFanSetSpeedTableMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2657,17 +2534,15 @@ namespace validation_layer
                                                         ///< measured.
         )
     {
-        context.logger->log_trace("zesFanGetState(hFan, units, pSpeed)");
-
         auto pfnGetState = context.zesDdiTable.Fan.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesFanGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanGetStatePrologue( hFan, units, pSpeed );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2678,17 +2553,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFanGetStatePrologue( hFan, units, pSpeed );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hFan, units, pSpeed );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFanGetStateEpilogue( hFan, units, pSpeed ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFanGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFanGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2709,17 +2584,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumFirmwares(hDevice, pCount, phFirmware)");
-
         auto pfnEnumFirmwares = context.zesDdiTable.Device.pfnEnumFirmwares;
 
         if( nullptr == pfnEnumFirmwares )
-            return logAndPropagateResult("zesDeviceEnumFirmwares", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFirmwaresPrologue( hDevice, pCount, phFirmware );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFirmwares", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2730,17 +2603,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumFirmwaresPrologue( hDevice, pCount, phFirmware );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFirmwares", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumFirmwares( hDevice, pCount, phFirmware );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFirmwaresEpilogue( hDevice, pCount, phFirmware ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFirmwares", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumFirmwares", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2752,17 +2625,15 @@ namespace validation_layer
                                                         ///< firmware
         )
     {
-        context.logger->log_trace("zesFirmwareGetProperties(hFirmware, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Firmware.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesFirmwareGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetPropertiesPrologue( hFirmware, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2773,17 +2644,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFirmwareGetPropertiesPrologue( hFirmware, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hFirmware, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetPropertiesEpilogue( hFirmware, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFirmwareGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2795,17 +2666,15 @@ namespace validation_layer
         uint32_t size                                   ///< [in] Size of the flash image.
         )
     {
-        context.logger->log_trace("zesFirmwareFlash(hFirmware, pImage, size)");
-
         auto pfnFlash = context.zesDdiTable.Firmware.pfnFlash;
 
         if( nullptr == pfnFlash )
-            return logAndPropagateResult("zesFirmwareFlash", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareFlashPrologue( hFirmware, pImage, size );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareFlash", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2816,17 +2685,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFirmwareFlashPrologue( hFirmware, pImage, size );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareFlash", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnFlash( hFirmware, pImage, size );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareFlashEpilogue( hFirmware, pImage, size ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareFlash", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFirmwareFlash", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2837,17 +2706,15 @@ namespace validation_layer
         uint32_t* pCompletionPercent                    ///< [in,out] Pointer to the Completion Percentage of Firmware Update
         )
     {
-        context.logger->log_trace("zesFirmwareGetFlashProgress(hFirmware, pCompletionPercent)");
-
         auto pfnGetFlashProgress = context.zesDdiTable.Firmware.pfnGetFlashProgress;
 
         if( nullptr == pfnGetFlashProgress )
-            return logAndPropagateResult("zesFirmwareGetFlashProgress", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetFlashProgressPrologue( hFirmware, pCompletionPercent );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetFlashProgress", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2858,17 +2725,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFirmwareGetFlashProgressPrologue( hFirmware, pCompletionPercent );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetFlashProgress", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetFlashProgress( hFirmware, pCompletionPercent );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetFlashProgressEpilogue( hFirmware, pCompletionPercent ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetFlashProgress", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFirmwareGetFlashProgress", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2880,17 +2747,15 @@ namespace validation_layer
         char* pFirmwareLog                              ///< [in,out][optional] pointer to null-terminated string of the log.
         )
     {
-        context.logger->log_trace("zesFirmwareGetConsoleLogs(hFirmware, pSize, pFirmwareLog)");
-
         auto pfnGetConsoleLogs = context.zesDdiTable.Firmware.pfnGetConsoleLogs;
 
         if( nullptr == pfnGetConsoleLogs )
-            return logAndPropagateResult("zesFirmwareGetConsoleLogs", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetConsoleLogsPrologue( hFirmware, pSize, pFirmwareLog );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetConsoleLogs", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2901,17 +2766,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFirmwareGetConsoleLogsPrologue( hFirmware, pSize, pFirmwareLog );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetConsoleLogs", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetConsoleLogs( hFirmware, pSize, pFirmwareLog );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetConsoleLogsEpilogue( hFirmware, pSize, pFirmwareLog ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetConsoleLogs", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFirmwareGetConsoleLogs", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2932,17 +2797,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumFrequencyDomains(hDevice, pCount, phFrequency)");
-
         auto pfnEnumFrequencyDomains = context.zesDdiTable.Device.pfnEnumFrequencyDomains;
 
         if( nullptr == pfnEnumFrequencyDomains )
-            return logAndPropagateResult("zesDeviceEnumFrequencyDomains", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFrequencyDomainsPrologue( hDevice, pCount, phFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFrequencyDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2953,17 +2816,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumFrequencyDomainsPrologue( hDevice, pCount, phFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFrequencyDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumFrequencyDomains( hDevice, pCount, phFrequency );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumFrequencyDomainsEpilogue( hDevice, pCount, phFrequency ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumFrequencyDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumFrequencyDomains", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -2974,17 +2837,15 @@ namespace validation_layer
         zes_freq_properties_t* pProperties              ///< [in,out] The frequency properties for the specified domain.
         )
     {
-        context.logger->log_trace("zesFrequencyGetProperties(hFrequency, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Frequency.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesFrequencyGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetPropertiesPrologue( hFrequency, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -2995,17 +2856,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyGetPropertiesPrologue( hFrequency, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hFrequency, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetPropertiesEpilogue( hFrequency, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3024,17 +2885,15 @@ namespace validation_layer
                                                         ///< then the driver shall only retrieve that number of frequencies.
         )
     {
-        context.logger->log_trace("zesFrequencyGetAvailableClocks(hFrequency, pCount, phFrequency)");
-
         auto pfnGetAvailableClocks = context.zesDdiTable.Frequency.pfnGetAvailableClocks;
 
         if( nullptr == pfnGetAvailableClocks )
-            return logAndPropagateResult("zesFrequencyGetAvailableClocks", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetAvailableClocksPrologue( hFrequency, pCount, phFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetAvailableClocks", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3045,17 +2904,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyGetAvailableClocksPrologue( hFrequency, pCount, phFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetAvailableClocks", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetAvailableClocks( hFrequency, pCount, phFrequency );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetAvailableClocksEpilogue( hFrequency, pCount, phFrequency ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetAvailableClocks", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyGetAvailableClocks", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3067,17 +2926,15 @@ namespace validation_layer
                                                         ///< specified domain.
         )
     {
-        context.logger->log_trace("zesFrequencyGetRange(hFrequency, pLimits)");
-
         auto pfnGetRange = context.zesDdiTable.Frequency.pfnGetRange;
 
         if( nullptr == pfnGetRange )
-            return logAndPropagateResult("zesFrequencyGetRange", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetRangePrologue( hFrequency, pLimits );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetRange", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3088,17 +2945,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyGetRangePrologue( hFrequency, pLimits );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetRange", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetRange( hFrequency, pLimits );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetRangeEpilogue( hFrequency, pLimits ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetRange", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyGetRange", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3110,17 +2967,15 @@ namespace validation_layer
                                                         ///< specified domain.
         )
     {
-        context.logger->log_trace("zesFrequencySetRange(hFrequency, pLimits)");
-
         auto pfnSetRange = context.zesDdiTable.Frequency.pfnSetRange;
 
         if( nullptr == pfnSetRange )
-            return logAndPropagateResult("zesFrequencySetRange", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencySetRangePrologue( hFrequency, pLimits );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencySetRange", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3131,17 +2986,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencySetRangePrologue( hFrequency, pLimits );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencySetRange", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetRange( hFrequency, pLimits );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencySetRangeEpilogue( hFrequency, pLimits ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencySetRange", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencySetRange", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3152,17 +3007,15 @@ namespace validation_layer
         zes_freq_state_t* pState                        ///< [in,out] Frequency state for the specified domain.
         )
     {
-        context.logger->log_trace("zesFrequencyGetState(hFrequency, pState)");
-
         auto pfnGetState = context.zesDdiTable.Frequency.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesFrequencyGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetStatePrologue( hFrequency, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3173,17 +3026,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyGetStatePrologue( hFrequency, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hFrequency, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetStateEpilogue( hFrequency, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3195,17 +3048,15 @@ namespace validation_layer
                                                         ///< specified domain.
         )
     {
-        context.logger->log_trace("zesFrequencyGetThrottleTime(hFrequency, pThrottleTime)");
-
         auto pfnGetThrottleTime = context.zesDdiTable.Frequency.pfnGetThrottleTime;
 
         if( nullptr == pfnGetThrottleTime )
-            return logAndPropagateResult("zesFrequencyGetThrottleTime", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetThrottleTimePrologue( hFrequency, pThrottleTime );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetThrottleTime", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3216,17 +3067,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyGetThrottleTimePrologue( hFrequency, pThrottleTime );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetThrottleTime", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetThrottleTime( hFrequency, pThrottleTime );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyGetThrottleTimeEpilogue( hFrequency, pThrottleTime ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyGetThrottleTime", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyGetThrottleTime", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3237,17 +3088,15 @@ namespace validation_layer
         zes_oc_capabilities_t* pOcCapabilities          ///< [in,out] Pointer to the capabilities structure.
         )
     {
-        context.logger->log_trace("zesFrequencyOcGetCapabilities(hFrequency, pOcCapabilities)");
-
         auto pfnOcGetCapabilities = context.zesDdiTable.Frequency.pfnOcGetCapabilities;
 
         if( nullptr == pfnOcGetCapabilities )
-            return logAndPropagateResult("zesFrequencyOcGetCapabilities", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetCapabilitiesPrologue( hFrequency, pOcCapabilities );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetCapabilities", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3258,17 +3107,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcGetCapabilitiesPrologue( hFrequency, pOcCapabilities );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetCapabilities", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcGetCapabilities( hFrequency, pOcCapabilities );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetCapabilitiesEpilogue( hFrequency, pOcCapabilities ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetCapabilities", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcGetCapabilities", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3282,17 +3131,15 @@ namespace validation_layer
                                                         ///< ::zes_oc_capabilities_t.
         )
     {
-        context.logger->log_trace("zesFrequencyOcGetFrequencyTarget(hFrequency, pCurrentOcFrequency)");
-
         auto pfnOcGetFrequencyTarget = context.zesDdiTable.Frequency.pfnOcGetFrequencyTarget;
 
         if( nullptr == pfnOcGetFrequencyTarget )
-            return logAndPropagateResult("zesFrequencyOcGetFrequencyTarget", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetFrequencyTargetPrologue( hFrequency, pCurrentOcFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetFrequencyTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3303,17 +3150,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcGetFrequencyTargetPrologue( hFrequency, pCurrentOcFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetFrequencyTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcGetFrequencyTarget( hFrequency, pCurrentOcFrequency );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetFrequencyTargetEpilogue( hFrequency, pCurrentOcFrequency ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetFrequencyTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcGetFrequencyTarget", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3327,17 +3174,15 @@ namespace validation_layer
                                                         ///< ::zes_oc_capabilities_t.
         )
     {
-        context.logger->log_trace("zesFrequencyOcSetFrequencyTarget(hFrequency, CurrentOcFrequency)");
-
         auto pfnOcSetFrequencyTarget = context.zesDdiTable.Frequency.pfnOcSetFrequencyTarget;
 
         if( nullptr == pfnOcSetFrequencyTarget )
-            return logAndPropagateResult("zesFrequencyOcSetFrequencyTarget", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetFrequencyTargetPrologue( hFrequency, CurrentOcFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetFrequencyTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3348,17 +3193,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcSetFrequencyTargetPrologue( hFrequency, CurrentOcFrequency );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetFrequencyTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcSetFrequencyTarget( hFrequency, CurrentOcFrequency );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetFrequencyTargetEpilogue( hFrequency, CurrentOcFrequency ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetFrequencyTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcSetFrequencyTarget", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3374,17 +3219,15 @@ namespace validation_layer
                                                         ///< `maxOcVoltageOffset` members of ::zes_oc_capabilities_t.
         )
     {
-        context.logger->log_trace("zesFrequencyOcGetVoltageTarget(hFrequency, pCurrentVoltageTarget, pCurrentVoltageOffset)");
-
         auto pfnOcGetVoltageTarget = context.zesDdiTable.Frequency.pfnOcGetVoltageTarget;
 
         if( nullptr == pfnOcGetVoltageTarget )
-            return logAndPropagateResult("zesFrequencyOcGetVoltageTarget", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetVoltageTargetPrologue( hFrequency, pCurrentVoltageTarget, pCurrentVoltageOffset );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetVoltageTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3395,17 +3238,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcGetVoltageTargetPrologue( hFrequency, pCurrentVoltageTarget, pCurrentVoltageOffset );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetVoltageTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcGetVoltageTarget( hFrequency, pCurrentVoltageTarget, pCurrentVoltageOffset );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetVoltageTargetEpilogue( hFrequency, pCurrentVoltageTarget, pCurrentVoltageOffset ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetVoltageTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcGetVoltageTarget", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3421,17 +3264,15 @@ namespace validation_layer
                                                         ///< `maxOcVoltageOffset` members of ::zes_oc_capabilities_t.
         )
     {
-        context.logger->log_trace("zesFrequencyOcSetVoltageTarget(hFrequency, CurrentVoltageTarget, CurrentVoltageOffset)");
-
         auto pfnOcSetVoltageTarget = context.zesDdiTable.Frequency.pfnOcSetVoltageTarget;
 
         if( nullptr == pfnOcSetVoltageTarget )
-            return logAndPropagateResult("zesFrequencyOcSetVoltageTarget", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetVoltageTargetPrologue( hFrequency, CurrentVoltageTarget, CurrentVoltageOffset );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetVoltageTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3442,17 +3283,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcSetVoltageTargetPrologue( hFrequency, CurrentVoltageTarget, CurrentVoltageOffset );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetVoltageTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcSetVoltageTarget( hFrequency, CurrentVoltageTarget, CurrentVoltageOffset );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetVoltageTargetEpilogue( hFrequency, CurrentVoltageTarget, CurrentVoltageOffset ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetVoltageTarget", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcSetVoltageTarget", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3463,17 +3304,15 @@ namespace validation_layer
         zes_oc_mode_t CurrentOcMode                     ///< [in] Current Overclocking Mode ::zes_oc_mode_t.
         )
     {
-        context.logger->log_trace("zesFrequencyOcSetMode(hFrequency, CurrentOcMode)");
-
         auto pfnOcSetMode = context.zesDdiTable.Frequency.pfnOcSetMode;
 
         if( nullptr == pfnOcSetMode )
-            return logAndPropagateResult("zesFrequencyOcSetMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetModePrologue( hFrequency, CurrentOcMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3484,17 +3323,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcSetModePrologue( hFrequency, CurrentOcMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcSetMode( hFrequency, CurrentOcMode );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetModeEpilogue( hFrequency, CurrentOcMode ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcSetMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3505,17 +3344,15 @@ namespace validation_layer
         zes_oc_mode_t* pCurrentOcMode                   ///< [out] Current Overclocking Mode ::zes_oc_mode_t.
         )
     {
-        context.logger->log_trace("zesFrequencyOcGetMode(hFrequency, pCurrentOcMode)");
-
         auto pfnOcGetMode = context.zesDdiTable.Frequency.pfnOcGetMode;
 
         if( nullptr == pfnOcGetMode )
-            return logAndPropagateResult("zesFrequencyOcGetMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetModePrologue( hFrequency, pCurrentOcMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3526,17 +3363,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcGetModePrologue( hFrequency, pCurrentOcMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcGetMode( hFrequency, pCurrentOcMode );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetModeEpilogue( hFrequency, pCurrentOcMode ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcGetMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3548,17 +3385,15 @@ namespace validation_layer
                                                         ///< successful return.
         )
     {
-        context.logger->log_trace("zesFrequencyOcGetIccMax(hFrequency, pOcIccMax)");
-
         auto pfnOcGetIccMax = context.zesDdiTable.Frequency.pfnOcGetIccMax;
 
         if( nullptr == pfnOcGetIccMax )
-            return logAndPropagateResult("zesFrequencyOcGetIccMax", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetIccMaxPrologue( hFrequency, pOcIccMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetIccMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3569,17 +3404,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcGetIccMaxPrologue( hFrequency, pOcIccMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetIccMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcGetIccMax( hFrequency, pOcIccMax );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetIccMaxEpilogue( hFrequency, pOcIccMax ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetIccMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcGetIccMax", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3590,17 +3425,15 @@ namespace validation_layer
         double ocIccMax                                 ///< [in] The new maximum current limit in Amperes.
         )
     {
-        context.logger->log_trace("zesFrequencyOcSetIccMax(hFrequency, ocIccMax)");
-
         auto pfnOcSetIccMax = context.zesDdiTable.Frequency.pfnOcSetIccMax;
 
         if( nullptr == pfnOcSetIccMax )
-            return logAndPropagateResult("zesFrequencyOcSetIccMax", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetIccMaxPrologue( hFrequency, ocIccMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetIccMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3611,17 +3444,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcSetIccMaxPrologue( hFrequency, ocIccMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetIccMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcSetIccMax( hFrequency, ocIccMax );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetIccMaxEpilogue( hFrequency, ocIccMax ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetIccMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcSetIccMax", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3633,17 +3466,15 @@ namespace validation_layer
                                                         ///< on successful return.
         )
     {
-        context.logger->log_trace("zesFrequencyOcGetTjMax(hFrequency, pOcTjMax)");
-
         auto pfnOcGetTjMax = context.zesDdiTable.Frequency.pfnOcGetTjMax;
 
         if( nullptr == pfnOcGetTjMax )
-            return logAndPropagateResult("zesFrequencyOcGetTjMax", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetTjMaxPrologue( hFrequency, pOcTjMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetTjMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3654,17 +3485,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcGetTjMaxPrologue( hFrequency, pOcTjMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetTjMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcGetTjMax( hFrequency, pOcTjMax );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcGetTjMaxEpilogue( hFrequency, pOcTjMax ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcGetTjMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcGetTjMax", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3675,17 +3506,15 @@ namespace validation_layer
         double ocTjMax                                  ///< [in] The new maximum temperature limit in degrees Celsius.
         )
     {
-        context.logger->log_trace("zesFrequencyOcSetTjMax(hFrequency, ocTjMax)");
-
         auto pfnOcSetTjMax = context.zesDdiTable.Frequency.pfnOcSetTjMax;
 
         if( nullptr == pfnOcSetTjMax )
-            return logAndPropagateResult("zesFrequencyOcSetTjMax", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetTjMaxPrologue( hFrequency, ocTjMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetTjMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3696,17 +3525,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFrequencyOcSetTjMaxPrologue( hFrequency, ocTjMax );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetTjMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnOcSetTjMax( hFrequency, ocTjMax );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFrequencyOcSetTjMaxEpilogue( hFrequency, ocTjMax ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFrequencyOcSetTjMax", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFrequencyOcSetTjMax", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3727,17 +3556,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumLeds(hDevice, pCount, phLed)");
-
         auto pfnEnumLeds = context.zesDdiTable.Device.pfnEnumLeds;
 
         if( nullptr == pfnEnumLeds )
-            return logAndPropagateResult("zesDeviceEnumLeds", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumLedsPrologue( hDevice, pCount, phLed );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumLeds", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3748,17 +3575,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumLedsPrologue( hDevice, pCount, phLed );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumLeds", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumLeds( hDevice, pCount, phLed );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumLedsEpilogue( hDevice, pCount, phLed ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumLeds", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumLeds", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3769,17 +3596,15 @@ namespace validation_layer
         zes_led_properties_t* pProperties               ///< [in,out] Will contain the properties of the LED.
         )
     {
-        context.logger->log_trace("zesLedGetProperties(hLed, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Led.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesLedGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedGetPropertiesPrologue( hLed, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3790,17 +3615,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesLedGetPropertiesPrologue( hLed, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hLed, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedGetPropertiesEpilogue( hLed, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesLedGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3811,17 +3636,15 @@ namespace validation_layer
         zes_led_state_t* pState                         ///< [in,out] Will contain the current state of the LED.
         )
     {
-        context.logger->log_trace("zesLedGetState(hLed, pState)");
-
         auto pfnGetState = context.zesDdiTable.Led.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesLedGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedGetStatePrologue( hLed, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3832,17 +3655,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesLedGetStatePrologue( hLed, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hLed, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedGetStateEpilogue( hLed, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesLedGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3853,17 +3676,15 @@ namespace validation_layer
         ze_bool_t enable                                ///< [in] Set to TRUE to turn the LED on, FALSE to turn off.
         )
     {
-        context.logger->log_trace("zesLedSetState(hLed, enable)");
-
         auto pfnSetState = context.zesDdiTable.Led.pfnSetState;
 
         if( nullptr == pfnSetState )
-            return logAndPropagateResult("zesLedSetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedSetStatePrologue( hLed, enable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedSetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3874,17 +3695,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesLedSetStatePrologue( hLed, enable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedSetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetState( hLed, enable );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedSetStateEpilogue( hLed, enable ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedSetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesLedSetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3895,17 +3716,15 @@ namespace validation_layer
         const zes_led_color_t* pColor                   ///< [in] New color of the LED.
         )
     {
-        context.logger->log_trace("zesLedSetColor(hLed, pColor)");
-
         auto pfnSetColor = context.zesDdiTable.Led.pfnSetColor;
 
         if( nullptr == pfnSetColor )
-            return logAndPropagateResult("zesLedSetColor", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedSetColorPrologue( hLed, pColor );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedSetColor", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3916,17 +3735,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesLedSetColorPrologue( hLed, pColor );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedSetColor", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetColor( hLed, pColor );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesLedSetColorEpilogue( hLed, pColor ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesLedSetColor", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesLedSetColor", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3947,17 +3766,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumMemoryModules(hDevice, pCount, phMemory)");
-
         auto pfnEnumMemoryModules = context.zesDdiTable.Device.pfnEnumMemoryModules;
 
         if( nullptr == pfnEnumMemoryModules )
-            return logAndPropagateResult("zesDeviceEnumMemoryModules", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumMemoryModulesPrologue( hDevice, pCount, phMemory );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumMemoryModules", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -3968,17 +3785,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumMemoryModulesPrologue( hDevice, pCount, phMemory );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumMemoryModules", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumMemoryModules( hDevice, pCount, phMemory );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumMemoryModulesEpilogue( hDevice, pCount, phMemory ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumMemoryModules", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumMemoryModules", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -3989,17 +3806,15 @@ namespace validation_layer
         zes_mem_properties_t* pProperties               ///< [in,out] Will contain memory properties.
         )
     {
-        context.logger->log_trace("zesMemoryGetProperties(hMemory, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Memory.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesMemoryGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesMemoryGetPropertiesPrologue( hMemory, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4010,17 +3825,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesMemoryGetPropertiesPrologue( hMemory, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hMemory, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesMemoryGetPropertiesEpilogue( hMemory, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesMemoryGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4031,17 +3846,15 @@ namespace validation_layer
         zes_mem_state_t* pState                         ///< [in,out] Will contain the current health and allocated memory.
         )
     {
-        context.logger->log_trace("zesMemoryGetState(hMemory, pState)");
-
         auto pfnGetState = context.zesDdiTable.Memory.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesMemoryGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesMemoryGetStatePrologue( hMemory, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4052,17 +3865,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesMemoryGetStatePrologue( hMemory, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hMemory, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesMemoryGetStateEpilogue( hMemory, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesMemoryGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4074,17 +3887,15 @@ namespace validation_layer
                                                         ///< to memory, as well as the current maximum bandwidth.
         )
     {
-        context.logger->log_trace("zesMemoryGetBandwidth(hMemory, pBandwidth)");
-
         auto pfnGetBandwidth = context.zesDdiTable.Memory.pfnGetBandwidth;
 
         if( nullptr == pfnGetBandwidth )
-            return logAndPropagateResult("zesMemoryGetBandwidth", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesMemoryGetBandwidthPrologue( hMemory, pBandwidth );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetBandwidth", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4095,17 +3906,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesMemoryGetBandwidthPrologue( hMemory, pBandwidth );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetBandwidth", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetBandwidth( hMemory, pBandwidth );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesMemoryGetBandwidthEpilogue( hMemory, pBandwidth ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesMemoryGetBandwidth", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesMemoryGetBandwidth", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4126,17 +3937,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumPerformanceFactorDomains(hDevice, pCount, phPerf)");
-
         auto pfnEnumPerformanceFactorDomains = context.zesDdiTable.Device.pfnEnumPerformanceFactorDomains;
 
         if( nullptr == pfnEnumPerformanceFactorDomains )
-            return logAndPropagateResult("zesDeviceEnumPerformanceFactorDomains", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumPerformanceFactorDomainsPrologue( hDevice, pCount, phPerf );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPerformanceFactorDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4147,17 +3956,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumPerformanceFactorDomainsPrologue( hDevice, pCount, phPerf );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPerformanceFactorDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumPerformanceFactorDomains( hDevice, pCount, phPerf );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumPerformanceFactorDomainsEpilogue( hDevice, pCount, phPerf ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPerformanceFactorDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumPerformanceFactorDomains", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4169,17 +3978,15 @@ namespace validation_layer
                                                         ///< Factor domain.
         )
     {
-        context.logger->log_trace("zesPerformanceFactorGetProperties(hPerf, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.PerformanceFactor.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesPerformanceFactorGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPerformanceFactorGetPropertiesPrologue( hPerf, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4190,17 +3997,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPerformanceFactorGetPropertiesPrologue( hPerf, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hPerf, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPerformanceFactorGetPropertiesEpilogue( hPerf, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPerformanceFactorGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4212,17 +4019,15 @@ namespace validation_layer
                                                         ///< hardware (may not be the same as the requested Performance Factor).
         )
     {
-        context.logger->log_trace("zesPerformanceFactorGetConfig(hPerf, pFactor)");
-
         auto pfnGetConfig = context.zesDdiTable.PerformanceFactor.pfnGetConfig;
 
         if( nullptr == pfnGetConfig )
-            return logAndPropagateResult("zesPerformanceFactorGetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPerformanceFactorGetConfigPrologue( hPerf, pFactor );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4233,17 +4038,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPerformanceFactorGetConfigPrologue( hPerf, pFactor );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetConfig( hPerf, pFactor );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPerformanceFactorGetConfigEpilogue( hPerf, pFactor ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPerformanceFactorGetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4254,17 +4059,15 @@ namespace validation_layer
         double factor                                   ///< [in] The new Performance Factor.
         )
     {
-        context.logger->log_trace("zesPerformanceFactorSetConfig(hPerf, factor)");
-
         auto pfnSetConfig = context.zesDdiTable.PerformanceFactor.pfnSetConfig;
 
         if( nullptr == pfnSetConfig )
-            return logAndPropagateResult("zesPerformanceFactorSetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPerformanceFactorSetConfigPrologue( hPerf, factor );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4275,17 +4078,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPerformanceFactorSetConfigPrologue( hPerf, factor );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetConfig( hPerf, factor );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPerformanceFactorSetConfigEpilogue( hPerf, factor ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPerformanceFactorSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPerformanceFactorSetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4306,17 +4109,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumPowerDomains(hDevice, pCount, phPower)");
-
         auto pfnEnumPowerDomains = context.zesDdiTable.Device.pfnEnumPowerDomains;
 
         if( nullptr == pfnEnumPowerDomains )
-            return logAndPropagateResult("zesDeviceEnumPowerDomains", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumPowerDomainsPrologue( hDevice, pCount, phPower );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPowerDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4327,17 +4128,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumPowerDomainsPrologue( hDevice, pCount, phPower );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPowerDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumPowerDomains( hDevice, pCount, phPower );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumPowerDomainsEpilogue( hDevice, pCount, phPower ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPowerDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumPowerDomains", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4348,17 +4149,15 @@ namespace validation_layer
         zes_pwr_handle_t* phPower                       ///< [in,out] power domain handle for the entire PCIe card.
         )
     {
-        context.logger->log_trace("zesDeviceGetCardPowerDomain(hDevice, phPower)");
-
         auto pfnGetCardPowerDomain = context.zesDdiTable.Device.pfnGetCardPowerDomain;
 
         if( nullptr == pfnGetCardPowerDomain )
-            return logAndPropagateResult("zesDeviceGetCardPowerDomain", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetCardPowerDomainPrologue( hDevice, phPower );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetCardPowerDomain", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4369,17 +4168,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetCardPowerDomainPrologue( hDevice, phPower );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetCardPowerDomain", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetCardPowerDomain( hDevice, phPower );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetCardPowerDomainEpilogue( hDevice, phPower ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetCardPowerDomain", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceGetCardPowerDomain", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4390,17 +4189,15 @@ namespace validation_layer
         zes_power_properties_t* pProperties             ///< [in,out] Structure that will contain property data.
         )
     {
-        context.logger->log_trace("zesPowerGetProperties(hPower, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Power.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesPowerGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetPropertiesPrologue( hPower, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4411,17 +4208,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerGetPropertiesPrologue( hPower, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hPower, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetPropertiesEpilogue( hPower, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4433,17 +4230,15 @@ namespace validation_layer
                                                         ///< timestamp when the last counter value was measured.
         )
     {
-        context.logger->log_trace("zesPowerGetEnergyCounter(hPower, pEnergy)");
-
         auto pfnGetEnergyCounter = context.zesDdiTable.Power.pfnGetEnergyCounter;
 
         if( nullptr == pfnGetEnergyCounter )
-            return logAndPropagateResult("zesPowerGetEnergyCounter", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetEnergyCounterPrologue( hPower, pEnergy );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetEnergyCounter", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4454,17 +4249,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerGetEnergyCounterPrologue( hPower, pEnergy );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetEnergyCounter", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetEnergyCounter( hPower, pEnergy );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetEnergyCounterEpilogue( hPower, pEnergy ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetEnergyCounter", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerGetEnergyCounter", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4480,17 +4275,15 @@ namespace validation_layer
                                                         ///< power limits will not be returned.
         )
     {
-        context.logger->log_trace("zesPowerGetLimits(hPower, pSustained, pBurst, pPeak)");
-
         auto pfnGetLimits = context.zesDdiTable.Power.pfnGetLimits;
 
         if( nullptr == pfnGetLimits )
-            return logAndPropagateResult("zesPowerGetLimits", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetLimitsPrologue( hPower, pSustained, pBurst, pPeak );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetLimits", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4501,17 +4294,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerGetLimitsPrologue( hPower, pSustained, pBurst, pPeak );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetLimits", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetLimits( hPower, pSustained, pBurst, pPeak );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetLimitsEpilogue( hPower, pSustained, pBurst, pPeak ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetLimits", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerGetLimits", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4527,17 +4320,15 @@ namespace validation_layer
                                                         ///< be made to the peak power limits.
         )
     {
-        context.logger->log_trace("zesPowerSetLimits(hPower, pSustained, pBurst, pPeak)");
-
         auto pfnSetLimits = context.zesDdiTable.Power.pfnSetLimits;
 
         if( nullptr == pfnSetLimits )
-            return logAndPropagateResult("zesPowerSetLimits", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerSetLimitsPrologue( hPower, pSustained, pBurst, pPeak );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetLimits", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4548,17 +4339,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerSetLimitsPrologue( hPower, pSustained, pBurst, pPeak );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetLimits", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetLimits( hPower, pSustained, pBurst, pPeak );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerSetLimitsEpilogue( hPower, pSustained, pBurst, pPeak ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetLimits", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerSetLimits", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4570,17 +4361,15 @@ namespace validation_layer
                                                         ///< enabled/energy threshold/process ID.
         )
     {
-        context.logger->log_trace("zesPowerGetEnergyThreshold(hPower, pThreshold)");
-
         auto pfnGetEnergyThreshold = context.zesDdiTable.Power.pfnGetEnergyThreshold;
 
         if( nullptr == pfnGetEnergyThreshold )
-            return logAndPropagateResult("zesPowerGetEnergyThreshold", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetEnergyThresholdPrologue( hPower, pThreshold );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetEnergyThreshold", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4591,17 +4380,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerGetEnergyThresholdPrologue( hPower, pThreshold );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetEnergyThreshold", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetEnergyThreshold( hPower, pThreshold );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetEnergyThresholdEpilogue( hPower, pThreshold ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetEnergyThreshold", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerGetEnergyThreshold", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4612,17 +4401,15 @@ namespace validation_layer
         double threshold                                ///< [in] The energy threshold to be set in joules.
         )
     {
-        context.logger->log_trace("zesPowerSetEnergyThreshold(hPower, threshold)");
-
         auto pfnSetEnergyThreshold = context.zesDdiTable.Power.pfnSetEnergyThreshold;
 
         if( nullptr == pfnSetEnergyThreshold )
-            return logAndPropagateResult("zesPowerSetEnergyThreshold", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerSetEnergyThresholdPrologue( hPower, threshold );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetEnergyThreshold", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4633,17 +4420,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerSetEnergyThresholdPrologue( hPower, threshold );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetEnergyThreshold", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetEnergyThreshold( hPower, threshold );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerSetEnergyThresholdEpilogue( hPower, threshold ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetEnergyThreshold", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerSetEnergyThreshold", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4664,17 +4451,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumPsus(hDevice, pCount, phPsu)");
-
         auto pfnEnumPsus = context.zesDdiTable.Device.pfnEnumPsus;
 
         if( nullptr == pfnEnumPsus )
-            return logAndPropagateResult("zesDeviceEnumPsus", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumPsusPrologue( hDevice, pCount, phPsu );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPsus", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4685,17 +4470,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumPsusPrologue( hDevice, pCount, phPsu );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPsus", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumPsus( hDevice, pCount, phPsu );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumPsusEpilogue( hDevice, pCount, phPsu ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumPsus", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumPsus", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4706,17 +4491,15 @@ namespace validation_layer
         zes_psu_properties_t* pProperties               ///< [in,out] Will contain the properties of the power supply.
         )
     {
-        context.logger->log_trace("zesPsuGetProperties(hPsu, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Psu.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesPsuGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPsuGetPropertiesPrologue( hPsu, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPsuGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4727,17 +4510,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPsuGetPropertiesPrologue( hPsu, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPsuGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hPsu, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPsuGetPropertiesEpilogue( hPsu, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPsuGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPsuGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4748,17 +4531,15 @@ namespace validation_layer
         zes_psu_state_t* pState                         ///< [in,out] Will contain the current state of the power supply.
         )
     {
-        context.logger->log_trace("zesPsuGetState(hPsu, pState)");
-
         auto pfnGetState = context.zesDdiTable.Psu.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesPsuGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPsuGetStatePrologue( hPsu, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPsuGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4769,17 +4550,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPsuGetStatePrologue( hPsu, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPsuGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hPsu, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPsuGetStateEpilogue( hPsu, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPsuGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPsuGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4800,17 +4581,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumRasErrorSets(hDevice, pCount, phRas)");
-
         auto pfnEnumRasErrorSets = context.zesDdiTable.Device.pfnEnumRasErrorSets;
 
         if( nullptr == pfnEnumRasErrorSets )
-            return logAndPropagateResult("zesDeviceEnumRasErrorSets", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumRasErrorSetsPrologue( hDevice, pCount, phRas );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumRasErrorSets", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4821,17 +4600,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumRasErrorSetsPrologue( hDevice, pCount, phRas );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumRasErrorSets", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumRasErrorSets( hDevice, pCount, phRas );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumRasErrorSetsEpilogue( hDevice, pCount, phRas ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumRasErrorSets", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumRasErrorSets", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4842,17 +4621,15 @@ namespace validation_layer
         zes_ras_properties_t* pProperties               ///< [in,out] Structure describing RAS properties
         )
     {
-        context.logger->log_trace("zesRasGetProperties(hRas, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Ras.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesRasGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetPropertiesPrologue( hRas, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4863,17 +4640,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesRasGetPropertiesPrologue( hRas, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hRas, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetPropertiesEpilogue( hRas, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesRasGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4885,17 +4662,15 @@ namespace validation_layer
                                                         ///< thresholds used to trigger events
         )
     {
-        context.logger->log_trace("zesRasGetConfig(hRas, pConfig)");
-
         auto pfnGetConfig = context.zesDdiTable.Ras.pfnGetConfig;
 
         if( nullptr == pfnGetConfig )
-            return logAndPropagateResult("zesRasGetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetConfigPrologue( hRas, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4906,17 +4681,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesRasGetConfigPrologue( hRas, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetConfig( hRas, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetConfigEpilogue( hRas, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesRasGetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4927,17 +4702,15 @@ namespace validation_layer
         const zes_ras_config_t* pConfig                 ///< [in] Change the RAS configuration - thresholds used to trigger events
         )
     {
-        context.logger->log_trace("zesRasSetConfig(hRas, pConfig)");
-
         auto pfnSetConfig = context.zesDdiTable.Ras.pfnSetConfig;
 
         if( nullptr == pfnSetConfig )
-            return logAndPropagateResult("zesRasSetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasSetConfigPrologue( hRas, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4948,17 +4721,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesRasSetConfigPrologue( hRas, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetConfig( hRas, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasSetConfigEpilogue( hRas, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesRasSetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -4970,17 +4743,15 @@ namespace validation_layer
         zes_ras_state_t* pState                         ///< [in,out] Breakdown of where errors have occurred
         )
     {
-        context.logger->log_trace("zesRasGetState(hRas, clear, pState)");
-
         auto pfnGetState = context.zesDdiTable.Ras.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesRasGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetStatePrologue( hRas, clear, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -4991,17 +4762,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesRasGetStatePrologue( hRas, clear, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hRas, clear, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetStateEpilogue( hRas, clear, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesRasGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5022,17 +4793,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumSchedulers(hDevice, pCount, phScheduler)");
-
         auto pfnEnumSchedulers = context.zesDdiTable.Device.pfnEnumSchedulers;
 
         if( nullptr == pfnEnumSchedulers )
-            return logAndPropagateResult("zesDeviceEnumSchedulers", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumSchedulersPrologue( hDevice, pCount, phScheduler );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumSchedulers", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5043,17 +4812,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumSchedulersPrologue( hDevice, pCount, phScheduler );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumSchedulers", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumSchedulers( hDevice, pCount, phScheduler );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumSchedulersEpilogue( hDevice, pCount, phScheduler ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumSchedulers", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumSchedulers", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5064,17 +4833,15 @@ namespace validation_layer
         zes_sched_properties_t* pProperties             ///< [in,out] Structure that will contain property data.
         )
     {
-        context.logger->log_trace("zesSchedulerGetProperties(hScheduler, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Scheduler.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesSchedulerGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetPropertiesPrologue( hScheduler, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5085,17 +4852,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerGetPropertiesPrologue( hScheduler, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hScheduler, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetPropertiesEpilogue( hScheduler, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5106,17 +4873,15 @@ namespace validation_layer
         zes_sched_mode_t* pMode                         ///< [in,out] Will contain the current scheduler mode.
         )
     {
-        context.logger->log_trace("zesSchedulerGetCurrentMode(hScheduler, pMode)");
-
         auto pfnGetCurrentMode = context.zesDdiTable.Scheduler.pfnGetCurrentMode;
 
         if( nullptr == pfnGetCurrentMode )
-            return logAndPropagateResult("zesSchedulerGetCurrentMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetCurrentModePrologue( hScheduler, pMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetCurrentMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5127,17 +4892,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerGetCurrentModePrologue( hScheduler, pMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetCurrentMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetCurrentMode( hScheduler, pMode );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetCurrentModeEpilogue( hScheduler, pMode ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetCurrentMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerGetCurrentMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5150,17 +4915,15 @@ namespace validation_layer
         zes_sched_timeout_properties_t* pConfig         ///< [in,out] Will contain the current parameters for this mode.
         )
     {
-        context.logger->log_trace("zesSchedulerGetTimeoutModeProperties(hScheduler, getDefaults, pConfig)");
-
         auto pfnGetTimeoutModeProperties = context.zesDdiTable.Scheduler.pfnGetTimeoutModeProperties;
 
         if( nullptr == pfnGetTimeoutModeProperties )
-            return logAndPropagateResult("zesSchedulerGetTimeoutModeProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetTimeoutModePropertiesPrologue( hScheduler, getDefaults, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetTimeoutModeProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5171,17 +4934,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerGetTimeoutModePropertiesPrologue( hScheduler, getDefaults, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetTimeoutModeProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetTimeoutModeProperties( hScheduler, getDefaults, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetTimeoutModePropertiesEpilogue( hScheduler, getDefaults, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetTimeoutModeProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerGetTimeoutModeProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5194,17 +4957,15 @@ namespace validation_layer
         zes_sched_timeslice_properties_t* pConfig       ///< [in,out] Will contain the current parameters for this mode.
         )
     {
-        context.logger->log_trace("zesSchedulerGetTimesliceModeProperties(hScheduler, getDefaults, pConfig)");
-
         auto pfnGetTimesliceModeProperties = context.zesDdiTable.Scheduler.pfnGetTimesliceModeProperties;
 
         if( nullptr == pfnGetTimesliceModeProperties )
-            return logAndPropagateResult("zesSchedulerGetTimesliceModeProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetTimesliceModePropertiesPrologue( hScheduler, getDefaults, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetTimesliceModeProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5215,17 +4976,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerGetTimesliceModePropertiesPrologue( hScheduler, getDefaults, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetTimesliceModeProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetTimesliceModeProperties( hScheduler, getDefaults, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerGetTimesliceModePropertiesEpilogue( hScheduler, getDefaults, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerGetTimesliceModeProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerGetTimesliceModeProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5238,17 +4999,15 @@ namespace validation_layer
                                                         ///< apply the new scheduler mode.
         )
     {
-        context.logger->log_trace("zesSchedulerSetTimeoutMode(hScheduler, pProperties, pNeedReload)");
-
         auto pfnSetTimeoutMode = context.zesDdiTable.Scheduler.pfnSetTimeoutMode;
 
         if( nullptr == pfnSetTimeoutMode )
-            return logAndPropagateResult("zesSchedulerSetTimeoutMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetTimeoutModePrologue( hScheduler, pProperties, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetTimeoutMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5259,17 +5018,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerSetTimeoutModePrologue( hScheduler, pProperties, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetTimeoutMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetTimeoutMode( hScheduler, pProperties, pNeedReload );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetTimeoutModeEpilogue( hScheduler, pProperties, pNeedReload ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetTimeoutMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerSetTimeoutMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5282,17 +5041,15 @@ namespace validation_layer
                                                         ///< apply the new scheduler mode.
         )
     {
-        context.logger->log_trace("zesSchedulerSetTimesliceMode(hScheduler, pProperties, pNeedReload)");
-
         auto pfnSetTimesliceMode = context.zesDdiTable.Scheduler.pfnSetTimesliceMode;
 
         if( nullptr == pfnSetTimesliceMode )
-            return logAndPropagateResult("zesSchedulerSetTimesliceMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetTimesliceModePrologue( hScheduler, pProperties, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetTimesliceMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5303,17 +5060,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerSetTimesliceModePrologue( hScheduler, pProperties, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetTimesliceMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetTimesliceMode( hScheduler, pProperties, pNeedReload );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetTimesliceModeEpilogue( hScheduler, pProperties, pNeedReload ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetTimesliceMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerSetTimesliceMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5325,17 +5082,15 @@ namespace validation_layer
                                                         ///< apply the new scheduler mode.
         )
     {
-        context.logger->log_trace("zesSchedulerSetExclusiveMode(hScheduler, pNeedReload)");
-
         auto pfnSetExclusiveMode = context.zesDdiTable.Scheduler.pfnSetExclusiveMode;
 
         if( nullptr == pfnSetExclusiveMode )
-            return logAndPropagateResult("zesSchedulerSetExclusiveMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetExclusiveModePrologue( hScheduler, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetExclusiveMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5346,17 +5101,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerSetExclusiveModePrologue( hScheduler, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetExclusiveMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetExclusiveMode( hScheduler, pNeedReload );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetExclusiveModeEpilogue( hScheduler, pNeedReload ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetExclusiveMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerSetExclusiveMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5368,17 +5123,15 @@ namespace validation_layer
                                                         ///< apply the new scheduler mode.
         )
     {
-        context.logger->log_trace("zesSchedulerSetComputeUnitDebugMode(hScheduler, pNeedReload)");
-
         auto pfnSetComputeUnitDebugMode = context.zesDdiTable.Scheduler.pfnSetComputeUnitDebugMode;
 
         if( nullptr == pfnSetComputeUnitDebugMode )
-            return logAndPropagateResult("zesSchedulerSetComputeUnitDebugMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetComputeUnitDebugModePrologue( hScheduler, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetComputeUnitDebugMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5389,17 +5142,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesSchedulerSetComputeUnitDebugModePrologue( hScheduler, pNeedReload );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetComputeUnitDebugMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetComputeUnitDebugMode( hScheduler, pNeedReload );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesSchedulerSetComputeUnitDebugModeEpilogue( hScheduler, pNeedReload ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesSchedulerSetComputeUnitDebugMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesSchedulerSetComputeUnitDebugMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5420,17 +5173,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumStandbyDomains(hDevice, pCount, phStandby)");
-
         auto pfnEnumStandbyDomains = context.zesDdiTable.Device.pfnEnumStandbyDomains;
 
         if( nullptr == pfnEnumStandbyDomains )
-            return logAndPropagateResult("zesDeviceEnumStandbyDomains", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumStandbyDomainsPrologue( hDevice, pCount, phStandby );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumStandbyDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5441,17 +5192,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumStandbyDomainsPrologue( hDevice, pCount, phStandby );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumStandbyDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumStandbyDomains( hDevice, pCount, phStandby );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumStandbyDomainsEpilogue( hDevice, pCount, phStandby ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumStandbyDomains", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumStandbyDomains", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5462,17 +5213,15 @@ namespace validation_layer
         zes_standby_properties_t* pProperties           ///< [in,out] Will contain the standby hardware properties.
         )
     {
-        context.logger->log_trace("zesStandbyGetProperties(hStandby, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Standby.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesStandbyGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesStandbyGetPropertiesPrologue( hStandby, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbyGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5483,17 +5232,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesStandbyGetPropertiesPrologue( hStandby, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbyGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hStandby, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesStandbyGetPropertiesEpilogue( hStandby, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbyGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesStandbyGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5504,17 +5253,15 @@ namespace validation_layer
         zes_standby_promo_mode_t* pMode                 ///< [in,out] Will contain the current standby mode.
         )
     {
-        context.logger->log_trace("zesStandbyGetMode(hStandby, pMode)");
-
         auto pfnGetMode = context.zesDdiTable.Standby.pfnGetMode;
 
         if( nullptr == pfnGetMode )
-            return logAndPropagateResult("zesStandbyGetMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesStandbyGetModePrologue( hStandby, pMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbyGetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5525,17 +5272,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesStandbyGetModePrologue( hStandby, pMode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbyGetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetMode( hStandby, pMode );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesStandbyGetModeEpilogue( hStandby, pMode ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbyGetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesStandbyGetMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5546,17 +5293,15 @@ namespace validation_layer
         zes_standby_promo_mode_t mode                   ///< [in] New standby mode.
         )
     {
-        context.logger->log_trace("zesStandbySetMode(hStandby, mode)");
-
         auto pfnSetMode = context.zesDdiTable.Standby.pfnSetMode;
 
         if( nullptr == pfnSetMode )
-            return logAndPropagateResult("zesStandbySetMode", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesStandbySetModePrologue( hStandby, mode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbySetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5567,17 +5312,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesStandbySetModePrologue( hStandby, mode );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbySetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetMode( hStandby, mode );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesStandbySetModeEpilogue( hStandby, mode ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesStandbySetMode", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesStandbySetMode", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5598,17 +5343,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumTemperatureSensors(hDevice, pCount, phTemperature)");
-
         auto pfnEnumTemperatureSensors = context.zesDdiTable.Device.pfnEnumTemperatureSensors;
 
         if( nullptr == pfnEnumTemperatureSensors )
-            return logAndPropagateResult("zesDeviceEnumTemperatureSensors", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumTemperatureSensorsPrologue( hDevice, pCount, phTemperature );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumTemperatureSensors", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5619,17 +5362,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumTemperatureSensorsPrologue( hDevice, pCount, phTemperature );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumTemperatureSensors", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumTemperatureSensors( hDevice, pCount, phTemperature );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumTemperatureSensorsEpilogue( hDevice, pCount, phTemperature ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumTemperatureSensors", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumTemperatureSensors", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5640,17 +5383,15 @@ namespace validation_layer
         zes_temp_properties_t* pProperties              ///< [in,out] Will contain the temperature sensor properties.
         )
     {
-        context.logger->log_trace("zesTemperatureGetProperties(hTemperature, pProperties)");
-
         auto pfnGetProperties = context.zesDdiTable.Temperature.pfnGetProperties;
 
         if( nullptr == pfnGetProperties )
-            return logAndPropagateResult("zesTemperatureGetProperties", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureGetPropertiesPrologue( hTemperature, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5661,17 +5402,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesTemperatureGetPropertiesPrologue( hTemperature, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetProperties( hTemperature, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureGetPropertiesEpilogue( hTemperature, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetProperties", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesTemperatureGetProperties", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5682,17 +5423,15 @@ namespace validation_layer
         zes_temp_config_t* pConfig                      ///< [in,out] Returns current configuration.
         )
     {
-        context.logger->log_trace("zesTemperatureGetConfig(hTemperature, pConfig)");
-
         auto pfnGetConfig = context.zesDdiTable.Temperature.pfnGetConfig;
 
         if( nullptr == pfnGetConfig )
-            return logAndPropagateResult("zesTemperatureGetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureGetConfigPrologue( hTemperature, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5703,17 +5442,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesTemperatureGetConfigPrologue( hTemperature, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetConfig( hTemperature, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureGetConfigEpilogue( hTemperature, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesTemperatureGetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5724,17 +5463,15 @@ namespace validation_layer
         const zes_temp_config_t* pConfig                ///< [in] New configuration.
         )
     {
-        context.logger->log_trace("zesTemperatureSetConfig(hTemperature, pConfig)");
-
         auto pfnSetConfig = context.zesDdiTable.Temperature.pfnSetConfig;
 
         if( nullptr == pfnSetConfig )
-            return logAndPropagateResult("zesTemperatureSetConfig", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureSetConfigPrologue( hTemperature, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5745,17 +5482,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesTemperatureSetConfigPrologue( hTemperature, pConfig );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetConfig( hTemperature, pConfig );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureSetConfigEpilogue( hTemperature, pConfig ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureSetConfig", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesTemperatureSetConfig", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5767,17 +5504,15 @@ namespace validation_layer
                                                         ///< in degrees Celsius.
         )
     {
-        context.logger->log_trace("zesTemperatureGetState(hTemperature, pTemperature)");
-
         auto pfnGetState = context.zesDdiTable.Temperature.pfnGetState;
 
         if( nullptr == pfnGetState )
-            return logAndPropagateResult("zesTemperatureGetState", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureGetStatePrologue( hTemperature, pTemperature );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5788,17 +5523,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesTemperatureGetStatePrologue( hTemperature, pTemperature );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetState( hTemperature, pTemperature );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesTemperatureGetStateEpilogue( hTemperature, pTemperature ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesTemperatureGetState", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesTemperatureGetState", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5817,17 +5552,15 @@ namespace validation_layer
                                                         ///< number of components.
         )
     {
-        context.logger->log_trace("zesPowerGetLimitsExt(hPower, pCount, pSustained)");
-
         auto pfnGetLimitsExt = context.zesDdiTable.Power.pfnGetLimitsExt;
 
         if( nullptr == pfnGetLimitsExt )
-            return logAndPropagateResult("zesPowerGetLimitsExt", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetLimitsExtPrologue( hPower, pCount, pSustained );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetLimitsExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5838,17 +5571,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerGetLimitsExtPrologue( hPower, pCount, pSustained );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetLimitsExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetLimitsExt( hPower, pCount, pSustained );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerGetLimitsExtEpilogue( hPower, pCount, pSustained ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerGetLimitsExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerGetLimitsExt", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5860,17 +5593,15 @@ namespace validation_layer
         zes_power_limit_ext_desc_t* pSustained          ///< [in][optional][range(0, *pCount)] Array of power limit descriptors.
         )
     {
-        context.logger->log_trace("zesPowerSetLimitsExt(hPower, pCount, pSustained)");
-
         auto pfnSetLimitsExt = context.zesDdiTable.Power.pfnSetLimitsExt;
 
         if( nullptr == pfnSetLimitsExt )
-            return logAndPropagateResult("zesPowerSetLimitsExt", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerSetLimitsExtPrologue( hPower, pCount, pSustained );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetLimitsExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5881,17 +5612,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesPowerSetLimitsExtPrologue( hPower, pCount, pSustained );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetLimitsExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetLimitsExt( hPower, pCount, pSustained );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesPowerSetLimitsExtEpilogue( hPower, pCount, pSustained ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesPowerSetLimitsExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesPowerSetLimitsExt", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5915,17 +5646,15 @@ namespace validation_layer
                                                         ///< of VF engine stats.
         )
     {
-        context.logger->log_trace("zesEngineGetActivityExt(hEngine, pCount, pStats)");
-
         auto pfnGetActivityExt = context.zesDdiTable.Engine.pfnGetActivityExt;
 
         if( nullptr == pfnGetActivityExt )
-            return logAndPropagateResult("zesEngineGetActivityExt", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesEngineGetActivityExtPrologue( hEngine, pCount, pStats );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetActivityExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5936,17 +5665,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesEngineGetActivityExtPrologue( hEngine, pCount, pStats );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetActivityExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetActivityExt( hEngine, pCount, pStats );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesEngineGetActivityExtEpilogue( hEngine, pCount, pStats ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesEngineGetActivityExt", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesEngineGetActivityExt", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -5965,17 +5694,15 @@ namespace validation_layer
                                                         ///< shall only retrieve that number of RAS states.
         )
     {
-        context.logger->log_trace("zesRasGetStateExp(hRas, pCount, pState)");
-
         auto pfnGetStateExp = context.zesDdiTable.RasExp.pfnGetStateExp;
 
         if( nullptr == pfnGetStateExp )
-            return logAndPropagateResult("zesRasGetStateExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetStateExpPrologue( hRas, pCount, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetStateExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -5986,21 +5713,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesRasGetStateExpPrologue( hRas, pCount, pState );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetStateExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetStateExp( hRas, pCount, pState );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasGetStateExpEpilogue( hRas, pCount, pState ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasGetStateExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesRasGetStateExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6011,17 +5738,15 @@ namespace validation_layer
         zes_ras_error_category_exp_t category           ///< [in] category for which error counter is to be cleared.
         )
     {
-        context.logger->log_trace("zesRasClearStateExp(hRas, category)");
-
         auto pfnClearStateExp = context.zesDdiTable.RasExp.pfnClearStateExp;
 
         if( nullptr == pfnClearStateExp )
-            return logAndPropagateResult("zesRasClearStateExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasClearStateExpPrologue( hRas, category );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasClearStateExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6032,17 +5757,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesRasClearStateExpPrologue( hRas, category );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasClearStateExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnClearStateExp( hRas, category );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesRasClearStateExpEpilogue( hRas, category ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesRasClearStateExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesRasClearStateExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6054,17 +5779,15 @@ namespace validation_layer
                                                         ///< returned if this property cannot be determined.
         )
     {
-        context.logger->log_trace("zesFirmwareGetSecurityVersionExp(hFirmware, pVersion)");
-
         auto pfnGetSecurityVersionExp = context.zesDdiTable.FirmwareExp.pfnGetSecurityVersionExp;
 
         if( nullptr == pfnGetSecurityVersionExp )
-            return logAndPropagateResult("zesFirmwareGetSecurityVersionExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetSecurityVersionExpPrologue( hFirmware, pVersion );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetSecurityVersionExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6075,21 +5798,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFirmwareGetSecurityVersionExpPrologue( hFirmware, pVersion );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetSecurityVersionExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetSecurityVersionExp( hFirmware, pVersion );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareGetSecurityVersionExpEpilogue( hFirmware, pVersion ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareGetSecurityVersionExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesFirmwareGetSecurityVersionExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6099,17 +5822,15 @@ namespace validation_layer
         zes_firmware_handle_t hFirmware                 ///< [in] Handle for the component.
         )
     {
-        context.logger->log_trace("zesFirmwareSetSecurityVersionExp(hFirmware)");
-
         auto pfnSetSecurityVersionExp = context.zesDdiTable.FirmwareExp.pfnSetSecurityVersionExp;
 
         if( nullptr == pfnSetSecurityVersionExp )
-            return logAndPropagateResult("zesFirmwareSetSecurityVersionExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareSetSecurityVersionExpPrologue( hFirmware );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareSetSecurityVersionExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6120,17 +5841,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesFirmwareSetSecurityVersionExpPrologue( hFirmware );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareSetSecurityVersionExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetSecurityVersionExp( hFirmware );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesFirmwareSetSecurityVersionExpEpilogue( hFirmware ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesFirmwareSetSecurityVersionExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesFirmwareSetSecurityVersionExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6149,17 +5870,15 @@ namespace validation_layer
                                                         ///< the driver shall only retrieve that number of sub device property structures.
         )
     {
-        context.logger->log_trace("zesDeviceGetSubDevicePropertiesExp(hDevice, pCount, pSubdeviceProps)");
-
         auto pfnGetSubDevicePropertiesExp = context.zesDdiTable.DeviceExp.pfnGetSubDevicePropertiesExp;
 
         if( nullptr == pfnGetSubDevicePropertiesExp )
-            return logAndPropagateResult("zesDeviceGetSubDevicePropertiesExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetSubDevicePropertiesExpPrologue( hDevice, pCount, pSubdeviceProps );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetSubDevicePropertiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6170,21 +5889,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceGetSubDevicePropertiesExpPrologue( hDevice, pCount, pSubdeviceProps );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetSubDevicePropertiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetSubDevicePropertiesExp( hDevice, pCount, pSubdeviceProps );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceGetSubDevicePropertiesExpEpilogue( hDevice, pCount, pSubdeviceProps ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceGetSubDevicePropertiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesDeviceGetSubDevicePropertiesExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6199,17 +5918,15 @@ namespace validation_layer
         uint32_t* subdeviceId                           ///< [out] If onSubdevice is true, this gives the ID of the sub-device
         )
     {
-        context.logger->log_trace("zesDriverGetDeviceByUuidExp(hDriver, uuid, phDevice, onSubdevice, subdeviceId)");
-
         auto pfnGetDeviceByUuidExp = context.zesDdiTable.DriverExp.pfnGetDeviceByUuidExp;
 
         if( nullptr == pfnGetDeviceByUuidExp )
-            return logAndPropagateResult("zesDriverGetDeviceByUuidExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetDeviceByUuidExpPrologue( hDriver, uuid, phDevice, onSubdevice, subdeviceId );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetDeviceByUuidExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6220,14 +5937,14 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDriverGetDeviceByUuidExpPrologue( hDriver, uuid, phDevice, onSubdevice, subdeviceId );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetDeviceByUuidExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetDeviceByUuidExp( hDriver, uuid, phDevice, onSubdevice, subdeviceId );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDriverGetDeviceByUuidExpEpilogue( hDriver, uuid, phDevice, onSubdevice, subdeviceId ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDriverGetDeviceByUuidExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6239,7 +5956,7 @@ namespace validation_layer
 
             }
         }
-        return logAndPropagateResult("zesDriverGetDeviceByUuidExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6260,17 +5977,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumActiveVFExp(hDevice, pCount, phVFhandle)");
-
         auto pfnEnumActiveVFExp = context.zesDdiTable.DeviceExp.pfnEnumActiveVFExp;
 
         if( nullptr == pfnEnumActiveVFExp )
-            return logAndPropagateResult("zesDeviceEnumActiveVFExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumActiveVFExpPrologue( hDevice, pCount, phVFhandle );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumActiveVFExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6281,17 +5996,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumActiveVFExpPrologue( hDevice, pCount, phVFhandle );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumActiveVFExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumActiveVFExp( hDevice, pCount, phVFhandle );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumActiveVFExpEpilogue( hDevice, pCount, phVFhandle ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumActiveVFExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumActiveVFExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6302,17 +6017,15 @@ namespace validation_layer
         zes_vf_exp_properties_t* pProperties            ///< [in,out] Will contain VF properties.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFPropertiesExp(hVFhandle, pProperties)");
-
         auto pfnGetVFPropertiesExp = context.zesDdiTable.VFManagementExp.pfnGetVFPropertiesExp;
 
         if( nullptr == pfnGetVFPropertiesExp )
-            return logAndPropagateResult("zesVFManagementGetVFPropertiesExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFPropertiesExpPrologue( hVFhandle, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFPropertiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6323,21 +6036,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFPropertiesExpPrologue( hVFhandle, pProperties );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFPropertiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFPropertiesExp( hVFhandle, pProperties );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFPropertiesExpEpilogue( hVFhandle, pProperties ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFPropertiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesVFManagementGetVFPropertiesExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6360,17 +6073,15 @@ namespace validation_layer
                                                         ///< memory stats.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFMemoryUtilizationExp(hVFhandle, pCount, pMemUtil)");
-
         auto pfnGetVFMemoryUtilizationExp = context.zesDdiTable.VFManagementExp.pfnGetVFMemoryUtilizationExp;
 
         if( nullptr == pfnGetVFMemoryUtilizationExp )
-            return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFMemoryUtilizationExpPrologue( hVFhandle, pCount, pMemUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6381,21 +6092,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFMemoryUtilizationExpPrologue( hVFhandle, pCount, pMemUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFMemoryUtilizationExp( hVFhandle, pCount, pMemUtil );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFMemoryUtilizationExpEpilogue( hVFhandle, pCount, pMemUtil ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6418,17 +6129,15 @@ namespace validation_layer
                                                         ///< engine stats.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFEngineUtilizationExp(hVFhandle, pCount, pEngineUtil)");
-
         auto pfnGetVFEngineUtilizationExp = context.zesDdiTable.VFManagementExp.pfnGetVFEngineUtilizationExp;
 
         if( nullptr == pfnGetVFEngineUtilizationExp )
-            return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFEngineUtilizationExpPrologue( hVFhandle, pCount, pEngineUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6439,21 +6148,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFEngineUtilizationExpPrologue( hVFhandle, pCount, pEngineUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFEngineUtilizationExp( hVFhandle, pCount, pEngineUtil );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFEngineUtilizationExpEpilogue( hVFhandle, pCount, pEngineUtil ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6466,17 +6175,15 @@ namespace validation_layer
         ze_bool_t enable                                ///< [in] Enable utilization telemetry.
         )
     {
-        context.logger->log_trace("zesVFManagementSetVFTelemetryModeExp(hVFhandle, flags, enable)");
-
         auto pfnSetVFTelemetryModeExp = context.zesDdiTable.VFManagementExp.pfnSetVFTelemetryModeExp;
 
         if( nullptr == pfnSetVFTelemetryModeExp )
-            return logAndPropagateResult("zesVFManagementSetVFTelemetryModeExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementSetVFTelemetryModeExpPrologue( hVFhandle, flags, enable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementSetVFTelemetryModeExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6487,17 +6194,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementSetVFTelemetryModeExpPrologue( hVFhandle, flags, enable );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementSetVFTelemetryModeExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetVFTelemetryModeExp( hVFhandle, flags, enable );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementSetVFTelemetryModeExpEpilogue( hVFhandle, flags, enable ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementSetVFTelemetryModeExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesVFManagementSetVFTelemetryModeExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6510,17 +6217,15 @@ namespace validation_layer
         uint64_t samplingInterval                       ///< [in] Sampling interval value.
         )
     {
-        context.logger->log_trace("zesVFManagementSetVFTelemetrySamplingIntervalExp(hVFhandle, flag, samplingInterval)");
-
         auto pfnSetVFTelemetrySamplingIntervalExp = context.zesDdiTable.VFManagementExp.pfnSetVFTelemetrySamplingIntervalExp;
 
         if( nullptr == pfnSetVFTelemetrySamplingIntervalExp )
-            return logAndPropagateResult("zesVFManagementSetVFTelemetrySamplingIntervalExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementSetVFTelemetrySamplingIntervalExpPrologue( hVFhandle, flag, samplingInterval );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementSetVFTelemetrySamplingIntervalExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6531,17 +6236,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementSetVFTelemetrySamplingIntervalExpPrologue( hVFhandle, flag, samplingInterval );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementSetVFTelemetrySamplingIntervalExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnSetVFTelemetrySamplingIntervalExp( hVFhandle, flag, samplingInterval );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementSetVFTelemetrySamplingIntervalExpEpilogue( hVFhandle, flag, samplingInterval ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementSetVFTelemetrySamplingIntervalExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesVFManagementSetVFTelemetrySamplingIntervalExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6562,17 +6267,15 @@ namespace validation_layer
                                                         ///< component handles.
         )
     {
-        context.logger->log_trace("zesDeviceEnumEnabledVFExp(hDevice, pCount, phVFhandle)");
-
         auto pfnEnumEnabledVFExp = context.zesDdiTable.DeviceExp.pfnEnumEnabledVFExp;
 
         if( nullptr == pfnEnumEnabledVFExp )
-            return logAndPropagateResult("zesDeviceEnumEnabledVFExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumEnabledVFExpPrologue( hDevice, pCount, phVFhandle );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumEnabledVFExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6583,17 +6286,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesDeviceEnumEnabledVFExpPrologue( hDevice, pCount, phVFhandle );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumEnabledVFExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnEnumEnabledVFExp( hDevice, pCount, phVFhandle );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesDeviceEnumEnabledVFExpEpilogue( hDevice, pCount, phVFhandle ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesDeviceEnumEnabledVFExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesDeviceEnumEnabledVFExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6604,17 +6307,15 @@ namespace validation_layer
         zes_vf_exp_capabilities_t* pCapability          ///< [in,out] Will contain VF capability.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFCapabilitiesExp(hVFhandle, pCapability)");
-
         auto pfnGetVFCapabilitiesExp = context.zesDdiTable.VFManagementExp.pfnGetVFCapabilitiesExp;
 
         if( nullptr == pfnGetVFCapabilitiesExp )
-            return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFCapabilitiesExpPrologue( hVFhandle, pCapability );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6625,21 +6326,21 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFCapabilitiesExpPrologue( hVFhandle, pCapability );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFCapabilitiesExp( hVFhandle, pCapability );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFCapabilitiesExpEpilogue( hVFhandle, pCapability ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
         if( driver_result == ZE_RESULT_SUCCESS && context.enableHandleLifetime ){
             
         }
-        return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6660,17 +6361,15 @@ namespace validation_layer
                                                         ///< memory stats.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFMemoryUtilizationExp2(hVFhandle, pCount, pMemUtil)");
-
         auto pfnGetVFMemoryUtilizationExp2 = context.zesDdiTable.VFManagementExp.pfnGetVFMemoryUtilizationExp2;
 
         if( nullptr == pfnGetVFMemoryUtilizationExp2 )
-            return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp2", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFMemoryUtilizationExp2Prologue( hVFhandle, pCount, pMemUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6681,17 +6380,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFMemoryUtilizationExp2Prologue( hVFhandle, pCount, pMemUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFMemoryUtilizationExp2( hVFhandle, pCount, pMemUtil );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFMemoryUtilizationExp2Epilogue( hVFhandle, pCount, pMemUtil ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesVFManagementGetVFMemoryUtilizationExp2", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6712,17 +6411,15 @@ namespace validation_layer
                                                         ///< engine stats.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFEngineUtilizationExp2(hVFhandle, pCount, pEngineUtil)");
-
         auto pfnGetVFEngineUtilizationExp2 = context.zesDdiTable.VFManagementExp.pfnGetVFEngineUtilizationExp2;
 
         if( nullptr == pfnGetVFEngineUtilizationExp2 )
-            return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp2", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFEngineUtilizationExp2Prologue( hVFhandle, pCount, pEngineUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6733,17 +6430,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFEngineUtilizationExp2Prologue( hVFhandle, pCount, pEngineUtil );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFEngineUtilizationExp2( hVFhandle, pCount, pEngineUtil );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFEngineUtilizationExp2Epilogue( hVFhandle, pCount, pEngineUtil ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesVFManagementGetVFEngineUtilizationExp2", driver_result);
+        return driver_result;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -6754,17 +6451,15 @@ namespace validation_layer
         zes_vf_exp2_capabilities_t* pCapability         ///< [in,out] Will contain VF capability.
         )
     {
-        context.logger->log_trace("zesVFManagementGetVFCapabilitiesExp2(hVFhandle, pCapability)");
-
         auto pfnGetVFCapabilitiesExp2 = context.zesDdiTable.VFManagementExp.pfnGetVFCapabilitiesExp2;
 
         if( nullptr == pfnGetVFCapabilitiesExp2 )
-            return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp2", ZE_RESULT_ERROR_UNSUPPORTED_FEATURE);
+            return ZE_RESULT_ERROR_UNSUPPORTED_FEATURE;
 
         auto numValHandlers = context.validationHandlers.size();
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFCapabilitiesExp2Prologue( hVFhandle, pCapability );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
 
@@ -6775,17 +6470,17 @@ namespace validation_layer
         
         if(context.enableHandleLifetime ){
             auto result = context.handleLifetime->zesHandleLifetime.zesVFManagementGetVFCapabilitiesExp2Prologue( hVFhandle, pCapability );
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
         auto driver_result = pfnGetVFCapabilitiesExp2( hVFhandle, pCapability );
 
         for (size_t i = 0; i < numValHandlers; i++) {
             auto result = context.validationHandlers[i]->zesValidation->zesVFManagementGetVFCapabilitiesExp2Epilogue( hVFhandle, pCapability ,driver_result);
-            if(result!=ZE_RESULT_SUCCESS) return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp2", result);
+            if(result!=ZE_RESULT_SUCCESS) return result;
         }
 
-        return logAndPropagateResult("zesVFManagementGetVFCapabilitiesExp2", driver_result);
+        return driver_result;
     }
 
 } // namespace validation_layer
